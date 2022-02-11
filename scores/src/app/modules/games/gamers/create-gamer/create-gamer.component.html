@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'modules.games.createGamer' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+
+        <ion-item lines="none">
+          <div class="choose-players">
+            <div class="choose-players__color">
+              <div class="select-color" (click)="showSelectColorPopup($event)"
+                [ngStyle]="{'background-color' : color }">
+              </div>
+            </div>
+            <div class="choose-players__name">
+              <ion-item>
+                <ion-input placeholder="Enter Name" clearInput [(ngModel)]="name"></ion-input>
+              </ion-item>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" (click)="onCreate()" [disabled]="!name">create
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

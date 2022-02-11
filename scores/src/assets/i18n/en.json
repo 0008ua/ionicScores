@@ -1,0 +1,136 @@
+{
+  "language": "Перейти на Українську",
+  "games": {
+    "train": {
+      "title": "Ticket to ride"
+    }
+  },
+  "modules": {
+    "analytics": {
+      "title": "Analytics"
+    },
+    "games": {
+      "title": "Games",
+      "createGamer": "Create player",
+      "addPlayers": "Add players",
+      "color": "Color",
+      "player": "Player"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "profile": {
+        "title": "Profile",
+        "login": "Login",
+        "email": "Email",
+        "role": "Role",
+        "blocked": "Blocked",
+        "activated": "Activated",
+        "activationText": "Please enter activation code from email",
+        "code": "Code",
+        "company": "company",
+        "deleteAttention": "This will remove all related data, including reservations!",
+        "activateWarning": "Please confirm your email to activate account. Additional features will be available."
+      },
+      "operator": {
+        "title": "Edit users",
+        "block": "Block",
+        "unblock": "Unblock"
+      },
+      "room": {
+        "title": "Edit rooms",
+        "deleteAttention": "This will remove all related reservations!"
+      }
+    },
+    "user": {
+      "signin": "Sign in",
+      "signup": "Sign up",
+      "orSignup": "Or sign up",
+      "orSignin": "Or sign in",
+      "logout": "Logout",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password"
+    },
+    "shared": {
+      "formField": {
+        "updatePrice": "Update price",
+        "inputPrice": "Input price",
+        "updateName": "Update name",
+        "inputName": "Input name"
+      }
+    }
+  },
+  "elements": {
+    "button": {
+      "send": "Send",
+      "add": "Add",
+      "update": "Update",
+      "slideToDelete": "Slide to delete",
+      "slideForOptions": "Slide for options",
+      "submit": "Submit",
+      "activate": "Activate",
+      "close": "Close",
+      "delete": "Delete"
+    },
+    "datePicker": {
+      "chooseMonth": "Choose Month",
+      "chooseDate": "Choose Date",
+      "monthNames": "January, February, March, April, May, June, July, August, September, October, November, December"
+    }
+  },
+  "common": {
+    "logic": {
+      "true": "Yes",
+      "false": "No"
+    },
+    "bookingSteps": {
+      "title": "Booking status",
+      "null": "All",
+      "preorder": "Preordered",
+      "reserved": "Reserved",
+      "paid": "Paid",
+      "cancelled": "Cancelled"
+    },
+    "bookingStepExprs": {
+      "title": "Booking status",
+      "$eq": "Equal",
+      "$ne": "Not equal"
+    },
+    "sortOrders": {
+      "title": "Sort order",
+      "1": "Ascending",
+      "-1": "Descending"
+    },
+    "sortFields": {
+      "title": "Sort field",
+      "bookingStep": "Booking status",
+      "dates.from": "Dates from",
+      "dates.to": "Dates to",
+      "price": "Price"
+    },
+    "paymentMethods": {
+      "title": "Payment method",
+      "cash": "Cash",
+      "card": "Card"
+    }
+  },
+  "dif": {
+    "name": "Name",
+    "all": "All",
+    "date": "Date",
+    "amount": "Amount",
+    "price": "Price",
+    "sure": "Are you sure?"
+  },
+  "errors": {
+    "minlength": "Too short",
+    "maxlength": "Too longg",
+    "required": "Required",
+    "pattern": "Some characters are not allowed or format is not correct",
+    "notunique": "Already exists",
+    "mismatch": "Mismatch",
+    "max": "Too much",
+    "min": "Not enough "
+  }
+}

@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>train</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-menu-button menu="games-menu"></ion-menu-button>
+    </ion-buttons>
+      <ion-segment scrollable [value]="activeRound" (ionChange)="onMenuClickHandler($event)">
+        <ion-segment-button *ngFor="let round of roundsCfg; let idx = index" [value]="round" [disabled]="(round._id === 'start' && (rounds$ | async).length) ||
+            (round._id !== 'start' && (rounds$ | async).length === 0)">
+          <ion-icon [name]="round.icon"></ion-icon>
+        </ion-segment-button>
+
+      </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="ion-no-margin ion-no-padding">
+    <ion-row>
+      <ion-col size-lg="6" size-md="8" size-sm="10" offset-lg="3" offset-md="2" offset-sm="1">
+        <ion-card *ngIf="(rounds$ | async).length !== 0">
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">Ticket to the ride</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+
+            <ion-list>
+              <ion-item *ngFor="let player of (players$ | async)">
+                <ion-label [ngStyle]="{
+                  'border-left': '6px solid ' + player.color,
+                  'padding-left': '10px'
+                }">
+                  {{player.name}}
+                </ion-label>
+                <div slot="end" [ngStyle]="{
+                  'border-right': '6px solid ' + player.color,
+                  'padding-right': '10px'
+                }">
+                  {{getPlayerTotalScores(player._id)}}
+                </div>
+              </ion-item>
+            </ion-list>
+            <ion-row class="ion-justify-content-around">
+              <ion-col>
+                <ion-button expand="block" size="small" [disabled]="(rounds$ | async).length === 0"
+                  (click)="onFinishGameHandler()">finish game
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button expand="block" size="small" [disabled]="(rounds$ | async).length === 0"
+                  (click)="onCancelGameHandler()">cancel game
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-lg="6" size-md="8" size-sm="10" offset-lg="3" offset-md="2" offset-sm="1">
+        <app-train-rounds [activeRound$]="activeRound$"></app-train-rounds>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- <app-train-menu></app-train-menu> -->
+  <!-- <router-outlet name='menuOutlet'></router-outlet> -->
+  <!-- <ion-item [routerLink]="['/', 'games', 'train', {outlets: {primary: 'stations', 'menuOutlet': 'stations'}}]"
+    routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+    <ion-icon name="log-in" slot="start"></ion-icon>
+    <ion-label>outlets</ion-label>
+  </ion-item> -->
+  <!-- <ion-item [routerLink]="['/', 'games', 'train', 'stations']" routerLinkActive="active-link"
+    [routerLinkActiveOptions]="{exact: true}">
+    <ion-icon name="log-in" slot="start"></ion-icon>
+    <ion-label>single</ion-label>
+  </ion-item> -->
+  <!-- <app-train-menu></app-train-menu>
+  <app-train-rounds></app-train-rounds>
+  <app-choose-players></app-choose-players> -->
+  <!-- <router-outlet ></router-outlet> -->
+  <!-- <ion-grid  class="ion-no-margin">
+    <ion-row>
+      <ion-col size-lg="6" size-md="8" size-sm="10" offset-lg="3" offset-md="2" offset-sm="1"> -->
+  <!-- <ion-router-outlet></ion-router-outlet> -->
+  <!--
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</ion-content>

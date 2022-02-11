@@ -1,0 +1,136 @@
+{
+  "language": "Switch to English",
+  "games": {
+    "train": {
+      "title": "Ticket to ride"
+    }
+  },
+  "modules": {
+    "analytics": {
+      "title": "Аналітика"
+    },
+    "games": {
+      "title": "Ігри",
+      "createGamer": "Створити гравця",
+      "addPlayers": "Додати гравців",
+      "color": "Колір",
+      "player": "Гравець"
+    },
+    "dashboard": {
+      "title": "Налаштування",
+      "profile": {
+        "title": "Профіль",
+        "login": "Логін",
+        "email": "Email",
+        "role": "Права",
+        "blocked": "Заблокований",
+        "activated": "Активований",
+        "activationText": "Введіть код, що прийшов на email",
+        "code": "Код",
+        "company": "компанію",
+        "deleteAttention": "Це назавжди видалить усі пов'язані дані, в т.ч. бронювання!",
+        "activateWarning": "Для активаціїї профілю будь ласка підтвердіть свій email. Будуть доступні додаткові функції."
+      },
+      "operator": {
+        "title": "Редагувати користувачів",
+        "block": "Блокувати",
+        "unblock": "Розблокувати"
+      },
+      "room": {
+        "title": "Редагувати номера",
+        "deleteAttention": "Це назавжди видалить усі пов'язані бронювання!"
+      }
+    },
+    "user": {
+      "signin": "Вхід",
+      "signup": "Реєстрація",
+      "orSignup": "Або реєстрація",
+      "orSignin": "Або вхід",
+      "logout": "Вийти",
+      "name": "Ім'я",
+      "email": "Email",
+      "password": "Пароль",
+      "confirmPassword": "Підтвердити пароль"
+    },
+    "shared": {
+      "formField": {
+        "updatePrice": "Оновити ціну",
+        "inputPrice": "Введіть ціну",
+        "updateName": "Оновити назву",
+        "inputName": "Введіть назву"
+      }
+    }
+  },
+  "elements": {
+    "button": {
+      "send": "Надіслати",
+      "add": "Додати",
+      "update": "Оновити",
+      "slideToDelete": "Зсунути для видалення",
+      "slideForOptions": "Зсунути для опцій",
+      "submit": "Зберегти",
+      "activate": "Активувати",
+      "close": "Закрити",
+      "delete": "Видалити"
+    },
+    "datePicker": {
+      "chooseMonth": "Виберіть місяць",
+      "chooseDate": "Виберіть дату",
+      "monthNames": "Січень, Лютий, Березень, Квітень, Травень, Червень, Липень, Серпень, Вересень, Жовтень, Листопад, Грудень"
+    }
+  },
+  "common": {
+    "logic": {
+      "true": "Так",
+      "false": "Ні"
+    },
+    "bookingSteps": {
+      "title": "Статус",
+      "null": "Всі",
+      "preorder": "Попередньо заброньовано",
+      "reserved": "Зарезервовано",
+      "paid": "Оплачено",
+      "cancelled": "Скасовано"
+    },
+    "bookingStepExprs": {
+      "title": "Статус",
+      "$eq": "Є",
+      "$ne": "Не є"
+    },
+    "sortOrders": {
+      "title": "Сортування",
+      "1": "Зростання",
+      "-1": "Спадання"
+    },
+    "sortFields": {
+      "title": "Сортувати по",
+      "bookingStep": "Статус",
+      "dates.from": "Дата з",
+      "dates.to": "Дата по",
+      "price": "Ціна"
+    },
+    "paymentMethods": {
+      "title": "Спосіб оплати",
+      "cash": "Готівка",
+      "card": "Карта"
+    }
+  },
+  "dif": {
+    "name": "Ім'я",
+    "all": "Всі",
+    "date": "Дата",
+    "amount": "Сума",
+    "price": "Ціна",
+    "sure": "Ви впевнені?"
+  },
+  "errors": {
+    "minlength": "Надто короткий",
+    "maxlength": "Надто довгий",
+    "required": "Обов'язкове поле",
+    "pattern": "Присутні недопустимі символи або невірне форматування",
+    "notunique": "Вже існує",
+    "mismatch": "Не збігається",
+    "max": "Забагато",
+    "min": "Замало"
+  }
+}

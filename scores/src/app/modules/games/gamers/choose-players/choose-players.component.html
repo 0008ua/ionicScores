@@ -1,0 +1,109 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>choosePlayers</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<!-- <ion-grid class="ion-no-margin">
+  <ion-row>
+    <ion-col size-lg="6" size-md="8" size-sm="10" offset-lg="3" offset-md="2" offset-sm="1"> -->
+      <!-- <form [formGroup]="choosePlayersForm" #choosePlayersFormDirective="ngForm"> -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">{{'modules.games.addPlayers' | translate}}</ion-card-title>
+            <ion-card-subtitle class="ion-text-center">Ticket to the ride</ion-card-subtitle>
+
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item-sliding *ngFor="let player of (players$ | async); let index = index" lines="none">
+              <ion-item lines="none">
+                <div class="choose-players">
+                  <div class="choose-players__color">
+                    <div class="select-color" (click)="filtredColors.length ? showSelectColorPopup($event, index) : null"
+
+                      [ngStyle]="{'background-color' : player?.color }">
+                      <!-- <div *ngIf="showSelectColor === index" class="select-color__popup select-color-popup"
+                        (click)="showSelectColorHandler($event, null)">
+
+                        <div *ngFor="let color of filtredColors" class="select-color-popup__item"
+                          (click)="chooseColorHandler(color, index)" [ngStyle]="{ 'backgroundColor' : color }">
+                        </div>
+                      </div> -->
+                    </div>
+                    <!-- </ion-item> -->
+                    <!-- <ion-item>
+                                                          <ion-label>{{'modules.games.color' | translate}}</ion-label>
+
+                                                          <ion-select placeholder="Select One" [value]="player.color"
+                                                            (ionChange)="chooseColorHandler($event, index)">
+                                                            <ion-select-option [value]="player.color">
+                                                              {{ player.color}}
+                                                            </ion-select-option>
+                                                            <ion-select-option *ngFor="let color of filtredPlayersColors" [value]="color">
+                                                              {{ color }}
+                                                            </ion-select-option>
+                                                          </ion-select>
+                                                        </ion-item> -->
+                  </div>
+                  <div class="choose-players__name">
+                    <ion-item>
+                      <!-- <ion-label lines="none">
+                    {{'modules.games.player' | translate}}
+                      </ion-label> -->
+
+                      <ion-select placeholder="Select One" [value]="player" interface="popover"
+                        (ionChange)="choosePlayerHandler($event, index)" slot="end">
+                        <ion-select-option [value]="player">
+                          {{ player.name}}
+                        </ion-select-option>
+                        <ion-select-option *ngFor="let filtredGamer of filtredGamers" [value]="filtredGamer">
+                          {{ filtredGamer.name}}
+                        </ion-select-option>
+                      </ion-select>
+                      <ion-note slot="end" color="danger">
+                        <ion-icon name="trash-outline"></ion-icon>
+                        <ion-icon name="caret-back-outline"></ion-icon>
+                        <!-- {{'elements.button.slideToDelete' | translate}} -->
+                      </ion-note>
+                    </ion-item>
+                  </div>
+                </div>
+              </ion-item>
+
+              <ion-item-options side="end">
+                <ion-item-option color="danger" (click)="removePlayerHandler(player._id)">Remove</ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+
+          </ion-list>
+          <ion-row>
+            <ion-col>
+              <ion-button expand="block" color="success" (click)="addPlayerHandler()" [disabled]="players.length >= 5">
+                add
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="block" color="secondary" (click)="showCreateGamerPopup($event)"  [disabled]="players.length >= 5">
+                create
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="block" color="danger" (click)="removeAllPlayersHandler()">remove all
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-button expand="block" (click)="startGameHandler()" [disabled]="players.length < 2">start game
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+
+      </ion-card>
+
+    <!-- </ion-col>
+  </ion-row>
+</ion-grid> -->
