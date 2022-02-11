@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "server": "c:/it/scores/node_modules/.bin/tsc-watch --onSuccess \" node ./serverDist/bin/www \"",
-    "start": "node ./serverDist/bin/www"
+    "start": "node ./serverDist/bin/www",
+    "postinstall": "tsc"
   },
   "dependencies": {
     "@ngrx/store": "^13.0.2",
