@@ -14,12 +14,12 @@
             <ion-card-subtitle class="ion-text-center">Ticket to the ride</ion-card-subtitle>
 
         </ion-card-header>
-        <ion-card-content>
-          <ion-list>
+        <ion-card-content class="choose-players">
+          <ion-list class="choose-players__list">
             <ion-item-sliding *ngFor="let player of (players$ | async); let index = index" lines="none">
               <ion-item lines="none">
-                <div class="choose-players">
-                  <div class="choose-players__color">
+                <div class="players-list">
+                  <div class="players-list__color">
                     <div class="select-color" (click)="filtredColors.length ? showSelectColorPopup($event, index) : null"
 
                       [ngStyle]="{'background-color' : player?.color }">
@@ -46,7 +46,7 @@
                                                           </ion-select>
                                                         </ion-item> -->
                   </div>
-                  <div class="choose-players__name">
+                  <div class="players-list__name">
                     <ion-item>
                       <!-- <ion-label lines="none">
                     {{'modules.games.player' | translate}}
@@ -77,24 +77,24 @@
             </ion-item-sliding>
 
           </ion-list>
-          <ion-row>
+          <ion-row class="choose-players__btn-block">
             <ion-col>
-              <ion-button expand="block" color="success" (click)="addPlayerHandler()" [disabled]="players.length >= 5">
+              <ion-button expand="block"  fill="outline" size="small" color="secondary" (click)="addPlayerHandler()" [disabled]="players.length >= 5">
                 add
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button expand="block" color="secondary" (click)="showCreateGamerPopup($event)"  [disabled]="players.length >= 5">
+              <ion-button expand="block" fill="outline" size="small" color="success" (click)="showCreateGamerPopup($event)"  [disabled]="players.length >= 5">
                 create
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button expand="block" color="danger" (click)="removeAllPlayersHandler()">remove all
+              <ion-button expand="block" fill="outline" size="small" color="danger" (click)="removeAllPlayersHandler()">remove all
               </ion-button>
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row class="choose-players__btn-block">
             <ion-col>
               <ion-button expand="block" (click)="startGameHandler()" [disabled]="players.length < 2">start game
               </ion-button>

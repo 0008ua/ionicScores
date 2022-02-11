@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>train</ion-title>
+    <!-- <ion-title>train</ion-title> -->
 
     <ion-buttons slot="end">
       <ion-menu-button menu="games-menu"></ion-menu-button>
@@ -43,16 +43,16 @@
               </ion-item>
             </ion-list>
             <ion-row class="ion-justify-content-around">
-              <ion-col>
-                <ion-button expand="block" size="small" [disabled]="(rounds$ | async).length === 0"
+              <!-- <ion-col> -->
+                <ion-button  fill="outline" size="small" [disabled]="(rounds$ | async).length === 0"
                   (click)="onFinishGameHandler()">finish game
                 </ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button expand="block" size="small" [disabled]="(rounds$ | async).length === 0"
+              <!-- </ion-col> -->
+              <!-- <ion-col> -->
+                <ion-button  fill="outline" size="small" [disabled]="(rounds$ | async).length === 0"
                   (click)="onCancelGameHandler()">cancel game
                 </ion-button>
-              </ion-col>
+              <!-- </ion-col> -->
             </ion-row>
           </ion-card-content>
         </ion-card>

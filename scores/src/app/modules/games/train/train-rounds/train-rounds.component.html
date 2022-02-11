@@ -16,6 +16,7 @@
 
       <ion-card-title class="ion-text-center">{{getPlayerName(player._id)}}</ion-card-title>
     </ion-card-header>
+
     <ion-card-content *ngIf="round._id === 'routes'">
       <ion-row class="round round_tools">
         <ion-col *ngFor="let routeScore of routeScoresEnv" size="3">
@@ -31,18 +32,6 @@
           </ion-chip>
         </ion-col>
       </ion-row>
-      <!-- <ion-row class="route-scores">
-          <ion-chip [color]="routeScore > 19 ? 'secondary' : 'warning'" (click)="addToScoresLine(player._id, routeScore)"
-            *ngFor="let routeScore of routeScoresEnv | slice:0:6">
-            <ion-label>{{routeScore}}</ion-label>
-          </ion-chip>
-        </ion-row>
-        <ion-row class="route-scores">
-          <ion-chip [color]="routeScore > 19 ? 'secondary' : 'warning'" (click)="addToScoresLine(player._id, routeScore)"
-            *ngFor="let routeScore of routeScoresEnv | slice:6 ">
-            <ion-label>{{routeScore}}</ion-label>
-          </ion-chip>
-        </ion-row> -->
       <ion-row class="round round_result">
         <ion-col *ngFor="let routeScore of player?.scoresLine" size="3">
           <ion-chip outline [color]="routeScore > 19 ? 'secondary' : 'warning'"
@@ -58,12 +47,12 @@
 
     <ion-card-content *ngIf="round._id === 'length'">
       <ion-row>
-        <ion-col>
-          <ion-item lines="none">
-            <ion-label>Mark as longest</ion-label>
+        <ion-col class="round round_tools">
+          <!-- <ion-item lines="none"> -->
+            <div>Mark as longest</div>
             <ion-toggle [checked]="player.scoresLine.length" (ionChange)="onMarkLongestHandler($event, player._id)">
             </ion-toggle>
-          </ion-item>
+          <!-- </ion-item> -->
         </ion-col>
       </ion-row>
     </ion-card-content>
@@ -75,14 +64,14 @@
         </ion-col>
         <ion-col class="round_tools__btn">
           <div class="incDecBtn">
-            <ion-button shape="round" color="success" (click)="removeFromScoresLine(player._id, 4)"
-              [disabled]="player.scoresLine.length <= 0">
-              <ion-icon name="add-outline"></ion-icon>
-            </ion-button>
-            <span class="incDecBtn__caption">Stations</span>
-            <ion-button shape="round" color="warning" (click)="addToScoresLine(player._id, 4)"
+            <ion-button shape="round" color="danger" fill="outline" (click)="addToScoresLine(player._id, 4)"
               [disabled]="player.scoresLine.length >= 3">
               <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <span class="incDecBtn__caption">Stations</span>
+            <ion-button shape="round" color="success" fill="outline" (click)="removeFromScoresLine(player._id, 4)"
+              [disabled]="player.scoresLine.length <= 0">
+              <ion-icon name="add-outline"></ion-icon>
             </ion-button>
           </div>
         </ion-col>
@@ -90,24 +79,27 @@
     </ion-card-content>
 
     <ion-card-content *ngIf="round._id === 'cars'">
-        <ion-row *ngFor="let car of carsCfg" class="round round_tools">
-          <ion-col class="round_tools__score">
-            <ion-label>{{calcQtyOfArrItems(player._id, car.score)}}</ion-label>
-          </ion-col>
-          <ion-col class="round_tools__btn">
-            <div class="incDecBtn">
-              <ion-button shape="round" color="success" (click)="addToScoresLine(player._id, car.score)">
-                <ion-icon name="add-outline"></ion-icon>
-              </ion-button>
-              <span class="incDecBtn__caption">
-                <ion-icon name="train-outline"></ion-icon>
-                 {{car.qty}}</span>
-              <ion-button shape="round" color="warning" (click)="removeFromScoresLine(player._id, car.score)">
-                <ion-icon name="remove-outline"></ion-icon>
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
+      <ion-row *ngFor="let car of carsCfg" class="round round_tools">
+        <ion-col class="round_tools__score">
+          <ion-label>{{calcQtyOfArrItems(player._id, car.score)}}</ion-label>
+        </ion-col>
+        <ion-col class="round_tools__btn">
+          <div class="incDecBtn">
+            <ion-button shape="round" color="danger" fill="outline"
+              (click)="removeFromScoresLine(player._id, car.score)">
+              <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <span class="incDecBtn__caption">
+              <ion-icon name="train-outline"></ion-icon>
+              {{car.qty}}
+            </span>
+            <ion-button shape="round" color="success" fill="outline" (click)="addToScoresLine(player._id, car.score)">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-card-content>
 
   </ion-card>
