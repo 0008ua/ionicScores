@@ -2,12 +2,14 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IGamer, Round, RoundCfg } from 'src/app/interfaces';
+import { IGamer, Round, RoundCfg, RoundMember } from 'src/app/interfaces';
 import { environment } from 'src/environments/environment';
 import * as fromRoundsReducer from '../../../../store/reducers/round.reducer';
 import * as fromRoundsActions from '../../../../store/actions/round.actions';
 import * as fromPlayersReducer from '../../../../store/reducers/player.reducer';
 import { switchMap, tap } from 'rxjs/operators';
+import * as fromRoundMembersReducer from '../../../../store/reducers/round-member.reducer';
+import * as fromRoundMembersActions from '../../../../store/actions/round-member.actions';
 
 @Component({
   selector: 'app-train-rounds',
@@ -26,6 +28,8 @@ export class TrainRoundsComponent implements OnInit {
   rounds$: Observable<Round[]>;
   rounds: Round[];
   // round$: Observable<Round>;
+  roundMembers$: Observable<RoundMember[]>;
+  roundMembers: RoundMember[];
 
   players$: Observable<IGamer[]>;
   players: IGamer[];
@@ -53,31 +57,42 @@ export class TrainRoundsComponent implements OnInit {
       tap((activeRound) => this.activeRound = activeRound),
       switchMap((activeRound) => this.store.select(fromRoundsReducer.selectRoundsById(activeRound._id)))
     ).subscribe((round) => {
-      console.log('round', round)
       if (round) {
         this.round = round;
-        this.round.players.forEach((player) => this.inverse[player._id] = 1);
       }
-
     });
 
     this.rounds$ = this.store.select(fromRoundsReducer.selectRoundsAll);
     this.rounds$.subscribe((rounds) => {
       this.rounds = rounds;
-      console.log('rounds', rounds);
     });
 
-
+    this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectRoundMembersAll);
+    this.roundMembers$.subscribe((roundMembers) => {
+      this.roundMembers = roundMembers;
+    });
 
 
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
     this.players$.subscribe((players) => {
       this.players = players;
+      this.players.forEach((player) => this.inverse[player._id] = 1);
+
     });
   }
 
-  calcScores(scoresLine: number[]): number {
-    return scoresLine.reduce((prev, cur) => prev + cur, 0);
+  calcScores(player_id: string): number {
+    return this.getMemberByPlayer_id(player_id).scoresLine.reduce((prev, cur) => prev + cur, 0);
+    // let result: number;
+    // this.round.members.forEach((member_id) => {
+    //   this.roundMembers.forEach((member) => {
+    //     if (member._id === member_id && member.player_id === player_id) {
+    //       result = member.scoresLine.reduce((prev, cur) => prev + cur, 0);
+    //     }
+    //   });
+    // });
+    // return result;
+    // return scoresLine.reduce((prev, cur) => prev + cur, 0);
   }
 
   getPlayerColor(player_id: string): string {
@@ -87,20 +102,50 @@ export class TrainRoundsComponent implements OnInit {
   getPlayerName(player_id: string): string {
     return this.players.find((player) => player._id === player_id).name;
   }
+  // round: {
+  //   members: ['44', '55']
+  // }
+
+  // roundMembers: [
+  //   {
+  //     _id: '44',
+  //     player_id: 'dddsdfsdf',
+  //     scoresLine: [5, 5, 6]
+  //   }
+  // ]
+
+
+
+  getMemberByPlayer_id(player_id: string): RoundMember {
+    return this.roundMembers
+      .filter((roundMember) =>
+        roundMember.player_id === player_id && this.round.members.includes(roundMember._id)
+      )[0];
+  }
 
   calcQtyOfArrItems(player_id: string, item: string | number): number {
     let count = 0;
-    this.round.players
-      .forEach((player) => {
-        if (player._id === player_id) {
-          player.scoresLine.forEach((arrItem) => {
-            if (arrItem === item) {
-              count++;
-            }
-          });
-        }
-      });
+
+    this.getMemberByPlayer_id(player_id).scoresLine.forEach((arrItem) => {
+      if (arrItem === item) {
+        count++;
+      }
+    });
+
     return count;
+
+    // let count = 0;
+    // this.roundMembers
+    //   .forEach((member) => {
+    //     if (member._id === member_id) {
+    //       member.scoresLine.forEach((arrItem) => {
+    //         if (arrItem === item) {
+    //           count++;
+    //         }
+    //       });
+    //     }
+    //   });
+    // return count;
   }
 
   inverseScore(player_id: string) {
@@ -108,67 +153,131 @@ export class TrainRoundsComponent implements OnInit {
   }
 
   addToScoresLine(player_id: string, score: number) {
-    console.log('upd', score)
-    const changes = this.round.players
-      .map((player) => {
-        if (player._id === player_id) {
-          return { ...player, scoresLine: [...player.scoresLine, score] };
-        }
-        return player;
-      });
-    this.store.dispatch(fromRoundsActions.updateRound({
-      round:
+    const member = this.getMemberByPlayer_id(player_id);
+    const changes = {
+      ...member,
+      scoresLine: [...member.scoresLine, score],
+    };
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
       {
-        id: this.round._id,
-        changes: {
-          players: changes,
-        }
+        id: member._id,
+        changes,
       }
     }));
   }
 
   removeFromScoresLine(player_id: string, score: number) {
-    const changes = this.round.players
-      .map((player) => {
-        if (player._id === player_id) {
-          const scoresLine = [...player.scoresLine];
-          const index = scoresLine.indexOf(score);
-          scoresLine.splice(index, 1);
-          if (index !== -1) {
-            return { ...player, scoresLine };
-          }
-        }
-        return player;
-      });
-    this.store.dispatch(fromRoundsActions.updateRound({
-      round:
+    const member = this.getMemberByPlayer_id(player_id);
+    const scoresLine = [...member.scoresLine];
+    const index = scoresLine.indexOf(score);
+    scoresLine.splice(index, 1);
+
+    const changes = {
+      ...member,
+      scoresLine,
+    };
+
+    // const changes = this.round.players
+    //   .map((player) => {
+    //     if (player._id === player_id) {
+    //       const scoresLine = [...player.scoresLine];
+    //       const index = scoresLine.indexOf(score);
+    //       scoresLine.splice(index, 1);
+    //       if (index !== -1) {
+    //         return { ...player, scoresLine };
+    //       }
+    //     }
+    //     return player;
+    //   });
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
       {
-        id: this.round._id,
-        changes: {
-          players: changes,
-        }
+        id: member._id,
+        changes,
       }
     }));
   }
 
   setScoresLine(player_id: string, scoresLine: number[]) {
-    const changes = this.round.players
-      .map((player) => {
-        if (player._id === player_id) {
-            return { ...player, scoresLine };
-        }
-        return player;
-      });
-    this.store.dispatch(fromRoundsActions.updateRound({
-      round:
+    const member = this.getMemberByPlayer_id(player_id);
+    const changes = {
+      ...member,
+      scoresLine,
+    };
+
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
       {
-        id: this.round._id,
-        changes: {
-          players: changes,
-        }
+        id: member._id,
+        changes,
       }
     }));
   }
+
+
+  // addToScoresLine(player_id: string, score: number) {
+  //   console.log('upd', score)
+  //   const changes = this.round.players
+  //     .map((player) => {
+  //       if (player._id === player_id) {
+  //         return { ...player, scoresLine: [...player.scoresLine, score] };
+  //       }
+  //       return player;
+  //     });
+  //   this.store.dispatch(fromRoundsActions.updateRound({
+  //     round:
+  //     {
+  //       id: this.round._id,
+  //       changes: {
+  //         players: changes,
+  //       }
+  //     }
+  //   }));
+  // }
+
+  // removeFromScoresLine(player_id: string, score: number) {
+  //   const changes = this.round.players
+  //     .map((player) => {
+  //       if (player._id === player_id) {
+  //         const scoresLine = [...player.scoresLine];
+  //         const index = scoresLine.indexOf(score);
+  //         scoresLine.splice(index, 1);
+  //         if (index !== -1) {
+  //           return { ...player, scoresLine };
+  //         }
+  //       }
+  //       return player;
+  //     });
+  //   this.store.dispatch(fromRoundsActions.updateRound({
+  //     round:
+  //     {
+  //       id: this.round._id,
+  //       changes: {
+  //         players: changes,
+  //       }
+  //     }
+  //   }));
+  // }
+
+  // setScoresLine(player_id: string, scoresLine: number[]) {
+  //   const changes = this.round.players
+  //     .map((player) => {
+  //       if (player._id === player_id) {
+  //           return { ...player, scoresLine };
+  //       }
+  //       return player;
+  //     });
+  //   this.store.dispatch(fromRoundsActions.updateRound({
+  //     round:
+  //     {
+  //       id: this.round._id,
+  //       changes: {
+  //         players: changes,
+  //       }
+  //     }
+  //   }));
+  // }
 
   onMarkLongestHandler(e: any, player_id: string) {
     const checked = e.target.checked;

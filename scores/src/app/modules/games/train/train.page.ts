@@ -3,11 +3,13 @@ import { ActivatedRoute, NavigationEnd, ParamMap, Router } from '@angular/router
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { filter, map, mergeMap, startWith, switchMap, tap } from 'rxjs/operators';
-import { IGamer, Round, RoundCfg } from 'src/app/interfaces';
+import { IGamer, Round, RoundCfg, RoundMember } from 'src/app/interfaces';
 import { clearRounds, deleteRounds } from 'src/app/store/actions/round.actions';
 import { environment } from 'src/environments/environment';
 import * as fromRoundsReducer from '../../../store/reducers/round.reducer';
+import * as fromRoundMembersReducer from '../../../store/reducers/round-member.reducer';
 import * as fromPlayersReducer from '../../../store/reducers/player.reducer';
+
 import { SharedService } from 'src/app/services/shared.service';
 import { GamerService } from 'src/app/store/gamer-data.service';
 import { GameService } from 'src/app/store/game-data.service';
@@ -28,6 +30,9 @@ export class TrainPage implements OnInit {
   rounds$: Observable<Round[]>;
   rounds: Round[];
   round: Round;
+
+  roundMembers$: Observable<RoundMember[]>;
+  roundMembers: RoundMember[];
 
   players$: Observable<IGamer[]>;
   players: IGamer[];
@@ -78,13 +83,16 @@ export class TrainPage implements OnInit {
       }
     });
 
+    this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectRoundMembersAll);
+    this.roundMembers$.subscribe((roundMembers) => {
+      this.roundMembers = roundMembers;
+    });
+
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
     this.players$.subscribe((players) => {
       this.players = players;
     });
   }
-
-
 
   onMenuClickHandler(e: any) {
     this.activeRound$.next(e.target.value);
@@ -96,19 +104,22 @@ export class TrainPage implements OnInit {
 
   onFinishGameHandler() {
     const clientRoundsWithTotal = this.rounds.map((round) => {
-          const players = round.players.map((player) => {
-            return {
-              _id: player._id,
-              score: player.scoresLine.reduce((prev, cur) => prev + cur, 0)
-            }
-          });
-          return { ...round, players }
-        });
+      const players = round.members.map((member_id) => {
+        const member = this.roundMembers.find((roundMember) => roundMember._id === member_id);
+        return {
+          _id: member._id,
+          score: member.scoresLine.reduce((prev, cur) => prev + cur, 0)
+        }
+      });
+      return { _id: round._id, players };
+    });
 
     const game = {
       type: this.rounds[0].clientGame.type,
       rounds: clientRoundsWithTotal,
     };
+
+    console.log('game', game);
 
     //save to db
     this.gameService.add(game)
@@ -128,12 +139,10 @@ export class TrainPage implements OnInit {
 
   getPlayerTotalScores(player_id: string): number {
     let sum = 0;
-    this.rounds.forEach((round) => {
-      round.players.forEach((player) => {
-        if (player._id === player_id) {
-          sum += player.scoresLine.reduce((prev, cur) => prev + cur, 0);
-        }
-      });
+    this.roundMembers.forEach((roundMember) => {
+      if (roundMember.player_id === player_id) {
+        sum += roundMember.scoresLine.reduce((prev, cur) => prev + cur, 0);
+      }
     });
     return sum;
   }

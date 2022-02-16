@@ -4,18 +4,21 @@ import { AuthService } from 'src/app/modules/auth/auth.service';
 import { environment } from '../../../environments/environment';
 import * as fromAuth from './auth.reducer';
 import * as fromRounds from './round.reducer';
+import * as fromRoundMembers from './round-member.reducer';
 import { hydrationMetaReducer } from './hydration.reducer';
 import * as fromPlayers from './player.reducer';
 
 export interface State {
   auth: fromAuth.AuthState;
   rounds: fromRounds.State;
+  roundMembers: fromRoundMembers.State;
   players: fromPlayers.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   auth: fromAuth.reducer,
   rounds: fromRounds.reducer,
+  roundMembers: fromRoundMembers.reducer,
   players: fromPlayers.reducer,
 };
 

@@ -35,56 +35,6 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
 };
 
 
-// // token for the state keys.
-// export const ROOT_STORAGE_KEYS = new InjectionToken<string[]>('StoreKeys');
-// // token for the localStorage key.
-// export const ROOT_LOCAL_STORAGE_KEY = new InjectionToken<string[]>('appStorage');
-
-
-// export const storageMetaReducer = (stateKeys: string[], localStorageKey: string, storageService: SharedService) => {
-//   return (reducer: ActionReducer<any>): ActionReducer<any> => {
-//     let init = true;
-
-//     return (state, action) => {
-//       const nextState = reducer(state, action);
-//       // if (init) {
-//       //   init = false;
-//       //   console.log('state', state);
-//       //   console.log('action', action);
-//       //   return storageService.getFromStorage(localStorageKey)
-//       //     .subscribe((savedState) => {
-//       //       console.log('load', savedState)
-//       //       // return { ...nextState, ...JSON.parse(savedState) };
-//       //       return nextState;
-
-//       //     }
-//       //     );
-//       //   // return { ...nextState, ...savedState };
-//       // } else {
-//       //   console.log('next', action);
-//       //   const pick = (obj: object, keys: string[]) => keys.reduce((o, k) => (o[k] = obj[k], o), {});
-
-//       //   // }
-//       //   const stateToSave = pick(nextState, stateKeys);
-//       //   storageService.setToStorage(localStorageKey, JSON.stringify(stateToSave));
-//         return nextState;
-//       // }
-//       // console.log('reducer', reducer(state, action))
-
-
-//     };
-//   };
-// };
-
-// // factory meta-reducer configuration function
-// export const getMetaReducers = (stateKeys: string[],
-//   localStorageKey: string,
-//   storageService: SharedService,
-// ): MetaReducer<any>[] => {
-//   return [storageMetaReducer(stateKeys, localStorageKey, storageService)];
-// };
-
-
 @NgModule({
   imports: [
     HttpClientModule,
@@ -106,14 +56,6 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     GameDataService,
     GamerDataService,
     { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig },
-
-    // { provide: ROOT_STORAGE_KEYS, useValue: ['players'] },
-    // { provide: ROOT_LOCAL_STORAGE_KEY, useValue: '__app_storage__' },
-    // {
-    //   provide: USER_PROVIDED_META_REDUCERS,
-    //   deps: [ROOT_STORAGE_KEYS, ROOT_LOCAL_STORAGE_KEY, SharedService],
-    //   useFactory: getMetaReducers
-    // },
   ],
 })
 

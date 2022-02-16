@@ -53,12 +53,12 @@ export interface IGame {
     _id?: string;
     players: {
       _id?: string;
-      score: number
+      score: number;
     }[];
   }[];
   createdAt?: string;
   updatedAt?: string;
- 
+
 }
 
 export interface ClientGame {
@@ -66,14 +66,27 @@ export interface ClientGame {
   type: string;
 }
 
+// export interface Round {
+//   _id: string;
+//   players: {
+//     _id: string;
+//     scoresLine: number[];
+//   }[];
+//   clientGame?: ClientGame;
+//   icon?: string;
+// }
+
 export interface Round {
   _id: string;
-  players: {
-    _id: string;
-    scoresLine: number[];
-  }[];
+  members: string[];
   clientGame?: ClientGame;
   icon?: string;
+}
+
+export interface RoundMember {
+  _id: string;
+  player_id: string;
+  scoresLine: number[];
 }
 
 export interface RoundCfg {

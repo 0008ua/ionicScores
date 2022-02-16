@@ -9,6 +9,7 @@ import { selectAllPlayers } from '../store/reducers/player.reducer';
 import { v4 as uuidv4 } from 'uuid';
 import { environment } from 'src/environments/environment';
 import { loadRounds } from '../store/actions/round.actions';
+import { addRoundMembers, clearRoundMembers, loadRoundMembers } from '../store/actions/round-member.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -80,22 +81,47 @@ export class SharedService {
       _id: uuidv4(),
       type: gameType,
     };
-
+    // this.store.dispatch(clearRoundMembers());
+    let roundMembers = [];
     const rounds: Round[] = environment.games[gameType].rounds
       .filter((round: RoundCfg) => round._id !== 'start')
       .map((round: RoundCfg) => {
+
+        const members = this.players.map((player) => ({
+          _id: uuidv4(),
+          player_id: player._id,
+          scoresLine: round.initialScoresLine,
+        }));
+        roundMembers = [...roundMembers, ...members];
+        // this.store.dispatch(addRoundMembers({ roundMembers: members }));
         return {
           _id: round._id,
-          players: this.players.map((player) => ({
-            _id: player._id,
-            scoresLine: round.initialScoresLine,
-          })),
+          members: members.map((member) => (member._id)),
           clientGame,
           icon: round.icon
         };
       });
+    console.log('roundMembers', roundMembers)
 
+    this.store.dispatch(loadRoundMembers({ roundMembers }));
     this.store.dispatch(loadRounds({ rounds }));
   }
+
+  //   const rounds: Round[] = environment.games[gameType].rounds
+  //     .filter((round: RoundCfg) => round._id !== 'start')
+  //     .map((round: RoundCfg) => {
+  //       return {
+  //         _id: round._id,
+  //         players: this.players.map((player) => ({
+  //           _id: player._id,
+  //           scoresLine: round.initialScoresLine,
+  //         })),
+  //         clientGame,
+  //         icon: round.icon
+  //       };
+  //     });
+
+  //   this.store.dispatch(loadRounds({ rounds }));
+  // }
 
 }

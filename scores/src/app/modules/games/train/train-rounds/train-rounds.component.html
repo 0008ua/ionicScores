@@ -3,14 +3,14 @@
 
 <ng-template #restRounds>
   <!-- <ng-container *ngIf="round._id === 'routes'"> -->
-  <ion-card *ngFor="let player of round.players">
+  <ion-card *ngFor="let player of players">
     <ion-card-header [ngStyle]="{'border-bottom': '2px solid ' + getPlayerColor(player._id)}">
       <ion-card-subtitle>
         <span class="round-subtitle">
           <ion-icon class="round-subtitle__icon" color="primary" [name]=activeRound?.icon></ion-icon>
           <span class="ion-text-capitalize">{{activeRound?._id}}</span>
           <span class="round-subtitle__blank"></span>
-          <span>{{calcScores(player.scoresLine)}}</span>
+          <span>{{calcScores(player._id)}}</span>
         </span>
       </ion-card-subtitle>
 
@@ -33,7 +33,7 @@
         </ion-col>
       </ion-row>
       <ion-row class="round round_result">
-        <ion-col *ngFor="let routeScore of player?.scoresLine" size="3">
+        <ion-col *ngFor="let routeScore of getMemberByPlayer_id(player._id).scoresLine" size="3">
           <ion-chip outline [color]="routeScore > 19 ? 'secondary' : 'warning'"
             (click)="removeFromScoresLine(player._id, routeScore)">
             <ion-label>{{routeScore }}</ion-label>
@@ -50,7 +50,7 @@
         <ion-col class="round round_tools">
           <!-- <ion-item lines="none"> -->
             <div>Mark as longest</div>
-            <ion-toggle [checked]="player.scoresLine.length" (ionChange)="onMarkLongestHandler($event, player._id)">
+            <ion-toggle [checked]="getMemberByPlayer_id(player._id).scoresLine.length" (ionChange)="onMarkLongestHandler($event, player._id)">
             </ion-toggle>
           <!-- </ion-item> -->
         </ion-col>
@@ -60,17 +60,17 @@
     <ion-card-content *ngIf="round._id === 'stations'">
       <ion-row class="round round_tools">
         <ion-col class="round_tools__score">
-          <ion-label>{{ 3 - calcScores(player.scoresLine) / 4 }}</ion-label>
+          <ion-label>{{ 3 - calcScores(player._id) / 4 }}</ion-label>
         </ion-col>
         <ion-col class="round_tools__btn">
           <div class="incDecBtn">
             <ion-button shape="round" color="danger" fill="outline" (click)="addToScoresLine(player._id, 4)"
-              [disabled]="player.scoresLine.length >= 3">
+              [disabled]="getMemberByPlayer_id(player._id).scoresLine.length >= 3">
               <ion-icon name="remove-outline"></ion-icon>
             </ion-button>
             <span class="incDecBtn__caption">Stations</span>
             <ion-button shape="round" color="success" fill="outline" (click)="removeFromScoresLine(player._id, 4)"
-              [disabled]="player.scoresLine.length <= 0">
+              [disabled]="getMemberByPlayer_id(player._id).scoresLine.length <= 0">
               <ion-icon name="add-outline"></ion-icon>
             </ion-button>
           </div>
