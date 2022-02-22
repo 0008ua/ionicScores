@@ -89,19 +89,18 @@ export class SharedService {
 
         const members = this.players.map((player) => ({
           _id: uuidv4(),
-          player_id: player._id,
+          player: player._id,
           scoresLine: round.initialScoresLine,
         }));
         roundMembers = [...roundMembers, ...members];
         // this.store.dispatch(addRoundMembers({ roundMembers: members }));
         return {
           _id: round._id,
-          members: members.map((member) => (member._id)),
+          roundMembers: members.map((member) => (member._id)),
           clientGame,
           icon: round.icon
         };
       });
-    console.log('roundMembers', roundMembers)
 
     this.store.dispatch(loadRoundMembers({ roundMembers }));
     this.store.dispatch(loadRounds({ rounds }));

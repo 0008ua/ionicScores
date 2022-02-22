@@ -62,3 +62,4 @@ export const {
 
 export const selectFeature = createFeatureSelector<State>(playersFeatureKey);
 export const selectAllPlayers = createSelector(selectFeature, selectAll);
+export const selectEntitiesPlayers = createSelector(selectFeature, selectEntities);

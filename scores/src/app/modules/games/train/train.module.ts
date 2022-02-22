@@ -10,6 +10,7 @@ import { TrainPage } from './train.page';
 import { TrainRoundsComponent } from './train-rounds/train-rounds.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { GamersModule } from '../gamers/gamers.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { GamersModule } from '../gamers/gamers.module';
     IonicModule,
     TrainPageRoutingModule,
     ReactiveFormsModule,
+    PipesModule,
     TranslateModule.forChild({
       extend: true,
     }),

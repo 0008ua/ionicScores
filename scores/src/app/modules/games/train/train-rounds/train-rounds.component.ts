@@ -7,20 +7,23 @@ import { environment } from 'src/environments/environment';
 import * as fromRoundsReducer from '../../../../store/reducers/round.reducer';
 import * as fromRoundsActions from '../../../../store/actions/round.actions';
 import * as fromPlayersReducer from '../../../../store/reducers/player.reducer';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import * as fromRoundMembersReducer from '../../../../store/reducers/round-member.reducer';
 import * as fromRoundMembersActions from '../../../../store/actions/round-member.actions';
+import { denormalize, schema } from 'normalizr';
 
 @Component({
   selector: 'app-train-rounds',
   templateUrl: './train-rounds.component.html',
   styleUrls: ['./train-rounds.component.scss'],
 })
+
 export class TrainRoundsComponent implements OnInit {
   @Input() activeRound$: Observable<RoundCfg>;
   activeRound: RoundCfg;
   // @Input() round: Round;
   round: Round;
+  round$: Observable<Round>;
 
   roundsCfg = environment.games.train.rounds;
   carsCfg = environment.games.train.cars;
@@ -30,9 +33,13 @@ export class TrainRoundsComponent implements OnInit {
   // round$: Observable<Round>;
   roundMembers$: Observable<RoundMember[]>;
   roundMembers: RoundMember[];
+  roundMembersEntities$: Observable<any>;
+  roundMembersEntities: any;
 
   players$: Observable<IGamer[]>;
   players: IGamer[];
+  playersEnteties$: Observable<any>;
+  playersEnteties: any;
 
   inverse: {
     [key: string]: 1 | -1;
@@ -53,21 +60,80 @@ export class TrainRoundsComponent implements OnInit {
   // }
 
   ngOnInit() {
+
+    // this.rounds$ = this.store.select(fromRoundsReducer.selectAllRounds);
+    // this.rounds$.subscribe((rounds) => {
+    //   this.rounds = rounds;
+    // });
+
+    // this.roundMembersEntities$ = this.store.select(fromRoundMembersReducer.selectEntitiesRoundMembers);
+    // this.roundMembers$.subscribe((roundMembers) => {
+    //   this.roundMembers = roundMembers;
+    // });
+
+
+    // this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
+    // this.playersEnteties$ = this.store.select(fromPlayersReducer.selectEntitiesPlayers);
+    // this.players$.subscribe((players) => {
+    //   this.players = players;
+    //   this.players.forEach((player) => this.inverse[player._id] = 1);
+
+    // });
+
+    // this.round$ = this.rounds$.pipe(
+    //   switchMap((rounds) => {
+    //     this.rounds = rounds;
+    //     return this.roundMembersEntities$;
+    //   }),
+    //   switchMap((roundMembers) => {
+    //     this.roundMembersEntities = roundMembers;
+    //     return this.playersEnteties$;
+    //   }),
+    //   switchMap((players) => {
+    //     this.playersEnteties = players;
+    //     return this.activeRound$;
+    //   }),
+
+    //   tap((activeRound) => this.activeRound = activeRound),
+    //   switchMap((activeRound) => this.store.select(fromRoundsReducer.selectByIdRounds(activeRound._id))),
+    //   map((round) => {
+    //     this.round = round;
+    //     const player = new schema.Entity('players');
+    //     const roundMember = new schema.Entity('members', {
+    //       player: player,
+    //     }, { idAttribute: '_id' }
+
+    //     );
+
+    //     // Define your article
+    //     const roundSchema = new schema.Entity('rounds', {
+    //       roundMember: [roundMember]
+    //     }, { idAttribute: '_id' });
+
+    //     console.log('this.roundMembers', this.roundMembersEntities)
+    //     const normalizedData = denormalize(round, roundSchema, { player: this.playersEnteties, members: this.roundMembersEntities });
+    //     return normalizedData;
+    //   })
+    // );
+
+    // this.round$.subscribe((round) => console.log('round', round));
+
+
     this.activeRound$.pipe(
       tap((activeRound) => this.activeRound = activeRound),
-      switchMap((activeRound) => this.store.select(fromRoundsReducer.selectRoundsById(activeRound._id)))
+      switchMap((activeRound) => this.store.select(fromRoundsReducer.selectByIdRounds(activeRound._id)))
     ).subscribe((round) => {
       if (round) {
         this.round = round;
       }
     });
 
-    this.rounds$ = this.store.select(fromRoundsReducer.selectRoundsAll);
+    this.rounds$ = this.store.select(fromRoundsReducer.selectAllRounds);
     this.rounds$.subscribe((rounds) => {
       this.rounds = rounds;
     });
 
-    this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectRoundMembersAll);
+    this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectAllRoundMembers);
     this.roundMembers$.subscribe((roundMembers) => {
       this.roundMembers = roundMembers;
     });
@@ -119,7 +185,7 @@ export class TrainRoundsComponent implements OnInit {
   getMemberByPlayer_id(player_id: string): RoundMember {
     return this.roundMembers
       .filter((roundMember) =>
-        roundMember.player_id === player_id && this.round.members.includes(roundMember._id)
+        roundMember.player=== player_id && this.round.roundMembers.includes(roundMember._id)
       )[0];
   }
 
@@ -153,28 +219,28 @@ export class TrainRoundsComponent implements OnInit {
   }
 
   addToScoresLine(player_id: string, score: number) {
-    const member = this.getMemberByPlayer_id(player_id);
+    const roundMember = this.getMemberByPlayer_id(player_id);
     const changes = {
-      ...member,
-      scoresLine: [...member.scoresLine, score],
+      ...roundMember,
+      scoresLine: [...roundMember.scoresLine, score],
     };
     this.store.dispatch(fromRoundMembersActions.updateRoundMember({
       roundMember:
       {
-        id: member._id,
+        id: roundMember._id,
         changes,
       }
     }));
   }
 
   removeFromScoresLine(player_id: string, score: number) {
-    const member = this.getMemberByPlayer_id(player_id);
-    const scoresLine = [...member.scoresLine];
+    const roundMember = this.getMemberByPlayer_id(player_id);
+    const scoresLine = [...roundMember.scoresLine];
     const index = scoresLine.indexOf(score);
     scoresLine.splice(index, 1);
 
     const changes = {
-      ...member,
+      ...roundMember,
       scoresLine,
     };
 
@@ -193,23 +259,23 @@ export class TrainRoundsComponent implements OnInit {
     this.store.dispatch(fromRoundMembersActions.updateRoundMember({
       roundMember:
       {
-        id: member._id,
+        id: roundMember._id,
         changes,
       }
     }));
   }
 
   setScoresLine(player_id: string, scoresLine: number[]) {
-    const member = this.getMemberByPlayer_id(player_id);
+    const roundMember = this.getMemberByPlayer_id(player_id);
     const changes = {
-      ...member,
+      ...roundMember,
       scoresLine,
     };
 
     this.store.dispatch(fromRoundMembersActions.updateRoundMember({
       roundMember:
       {
-        id: member._id,
+        id: roundMember._id,
         changes,
       }
     }));

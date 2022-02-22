@@ -21,6 +21,10 @@ export interface IGamer {
   updatedAt?: string;
 }
 
+export interface IGamerTotal extends IGamer {
+  totalScore: number;
+}
+
 // export interface IGame {
 //   _id?: string;
 //   type: string;
@@ -75,19 +79,33 @@ export interface ClientGame {
 //   clientGame?: ClientGame;
 //   icon?: string;
 // }
-
-export interface Round {
+export interface DenormalizedRoundMember {
   _id: string;
-  members: string[];
+  player: IGamer;
+  scoresLine: number[];
+}
+
+export interface DenormalizedRound {
+  _id: string;
+  roundMembers: DenormalizedRoundMember[];
   clientGame?: ClientGame;
   icon?: string;
 }
 
+export interface Round {
+  _id: string;
+  roundMembers: string[]; // RoundMember
+  clientGame?: ClientGame;
+  icon?: string;
+}
+
+
 export interface RoundMember {
   _id: string;
-  player_id: string;
+  player: string; // Player
   scoresLine: number[];
 }
+
 
 export interface RoundCfg {
   _id: string;

@@ -14,4 +14,5 @@ import { ErrorExtractorPipe } from './error-extractor.pipe';
     ErrorExtractorPipe,
   ],
 })
+
 export class PipesModule { }

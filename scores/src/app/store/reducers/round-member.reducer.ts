@@ -59,4 +59,5 @@ export const {
 } = adapter.getSelectors();
 
 export const selectFeature = createFeatureSelector<State>(roundMembersFeatureKey);
-export const selectRoundMembersAll = createSelector(selectFeature, selectAll);
+export const selectAllRoundMembers = createSelector(selectFeature, selectAll);
+export const selectEntitiesRoundMembers = createSelector(selectFeature, selectEntities);

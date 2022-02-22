@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationEnd, ParamMap, Router } from '@angular/router
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { filter, map, mergeMap, startWith, switchMap, tap } from 'rxjs/operators';
-import { IGamer, Round, RoundCfg, RoundMember } from 'src/app/interfaces';
+import { IGamer, IGamerTotal, Round, RoundCfg, RoundMember } from 'src/app/interfaces';
 import { clearRounds, deleteRounds } from 'src/app/store/actions/round.actions';
 import { environment } from 'src/environments/environment';
 import * as fromRoundsReducer from '../../../store/reducers/round.reducer';
@@ -36,6 +36,8 @@ export class TrainPage implements OnInit {
 
   players$: Observable<IGamer[]>;
   players: IGamer[];
+
+  playersWithTotal: IGamerTotal[];
   // gamer - server
   // game - server
 
@@ -64,7 +66,7 @@ export class TrainPage implements OnInit {
     this.activeRound$
       .subscribe((activeRound) => this.activeRound = activeRound);
 
-    this.rounds$ = this.store.select(fromRoundsReducer.selectRoundsAll);
+    this.rounds$ = this.store.select(fromRoundsReducer.selectAllRounds);
     this.rounds$.subscribe((rounds) => {
       this.rounds = rounds;
       if (rounds.length) {
@@ -83,15 +85,35 @@ export class TrainPage implements OnInit {
       }
     });
 
-    this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectRoundMembersAll);
-    this.roundMembers$.subscribe((roundMembers) => {
-      this.roundMembers = roundMembers;
-    });
+    this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectAllRoundMembers);
+    // this.roundMembers$.subscribe((roundMembers) => {
+    //   this.roundMembers = roundMembers;
+    //   this.playersWithTotal = this.players.map((player) => ({
+    //     ...player,
+    //     totalScore: this.getPlayerTotalScores(player._id),
+    //   }));
+    // });
 
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
-    this.players$.subscribe((players) => {
-      this.players = players;
-    });
+    this.players$.pipe(
+      switchMap((players) => {
+        this.players = players;
+        return this.roundMembers$;
+      }))
+      .subscribe((roundMembers) => {
+        this.roundMembers = roundMembers;
+        this.playersWithTotal = this.players
+          .map((player) => ({
+            ...player,
+            totalScore: this.getPlayerTotalScores(player._id),
+          }))
+          .sort((a, b) => b.totalScore - a.totalScore);
+      });
+
+    // this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
+    // this.players$.subscribe((players) => {
+    //   this.players = players;
+    // });
   }
 
   onMenuClickHandler(e: any) {
@@ -104,7 +126,7 @@ export class TrainPage implements OnInit {
 
   onFinishGameHandler() {
     const clientRoundsWithTotal = this.rounds.map((round) => {
-      const players = round.members.map((member_id) => {
+      const players = round.roundMembers.map((member_id) => {
         const member = this.roundMembers.find((roundMember) => roundMember._id === member_id);
         return {
           _id: member._id,
@@ -137,10 +159,10 @@ export class TrainPage implements OnInit {
   //   return scoresLine.reduce((prev, cur) => prev + cur, 0);
   // }
 
-  getPlayerTotalScores(player_id: string): number {
+  getPlayerTotalScores(player: string): number {
     let sum = 0;
     this.roundMembers.forEach((roundMember) => {
-      if (roundMember.player_id === player_id) {
+      if (roundMember.player === player) {
         sum += roundMember.scoresLine.reduce((prev, cur) => prev + cur, 0);
       }
     });

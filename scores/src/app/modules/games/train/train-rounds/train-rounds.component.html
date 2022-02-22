@@ -2,7 +2,7 @@
 </app-choose-players>
 
 <ng-template #restRounds>
-  <!-- <ng-container *ngIf="round._id === 'routes'"> -->
+  <!-- <ion-card *ngFor="let member of (round$ | async).members"> -->
   <ion-card *ngFor="let player of players">
     <ion-card-header [ngStyle]="{'border-bottom': '2px solid ' + getPlayerColor(player._id)}">
       <ion-card-subtitle>
@@ -39,8 +39,6 @@
             <ion-label>{{routeScore }}</ion-label>
             <ion-icon name="close-circle"></ion-icon>
           </ion-chip>
-          <!-- <ion-button>{{routeScore}} -->
-          <!-- </ion-button> -->
         </ion-col>
       </ion-row>
     </ion-card-content>
@@ -48,11 +46,10 @@
     <ion-card-content *ngIf="round._id === 'length'">
       <ion-row>
         <ion-col class="round round_tools">
-          <!-- <ion-item lines="none"> -->
-            <div>Mark as longest</div>
-            <ion-toggle [checked]="getMemberByPlayer_id(player._id).scoresLine.length" (ionChange)="onMarkLongestHandler($event, player._id)">
-            </ion-toggle>
-          <!-- </ion-item> -->
+          <div>Mark as longest</div>
+          <ion-toggle [checked]="getMemberByPlayer_id(player._id).scoresLine.length"
+            (ionChange)="onMarkLongestHandler($event, player._id)">
+          </ion-toggle>
         </ion-col>
       </ion-row>
     </ion-card-content>
@@ -104,3 +101,105 @@
 
   </ion-card>
 </ng-template>
+
+<!-- <app-choose-players *ngIf="activeRound?._id === 'start' && (rounds$ | async).length === 0; else restRounds">
+</app-choose-players>
+
+<ng-template #restRounds>
+  <ion-card *ngFor="let player of players">
+    <ion-card-header [ngStyle]="{'border-bottom': '2px solid ' + getPlayerColor(player._id)}">
+      <ion-card-subtitle>
+        <span class="round-subtitle">
+          <ion-icon class="round-subtitle__icon" color="primary" [name]=activeRound?.icon></ion-icon>
+          <span class="ion-text-capitalize">{{activeRound?._id}}</span>
+          <span class="round-subtitle__blank"></span>
+          <span>{{calcScores(player._id)}}</span>
+        </span>
+      </ion-card-subtitle>
+
+      <ion-card-title class="ion-text-center">{{getPlayerName(player._id)}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content *ngIf="round._id === 'routes'">
+      <ion-row class="round round_tools">
+        <ion-col *ngFor="let routeScore of routeScoresEnv" size="3">
+          <ion-chip [color]="routeScore > 19 ? 'secondary' : 'warning'"
+            (click)="addToScoresLine(player._id, routeScore * inverse[player._id])">
+            <ion-label>{{routeScore * inverse[player._id]}}</ion-label>
+          </ion-chip>
+        </ion-col>
+        <ion-col size="3">
+          <ion-chip [color]="'danger'" (click)="inverseScore(player._id)">
+            <ion-icon name="add-outline"></ion-icon>
+            <ion-icon name="remove-outline"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+      <ion-row class="round round_result">
+        <ion-col *ngFor="let routeScore of getMemberByPlayer_id(player._id).scoresLine" size="3">
+          <ion-chip outline [color]="routeScore > 19 ? 'secondary' : 'warning'"
+            (click)="removeFromScoresLine(player._id, routeScore)">
+            <ion-label>{{routeScore }}</ion-label>
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="round._id === 'length'">
+      <ion-row>
+        <ion-col class="round round_tools">
+            <div>Mark as longest</div>
+            <ion-toggle [checked]="getMemberByPlayer_id(player._id).scoresLine.length" (ionChange)="onMarkLongestHandler($event, player._id)">
+            </ion-toggle>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="round._id === 'stations'">
+      <ion-row class="round round_tools">
+        <ion-col class="round_tools__score">
+          <ion-label>{{ 3 - calcScores(player._id) / 4 }}</ion-label>
+        </ion-col>
+        <ion-col class="round_tools__btn">
+          <div class="incDecBtn">
+            <ion-button shape="round" color="danger" fill="outline" (click)="addToScoresLine(player._id, 4)"
+              [disabled]="getMemberByPlayer_id(player._id).scoresLine.length >= 3">
+              <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <span class="incDecBtn__caption">Stations</span>
+            <ion-button shape="round" color="success" fill="outline" (click)="removeFromScoresLine(player._id, 4)"
+              [disabled]="getMemberByPlayer_id(player._id).scoresLine.length <= 0">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="round._id === 'cars'">
+      <ion-row *ngFor="let car of carsCfg" class="round round_tools">
+        <ion-col class="round_tools__score">
+          <ion-label>{{calcQtyOfArrItems(player._id, car.score)}}</ion-label>
+        </ion-col>
+        <ion-col class="round_tools__btn">
+          <div class="incDecBtn">
+            <ion-button shape="round" color="danger" fill="outline"
+              (click)="removeFromScoresLine(player._id, car.score)">
+              <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <span class="incDecBtn__caption">
+              <ion-icon name="train-outline"></ion-icon>
+              {{car.qty}}
+            </span>
+            <ion-button shape="round" color="success" fill="outline" (click)="addToScoresLine(player._id, car.score)">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+  </ion-card>
+</ng-template> -->
