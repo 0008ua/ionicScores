@@ -2,10 +2,19 @@
   "language": "Switch to English",
   "games": {
     "train": {
-      "title": "Ticket to ride"
+      "title": "Ticket to the ride",
+      "routes": "Завершені маршрути",
+      "length": "Найдовший маршрут",
+      "cars": "Потяги",
+      "stations": "Використані станції",
+      "longestRoute": "Позначити як найдовший",
+      "stationsShort": "Станції"
     }
   },
   "modules": {
+    "settings": {
+      "title": "Налаштування"
+    },
     "analytics": {
       "title": "Аналітика"
     },
@@ -15,31 +24,6 @@
       "addPlayers": "Додати гравців",
       "color": "Колір",
       "player": "Гравець"
-    },
-    "dashboard": {
-      "title": "Налаштування",
-      "profile": {
-        "title": "Профіль",
-        "login": "Логін",
-        "email": "Email",
-        "role": "Права",
-        "blocked": "Заблокований",
-        "activated": "Активований",
-        "activationText": "Введіть код, що прийшов на email",
-        "code": "Код",
-        "company": "компанію",
-        "deleteAttention": "Це назавжди видалить усі пов'язані дані, в т.ч. бронювання!",
-        "activateWarning": "Для активаціїї профілю будь ласка підтвердіть свій email. Будуть доступні додаткові функції."
-      },
-      "operator": {
-        "title": "Редагувати користувачів",
-        "block": "Блокувати",
-        "unblock": "Розблокувати"
-      },
-      "room": {
-        "title": "Редагувати номера",
-        "deleteAttention": "Це назавжди видалить усі пов'язані бронювання!"
-      }
     },
     "user": {
       "signin": "Вхід",
@@ -51,77 +35,32 @@
       "email": "Email",
       "password": "Пароль",
       "confirmPassword": "Підтвердити пароль"
-    },
-    "shared": {
-      "formField": {
-        "updatePrice": "Оновити ціну",
-        "inputPrice": "Введіть ціну",
-        "updateName": "Оновити назву",
-        "inputName": "Введіть назву"
-      }
     }
   },
   "elements": {
     "button": {
       "send": "Надіслати",
       "add": "Додати",
+      "create": "Створити",
+      "remove": "Видалити",
+      "removeAll": "Видалити всіх",
+      "startGame": "Розпочати гру",
       "update": "Оновити",
       "slideToDelete": "Зсунути для видалення",
       "slideForOptions": "Зсунути для опцій",
       "submit": "Зберегти",
       "activate": "Активувати",
       "close": "Закрити",
-      "delete": "Видалити"
-    },
-    "datePicker": {
-      "chooseMonth": "Виберіть місяць",
-      "chooseDate": "Виберіть дату",
-      "monthNames": "Січень, Лютий, Березень, Квітень, Травень, Червень, Липень, Серпень, Вересень, Жовтень, Листопад, Грудень"
+      "delete": "Видалити",
+      "finishGame": "Завершити гру",
+      "cancelGame": "Відмінити гру"
     }
   },
   "common": {
     "logic": {
       "true": "Так",
       "false": "Ні"
-    },
-    "bookingSteps": {
-      "title": "Статус",
-      "null": "Всі",
-      "preorder": "Попередньо заброньовано",
-      "reserved": "Зарезервовано",
-      "paid": "Оплачено",
-      "cancelled": "Скасовано"
-    },
-    "bookingStepExprs": {
-      "title": "Статус",
-      "$eq": "Є",
-      "$ne": "Не є"
-    },
-    "sortOrders": {
-      "title": "Сортування",
-      "1": "Зростання",
-      "-1": "Спадання"
-    },
-    "sortFields": {
-      "title": "Сортувати по",
-      "bookingStep": "Статус",
-      "dates.from": "Дата з",
-      "dates.to": "Дата по",
-      "price": "Ціна"
-    },
-    "paymentMethods": {
-      "title": "Спосіб оплати",
-      "cash": "Готівка",
-      "card": "Карта"
     }
-  },
-  "dif": {
-    "name": "Ім'я",
-    "all": "Всі",
-    "date": "Дата",
-    "amount": "Сума",
-    "price": "Ціна",
-    "sure": "Ви впевнені?"
   },
   "errors": {
     "minlength": "Надто короткий",

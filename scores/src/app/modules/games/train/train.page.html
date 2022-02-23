@@ -43,16 +43,14 @@
               </ion-item>
             </ion-list>
             <ion-row class="ion-justify-content-around">
-              <!-- <ion-col> -->
                 <ion-button  fill="outline" size="small" [disabled]="(rounds$ | async).length === 0"
-                  (click)="onFinishGameHandler()">finish game
+                  (click)="onFinishGameHandler()">
+                  {{'elements.button.finishGame' | translate}}
                 </ion-button>
-              <!-- </ion-col> -->
-              <!-- <ion-col> -->
                 <ion-button  fill="outline" size="small" [disabled]="(rounds$ | async).length === 0"
-                  (click)="onCancelGameHandler()">cancel game
+                  (click)="onCancelGameHandler()">
+                  {{'elements.button.cancelGame' | translate}}
                 </ion-button>
-              <!-- </ion-col> -->
             </ion-row>
           </ion-card-content>
         </ion-card>

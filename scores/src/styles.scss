@@ -80,10 +80,11 @@
   align-items: center;
   &__icon {
     padding-right: 10px;
+    min-width: 20px;
     // vertical-align: middle;
   }
   &__text {
-    // vertical-align: middle;
+    white-space: nowrap;
   }
   &__blank {
     flex: 1 1 100%;

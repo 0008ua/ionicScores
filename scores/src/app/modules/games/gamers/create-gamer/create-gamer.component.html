@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-title>{{'modules.games.createGamer' | translate}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">close</ion-button>
+      <ion-button (click)="dismiss()">
+        {{'elements.button.close' | translate}}
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -21,7 +23,8 @@
             </div>
             <div class="choose-players__name">
               <ion-item>
-                <ion-input placeholder="Enter Name" clearInput [(ngModel)]="name"></ion-input>
+                <ion-input [placeholder]="'modules.user.name' | translate"
+                 clearInput [(ngModel)]="name"></ion-input>
               </ion-item>
             </div>
           </div>
@@ -29,7 +32,8 @@
       </ion-list>
       <ion-row>
         <ion-col>
-          <ion-button expand="block" (click)="onCreate()" [disabled]="!name">create
+          <ion-button expand="block" (click)="onCreate()" [disabled]="!name">
+            {{'elements.button.create' | translate}}
           </ion-button>
         </ion-col>
       </ion-row>
