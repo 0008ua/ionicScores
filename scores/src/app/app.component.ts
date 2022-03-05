@@ -34,8 +34,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // console.log('jwt null', jwtDecode(null));
     this.store.dispatch(storeUserFromToken());
     this.authService.testProtected()
       .subscribe((test) => console.log('test protected', test),

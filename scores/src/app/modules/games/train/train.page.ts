@@ -129,24 +129,31 @@ export class TrainPage implements OnInit {
       const players = round.roundMembers.map((member_id) => {
         const member = this.roundMembers.find((roundMember) => roundMember._id === member_id);
         return {
-          _id: member._id,
-          score: member.scoresLine.reduce((prev, cur) => prev + cur, 0)
-        }
+          _id: member.player,
+          score: member.scoresLine.reduce((prev, cur) => prev + cur, 0),
+        };
       });
       return { _id: round._id, players };
     });
 
-    const game = {
-      type: this.rounds[0].clientGame.type,
-      rounds: clientRoundsWithTotal,
+    const result = {
+      _id: 'result',
+      players: this.players.map((player) => ({
+        _id: player._id,
+        score: this.getPlayerTotalScores(player._id),
+      }))
     };
 
-    console.log('game', game);
+    const game = {
+      type: this.rounds[0].clientGame.type,
+      rounds: [...clientRoundsWithTotal, result],
+    };
 
+    console.log('finish game', game);
     //save to db
     this.gameService.add(game)
-      .subscribe((result) => {
-        console.log(result);
+      .subscribe((_) => {
+        console.log(_);
         this.store.dispatch(clearRounds());
       });
   }

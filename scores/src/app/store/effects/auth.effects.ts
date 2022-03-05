@@ -72,8 +72,6 @@ export class AuthEffects {
         );
     });
 
-
-
     storeUserFromToken = createEffect(() => {
         return this.actions$.pipe(
             ofType(fromAuthActions.storeUserFromToken),

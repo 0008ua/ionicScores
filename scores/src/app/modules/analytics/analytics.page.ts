@@ -29,6 +29,7 @@ export class AnalyticsPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    console.log('an')
     this.menuController.enable(true, 'analytics-menu');
   }
 

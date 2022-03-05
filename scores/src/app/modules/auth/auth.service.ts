@@ -25,6 +25,7 @@ export class AuthService {
     this.url$
       .subscribe((url) => {
         if (url) {
+          console.log('url', url)
           this.router.navigateByUrl(url);
           this.store.dispatch(redirection({ redirectionUrl: null }));
         }

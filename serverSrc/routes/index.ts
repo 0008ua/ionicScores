@@ -4,6 +4,7 @@ import path from 'path';
 import dataRouter from './data.routes';
 import authRouter from './auth.routes';
 import storeRouter from './store.routes';
+import analyticsRouter from './analytics.routes';
 
 const router = express.Router();
 router.use('/', express.static(path.join(__dirname, '..', '..', 'public'), { redirect: false }));
@@ -15,4 +16,5 @@ export {
   dataRouter,
   authRouter,
   storeRouter,
+  analyticsRouter,
 };

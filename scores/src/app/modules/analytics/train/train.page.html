@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>train analytics</ion-title>
+    <ion-title>Train analytics</ion-title>
 
     <ion-buttons slot="end">
       <ion-menu-button menu="analytics-menu"></ion-menu-button>
@@ -9,4 +9,8 @@
 </ion-header>
 
 <ion-content>
+  <ion-button (click)="getRaiting()">Rating</ion-button>
+  <div *ngFor="let player of players">
+    {{player | json}}
+  </div>
 </ion-content>

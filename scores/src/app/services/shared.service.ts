@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { environment } from 'src/environments/environment';
 import { loadRounds } from '../store/actions/round.actions';
 import { addRoundMembers, clearRoundMembers, loadRoundMembers } from '../store/actions/round-member.actions';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class SharedService {
 
   constructor(
     private store: Store,
+    private http: HttpClient,
   ) {
     this.players$ = this.store.select(selectAllPlayers);
     this.players$.subscribe((players) => {
@@ -106,21 +108,16 @@ export class SharedService {
     this.store.dispatch(loadRounds({ rounds }));
   }
 
-  //   const rounds: Round[] = environment.games[gameType].rounds
-  //     .filter((round: RoundCfg) => round._id !== 'start')
-  //     .map((round: RoundCfg) => {
-  //       return {
-  //         _id: round._id,
-  //         players: this.players.map((player) => ({
-  //           _id: player._id,
-  //           scoresLine: round.initialScoresLine,
-  //         })),
-  //         clientGame,
-  //         icon: round.icon
-  //       };
-  //     });
-
-  //   this.store.dispatch(loadRounds({ rounds }));
-  // }
+  getRaiting(): Observable<IGamer[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http.get<IGamer[]>(
+      environment.host + 'api/analytics/get-wins/',
+      httpOptions,
+    );
+  }
 
 }

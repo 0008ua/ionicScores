@@ -31,7 +31,6 @@ const add = (req: Request, res: Response, next: NextFunction) => {
     gamer.uniqueName = user._id + gamer.name;
     GamerModel.createGamer(gamer)
       .then((gamer) => {
-        console.log('created gamer', normalizeGamer(gamer));
         return res.status(200).json(normalizeGamer(gamer));
       })
       .catch((err) => next(err));
@@ -94,13 +93,10 @@ const remove = (req: Request, res: Response, next: NextFunction) => {
 const getAll = (req: Request, res: Response, next: NextFunction) => {
   const user = req.user as IUser;
   const entityPluralName = req.params.entityPluralName;
-
-  console.log('user._id', user._id);
   switch (entityPluralName) {
   case 'gamers': {
     GamerModel.find({ owner: user._id })
       .then((gamers) => {
-        console.log('gamers', gamers);
         return res.status(200).json(normalizeGamer(gamers));
       })
       .catch((err) => next(err));
@@ -134,7 +130,6 @@ const getById = (req: Request, res: Response, next: NextFunction) => {
   case 'gamer': {
     GamerModel.find({ _id, owner: user._id })
       .then((gamer) => {
-        console.log('created gamer', normalizeGamer(gamer));
         return res.status(200).json(normalizeGamer(gamer));
       })
       .catch((err) => next(err));
@@ -143,14 +138,12 @@ const getById = (req: Request, res: Response, next: NextFunction) => {
   case 'game': {
     GameModel.find({ _id, owner: user._id })
       .then((game) => {
-        console.log('found game', game);
         return res.status(200).json(game);
       })
       .catch((err) => next(err));
     break;
   }
   }
-  console.log('id', _id);
   res.status(200).json({ _id: '12345', name: 'john' });
 };
 
@@ -178,7 +171,6 @@ const update = (req: Request, res: Response, next: NextFunction) => {
       },
     )
       .then((updatedGamer) => {
-        console.log('updatedGamer', updatedGamer);
         return updatedGamer;
       })
       .then((updatedGamer) => normalizeGamer(updatedGamer))
@@ -198,7 +190,6 @@ const update = (req: Request, res: Response, next: NextFunction) => {
       },
     )
       .then((updatedGame) => {
-        console.log('updatedGame', updatedGame);
         return updatedGame;
       })
       .then((updatedGame) => res.status(200).json(updatedGame))
