@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import { ClientError } from '../errors';
 import { IUser, IUserModel } from '../interfaces';
 import bcrypt from 'bcryptjs';
@@ -73,5 +73,28 @@ UserSchema.statics.createUser = function(user) {
       return this.create(user);
     });
 };
+
+UserSchema.statics.findUserByIdAndUpdateTimestamp = function(_id) {
+  return new Promise((resolve, reject) => {
+    if (!_id) {
+      return reject(new ClientError('User not found', 401));
+    }
+    // empty update object, reason: update timestamp after using $set operator
+    UserModel.findOneAndUpdate({ _id }, {$set: {}}, {
+      upsert: false,
+      useFindAndModify: false,
+      new: true,
+      rawResult: false,
+    })
+      .then((userFromDb) => {
+        if (userFromDb) {
+          return resolve(userFromDb);
+        }
+        return reject(new ClientError('User not found', 401));
+      })
+      .catch((err) => reject(err));
+  });
+};
+
 
 export const UserModel = model<IUser, IUserModel>('users', UserSchema);

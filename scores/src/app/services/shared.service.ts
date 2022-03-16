@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { GetResult, Storage } from '@capacitor/storage';
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { IGamer, IUser, Round, RoundCfg } from '../interfaces';
 import { Store } from '@ngrx/store';
 import { selectAllPlayers } from '../store/reducers/player.reducer';
@@ -108,7 +108,7 @@ export class SharedService {
     this.store.dispatch(loadRounds({ rounds }));
   }
 
-  getRaiting(): Observable<IGamer[]> {
+  getRaitingByWins(): Observable<IGamer[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -117,7 +117,19 @@ export class SharedService {
     return this.http.get<IGamer[]>(
       environment.host + 'api/analytics/get-wins/',
       httpOptions,
-    );
+    ).pipe(catchError((err) => throwError(err)));
   }
+
+  getRaitingByWinsToGames(): Observable<IGamer[]> {
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
+  return this.http.get<IGamer[]>(
+    environment.host + 'api/analytics/get-wins-to-games/',
+    httpOptions,
+  ).pipe(catchError((err) => throwError(err)));
+}
 
 }

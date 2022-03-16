@@ -45,10 +45,8 @@ jwtOptions.secretOrKey = config.get('JWT_SECRET');
 passport.use('jwt', new JwtStrategy(jwtOptions, (jwtPayload, done) => {
   // на основі _id (витягнутого з токена) робить пошук
   // в базі, чи є такий юзер, і ф-я done повертає відповідь
-  UserModel.findOne({ _id: jwtPayload._id })
+  UserModel.findUserByIdAndUpdateTimestamp(jwtPayload._id)
     .then((user) => {
-      // check version of user token equal version in db
-      // if not (credentials changed, ..) need to reauth using refresh token or name/pass
       if (user) {
         done(null, user);
       } else {

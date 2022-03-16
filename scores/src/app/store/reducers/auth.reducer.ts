@@ -5,28 +5,24 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export const authFeatureKey = 'auth';
 
-export interface AuthState {
+export interface State {
   user: IUser;
   error: any;
   redirectionUrl: string;
+  loading: boolean;
 }
 
-export const initialState: AuthState = {
+export const initialState: State = {
   user: null,
   error: null,
   redirectionUrl: null,
+  loading: false,
 };
 
 export const reducer = createReducer(
   initialState,
-  // on(fromAuthActions.storeTokenSuccess,
-  //   (state, { token }): AuthState => ({
-  //     ...state,
-  //     token,
-  //   })
-  // ),
   on(fromAuthActions.storeUserFromTokenSuccess,
-    (state, { user }): AuthState => ({
+    (state, { user }): State => ({
       ...state,
       user,
       redirectionUrl: '/',
@@ -34,20 +30,20 @@ export const reducer = createReducer(
       error: null,
     })
   ),
-  // on(fromAuthActions.logout,
-  //   (state): AuthState => ({
-  //     ...state,
-  //     redirectionUrl: '/auth/signin',
-  //   })
-  // ),
-  on(fromAuthActions.authError,
-    (state, { error }): AuthState => ({
+  on(fromAuthActions.error,
+    (state, { error }): State => ({
       ...state,
       error,
     })
   ),
+  on(fromAuthActions.loading,
+    (state, { loading }): State => ({
+      ...state,
+      loading,
+    })
+  ),
   on(fromAuthActions.redirection,
-    (state, { redirectionUrl }): AuthState => ({
+    (state, { redirectionUrl }): State => ({
       ...state,
       redirectionUrl,
     })
@@ -55,8 +51,8 @@ export const reducer = createReducer(
 );
 
 
-const selectFeature = createFeatureSelector<AuthState>(authFeatureKey);
+const selectFeature = createFeatureSelector<State>(authFeatureKey);
 
 export const selectUser = createSelector(selectFeature, (state) => state.user);
-export const selectUserRole = createSelector(selectFeature, (state) => state.user.role);
+export const selectUserRole = createSelector(selectFeature, (state) => state.user?.role);
 export const selectRedirectionUrl = createSelector(selectFeature, (state) => state.redirectionUrl);

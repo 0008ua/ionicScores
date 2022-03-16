@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { TrainPageRoutingModule } from './train-routing.module';
 
 import { TrainPage } from './train.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TrainPageRoutingModule
+    TrainPageRoutingModule,
+    TranslateModule.forChild({
+      extend: true,
+    }),
   ],
   declarations: [TrainPage]
 })

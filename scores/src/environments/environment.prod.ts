@@ -17,6 +17,18 @@ export const environment = {
         { qty: 6, score: 15 },
         { qty: 8, score: 21 },
       ],
+      stats: [
+        {
+          _id: 'getRaitingByWins',
+          icon: 'trophy-outline',
+          name: 'byWins',
+        },
+        {
+          _id: 'getRaitingByWinsToGames',
+          icon: 'podium-outline',
+          name: 'byWinsToGames',
+        }
+      ],
       rounds: [
         {
           _id: 'start',

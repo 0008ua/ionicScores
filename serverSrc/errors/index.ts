@@ -34,7 +34,6 @@ export const errorHandler = (err: Error | ClientError | ServerError, req: Reques
   if (err instanceof ClientError || err instanceof ServerError) {
     return res.status(err.status).json(err);
   }
-
   if (err.name === 'AuthenticationError') {
     return res.send(JSON.stringify(err));
   }

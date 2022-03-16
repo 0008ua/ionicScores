@@ -16,7 +16,11 @@
       "title": "Settings"
     },
     "analytics": {
-      "title": "Analytics"
+      "title": "Analytics",
+      "byWins": "Raiting by total wins",
+      "byWinsToGames": "Raiting by wins to played games",
+      "games": "Games",
+      "wins": "Wins"
     },
     "games": {
       "title": "Games",

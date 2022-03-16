@@ -9,7 +9,7 @@ import { reducers, metaReducers } from './reducers';
 import { GameDataService } from './game-data.service';
 import { GamerDataService } from './gamer-data.service';
 import { entityMetadata } from './entity-metadata';
-// import { EntityToastService } from './store-toast.service';
+import { StoreToastService } from './store-toast.service';
 import { environment } from 'src/environments/environment';
 import { AuthEffects } from './effects/auth.effects';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +18,8 @@ import { InjectionToken } from '@angular/core';
 import { AuthService } from '../modules/auth/auth.service';
 import { SharedService } from '../services/shared.service';
 import { HydrationEffects } from './effects/hydration.effects';
+import { AnalyticsEffects } from './effects/analytics.effects';
+import { StoreAppService } from './store-app.service';
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.host + 'api/store/',
@@ -49,6 +51,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     EffectsModule.forRoot([
       AuthEffects,
       HydrationEffects,
+      AnalyticsEffects,
     ]),
     EntityDataModule.forRoot({ entityMetadata }),
   ],
@@ -65,7 +68,8 @@ export class AppStoreModule {
     entityDataService: EntityDataService,
     gameDataService: GameDataService,
     gamerDataService: GamerDataService,
-    // entityToastService: EntityToastService,
+    storeToastService: StoreToastService,
+    storeAppService: StoreAppService,
   ) {
     entityDataService.registerService('Game', gameDataService);
     entityDataService.registerService('Gamer', gamerDataService);

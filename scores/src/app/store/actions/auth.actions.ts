@@ -2,79 +2,80 @@ import { Action, createAction, props, union } from '@ngrx/store';
 import { IUser } from 'src/app/interfaces';
 
 export enum AuthActionTypes {
-  storeToken = 'auth/storeToken',
-  storeTokenSuccess = 'auth/storeTokenSuccess',
+  storeTokenType = 'auth/storeToken',
+  storeTokenSuccessType = 'auth/storeTokenSuccess',
 
-  storeUserFromToken = 'auth/storeUserFromToken',
-  storeUserFromTokenSuccess = 'auth/storeUserFromTokenSuccess',
+  storeUserFromTokenType = 'auth/storeUserFromToken',
+  storeUserFromTokenSuccessType = 'auth/storeUserFromTokenSuccess',
 
-  signin = 'auth/signin',
-  signinSuccess = 'auth/signinSuccess',
-  signup = 'auth/signup',
+  signinType = 'auth/signin',
+  signinSuccessType = 'auth/signinSuccess',
+  signupType = 'auth/signup',
 
-  logout = 'auth/logout',
+  logoutType = 'auth/logout',
 
-  redirection = 'auth/redirection',
+  redirectionType = 'auth/redirection',
 
-  authError = 'auth/authError',
+  errorType = 'auth/error',
+  loadingType = 'auth/loading',
 }
 
 export const storeToken = createAction(
-  AuthActionTypes.storeToken,
+  AuthActionTypes.storeTokenType,
   props<{ token: string }>()
 );
 
-// export const storeTokenSuccess = createAction(
-//   AuthActionTypes.storeToken,
-//   props<{ token: string }>()
-// );
-
 export const storeUserFromToken = createAction(
-  AuthActionTypes.storeUserFromToken,
+  AuthActionTypes.storeUserFromTokenType,
 );
 
 export const storeUserFromTokenSuccess = createAction(
-  AuthActionTypes.storeUserFromTokenSuccess,
+  AuthActionTypes.storeUserFromTokenSuccessType,
   props<{ user: IUser }>()
 );
 
 export const signin = createAction(
-  AuthActionTypes.signin,
+  AuthActionTypes.signinType,
   props<{ user: IUser }>()
 );
 
 export const signinSuccess = createAction(
-  AuthActionTypes.signinSuccess,
+  AuthActionTypes.signinSuccessType,
   props<{ token: string }>()
 );
 
 export const signup = createAction(
-  AuthActionTypes.signup,
+  AuthActionTypes.signupType,
   props<{ user?: IUser }>()
 );
 
 export const logout = createAction(
-  AuthActionTypes.logout,
+  AuthActionTypes.logoutType,
 );
 
 export const redirection = createAction(
-  AuthActionTypes.redirection,
+  AuthActionTypes.redirectionType,
   props<{ redirectionUrl: string | null }>()
 );
 
-export const authError = createAction(
-  AuthActionTypes.authError,
-  props<{ error: any }>()
+export const error = createAction(
+  AuthActionTypes.errorType,
+  props<{ error: string }>()
+);
+
+export const loading = createAction(
+  AuthActionTypes.loadingType,
+  props<{ loading: boolean }>()
 );
 
 const all = union({
   storeToken,
-  // storeTokenSuccess,
   storeUserFromToken,
   storeUserFromTokenSuccess,
   signin,
   signup,
-  authError,
+  error,
+  loading,
   redirection,
   logout,
 });

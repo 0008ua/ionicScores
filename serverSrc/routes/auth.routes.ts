@@ -13,6 +13,13 @@ import {authController} from '../controllers';
 router.get('/protected',
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as IUser;
+
+    console.log('_id', user._id);
+    UserModel.findUserByIdAndUpdateTimestamp(user._id).then((result) => {
+      console.log('find result', result);
+    });
+
     const token = req.headers['authorization'];
     // console.log('token', token);
     return res.status(200).json('reached protected route');

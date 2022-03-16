@@ -9,11 +9,11 @@ const router = express.Router();
 router.get('/get-wins',
   passport.authenticate('jwt', { session: false, failWithError: true }),
   analyticsController.getWins
-  //  (req: Request, res: Response) => {
-  //   res.status(200).json('rating response');
-  //   // return res.status(200).json(body);
-  //   // return next(new ClientError());
-  // }
+);
+
+router.get('/get-wins-to-games',
+  passport.authenticate('jwt', { session: false, failWithError: true }),
+  analyticsController.getWinsToGames
 );
 
 export default router;

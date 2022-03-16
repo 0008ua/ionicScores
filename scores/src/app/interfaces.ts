@@ -16,6 +16,7 @@ export interface IGamer {
   owner?: string; //Pick<IUser, '_id'>;
   name: string;
   uniqueName?: string;
+  raiting?: any;
   color: Colors;
   createdAt?: string;
   updatedAt?: string;

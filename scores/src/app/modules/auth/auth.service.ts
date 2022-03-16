@@ -8,7 +8,7 @@ import { IUser } from '../../interfaces';
 
 import { Router } from '@angular/router';
 import { redirection } from 'src/app/store/actions/auth.actions';
-import { selectRedirectionUrl } from '../../store/reducers/auth.reducer';
+import { selectRedirectionUrl, selectUser } from '../../store/reducers/auth.reducer';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,11 +21,11 @@ export class AuthService {
     private store: Store,
     private router: Router,
   ) {
+
     this.url$ = this.store.select(selectRedirectionUrl);
     this.url$
       .subscribe((url) => {
         if (url) {
-          console.log('url', url)
           this.router.navigateByUrl(url);
           this.store.dispatch(redirection({ redirectionUrl: null }));
         }

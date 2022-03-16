@@ -50,6 +50,7 @@ export interface IUserModel extends Model<IUser> {
   isNameExists(name: string): Promise<IUser>;
   isNameUnique(name: string): Promise<null>;
   isPasswordMatched(candidatePassword: string, userFromDb: IUser): Promise<IUser>;
+  findUserByIdAndUpdateTimestamp(_id: string | undefined): Promise<any>;
 }
 
 export interface IGamerModel extends Model<IGamer> {
