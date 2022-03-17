@@ -22,22 +22,36 @@
         <ion-card>
           <ion-card-header>
             <ion-card-title class="ion-text-center">Ticket to the ride</ion-card-title>
-            <ion-card-subtitle class="ion-text-center">{{'modules.analytics.'+stat.name | translate}}</ion-card-subtitle>
+            <ion-card-subtitle class="ion-text-center">{{'modules.analytics.' + stat.name | translate}}
+            </ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
+            <ion-list *ngIf="(loading$ | async) === true">
+              <ion-item lines="none" *ngFor="let x of [0,0,0,0,0]">
+                <ion-skeleton-text slot="start" animated style="width: 60%">
+                </ion-skeleton-text>
+                <ion-skeleton-text slot="end"  animated>
+                </ion-skeleton-text>
+              </ion-item>
 
-            <ion-list>
+            </ion-list>
+
+            <ion-list *ngIf="(loading$ | async) === false">
               <ion-item *ngFor="let player of (analytics$ | async); let idx = index">
                 <div slot="start" [ngStyle]="{
                   'border-right': '6px solid ' + player.color,
                   'padding-right': '10px'
                 }">{{idx+1}}</div>
-                <ion-label >
+                <ion-label>
                   {{player.name}}
                 </ion-label>
-                <div slot="end">
-                  {{'modules.analytics.wins' | translate}}: {{player.raiting.wins}}
-                </div>
+
+                <ion-text *ngIf="stat._id === 'getRaitingByWins'" slot="end" color="primary">
+                  {{player.raiting.wins}}
+                </ion-text>
+                <ion-text *ngIf="stat._id === 'getRaitingByWinsToGames'" slot="end" color="primary">
+                  {{player.raiting.wins}}/{{player.raiting.gamesCount}} ({{player.raiting.winsToGames * 100}}%)
+                </ion-text>
               </ion-item>
             </ion-list>
             <!-- <ion-row class="ion-justify-content-around">

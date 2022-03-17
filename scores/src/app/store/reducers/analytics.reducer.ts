@@ -19,25 +19,23 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(fromAnalyticsActions.getRaitingByWins,
-    (state): State => ({
-      ...state,
-      loading: true,
-    })
-  ),
   on(fromAnalyticsActions.getRaitingSuccess,
     (state, { analytics }): State => ({
       ...state,
       analytics,
       error: null,
-      loading: false,
     })
   ),
   on(fromAnalyticsActions.error,
     (state, { error }): State => ({
       ...state,
       error,
-      loading: false,
+    })
+  ),
+  on(fromAnalyticsActions.loading,
+    (state, { loading }): State => ({
+      ...state,
+      loading
     })
   ),
 );

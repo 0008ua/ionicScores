@@ -19,7 +19,8 @@
       "title": "Analytics",
       "byWins": "Raiting by total wins",
       "byWinsToGames": "Raiting by wins to played games",
-      "games": "Games",
+      "gamesCount": "Games",
+      "winsToGames": "%",
       "wins": "Wins"
     },
     "games": {
