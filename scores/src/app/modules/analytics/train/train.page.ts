@@ -18,8 +18,9 @@ export class TrainPage implements OnInit {
   loading$: Observable<boolean>;
   stats = environment.games.train.stats;
   stat: any = this.stats[0];
-
-
+  math = Math;
+  array =Array;
+  
   constructor(
     private store: Store,
   ) { }

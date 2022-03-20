@@ -50,7 +50,7 @@
                   {{player.raiting.wins}}
                 </ion-text>
                 <ion-text *ngIf="stat._id === 'getRaitingByWinsToGames'" slot="end" color="primary">
-                  {{player.raiting.wins}}/{{player.raiting.gamesCount}} ({{player.raiting.winsToGames * 100}}%)
+                  {{player.raiting.wins}}/{{player.raiting.gamesCount}} ({{math.floor(player.raiting.winsToGames * 100)}}%)
                 </ion-text>
               </ion-item>
             </ion-list>

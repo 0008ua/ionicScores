@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'analytics',
+        redirectTo: 'games',
         pathMatch: 'full'
       },
       {

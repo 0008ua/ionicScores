@@ -35,9 +35,5 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(storeUserFromToken());
-    this.authService.testProtected()
-      .subscribe((test) => console.log('test protected', test),
-        (error) => console.log('test protected error', error)
-      );
   }
 }

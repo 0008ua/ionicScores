@@ -32,19 +32,19 @@ export class AuthService {
       });
   }
 
-  testProtected(): Observable<string> {
-    // return this.http.post('/api/auth/signin', { body: user });
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        // Authorization: 'token',
-      }),
-    };
-    return this.http.get<string>(
-      this.host + '/api/auth/protected',
-      httpOptions,
-    );
-  }
+  // testProtected(): Observable<string> {
+  //   // return this.http.post('/api/auth/signin', { body: user });
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       // Authorization: 'token',
+  //     }),
+  //   };
+  //   return this.http.get<string>(
+  //     this.host + '/api/auth/protected',
+  //     httpOptions,
+  //   );
+  // }
 
 
   signin(user: IUser): Observable<string> {
