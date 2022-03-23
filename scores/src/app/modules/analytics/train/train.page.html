@@ -27,7 +27,7 @@
           </ion-card-header>
           <ion-card-content>
             <ion-list *ngIf="(loading$ | async) === true">
-              <ion-item lines="none" *ngFor="let x of [0,0,0,0,0]">
+              <ion-item lines="none" *ngFor="let x of array(5).fill('')">
                 <ion-skeleton-text slot="start" animated style="width: 60%">
                 </ion-skeleton-text>
                 <ion-skeleton-text slot="end"  animated>

@@ -15,13 +15,13 @@
       <ion-list>
 
         <ion-item lines="none">
-          <div class="choose-players">
-            <div class="choose-players__color">
+          <div class="players-list">
+            <div class="players-list__color">
               <div class="select-color" (click)="showSelectColorPopup($event)"
                 [ngStyle]="{'background-color' : color }">
               </div>
             </div>
-            <div class="choose-players__name">
+            <div class="players-list__name">
               <ion-item>
                 <ion-input [placeholder]="'modules.user.name' | translate"
                  clearInput [(ngModel)]="name"></ion-input>
