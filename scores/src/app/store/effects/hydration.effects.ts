@@ -15,6 +15,7 @@ export class HydrationEffects implements OnInitEffects {
       map((storageValue) => {
         if (storageValue) {
           const state = JSON.parse(storageValue);
+
           return HydrationActions.hydrateSuccess({ state });
         }
         return HydrationActions.hydrateFailure();
@@ -33,6 +34,10 @@ export class HydrationEffects implements OnInitEffects {
           players: store.players,
           rounds: store.rounds,
           roundMembers: store.roundMembers,
+// !!!          // storage: store.storage,
+
+
+          router: store.router,
         }))),
       );
     },

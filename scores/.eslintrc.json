@@ -83,7 +83,18 @@
       ],
       "extends": [
         "plugin:ngrx/recommended"
-      ]
+      ],
+      "rules": {
+        "camelcase": [
+          "error",
+          {
+            "allow": [
+              "(.*?)_id(.*?)",
+              "[_id]$"
+            ]
+          }
+        ]
+      }
     }
   ]
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of, throwError } from 'rxjs';
-import { map, switchMap, catchError, tap, mergeMap, filter } from 'rxjs/operators';
+import { map, switchMap, catchError, tap, mergeMap, filter, withLatestFrom } from 'rxjs/operators';
 
 import * as fromAuthActions from '../actions/auth.actions';
 import * as fromRoundActions from '../actions/round.actions';
@@ -14,7 +14,7 @@ import { userInfo } from 'os';
 import { GamerService } from '../gamer-data.service';
 import { EntityActionFactory, EntityOp, MergeStrategy } from '@ngrx/data';
 import { SharedService } from 'src/app/services/shared.service';
-
+import { State } from '../reducers';
 
 @Injectable()
 export class AuthEffects {
@@ -115,11 +115,21 @@ export class AuthEffects {
         );
     });
 
+
+    storeUserFromTokenSuccess = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(fromAuthActions.storeUserFromTokenSuccess),
+            concatLatestFrom(() => this.store),
+            // !!!! get url from storage
+            map(([action, state]) => fromAuthActions.redirection({ redirectionUrl: '/games/' + (state as State).app.gameType }))
+        );
+    });
+
     getGamers = createEffect(() => {
         return this.actions$.pipe(
             ofType(fromAuthActions.storeUserFromTokenSuccess),
             map((_) => this.entityActionFactory.create(
-                'gamer', EntityOp.QUERY_LOAD, null, { tag: 'gamer/on storeUserFromToken',})),
+                'gamer', EntityOp.QUERY_LOAD, null, { tag: 'gamer/on storeUserFromToken', })),
             catchError((error) => of(fromAuthActions.error({ error: error.error.message || 'error' }))),
         );
     });
@@ -144,6 +154,7 @@ export class AuthEffects {
 
     constructor(
         private actions$: Actions<fromAuthActions.CoreActionsUnion>,
+        private store: Store,
         private authService: AuthService,
         private sharedService: SharedService,
         private entityActionFactory: EntityActionFactory,

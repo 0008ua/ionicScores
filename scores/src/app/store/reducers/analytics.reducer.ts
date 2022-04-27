@@ -26,6 +26,13 @@ export const reducer = createReducer(
       error: null,
     })
   ),
+  on(fromAnalyticsActions.addMany,
+    (state, { analytics }): State => ({
+      ...state,
+      analytics: [...state.analytics, ...analytics],
+      error: null,
+    })
+  ),
   on(fromAnalyticsActions.error,
     (state, { error }): State => ({
       ...state,

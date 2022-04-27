@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,6 +23,7 @@ export class GamesPage implements OnInit {
     private store: Store,
     public translate: TranslateService,
     private menuController: MenuController,
+    private route: ActivatedRoute,
     // private gamerService: GamerService,
   ) { }
 

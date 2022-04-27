@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ComponentRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CollectionSelectors, EntityActionFactory, MergeStrategy } from '@ngrx/data';
@@ -6,7 +6,7 @@ import { ReducerManager, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
-import { IGamer, Colors, IGame } from 'src/app/interfaces';
+import { IGamer, Colors, IGame, GameType } from 'src/app/interfaces';
 import { GamerDataService, GamerService } from 'src/app/store/gamer-data.service';
 import { AuthService } from '../../../auth/auth.service';
 import { environment } from 'src/environments/environment';
@@ -18,6 +18,8 @@ import { GameService } from 'src/app/store/game-data.service';
 import { addRound, loadRounds } from 'src/app/store/actions/round.actions';
 import { loadPlayers } from 'src/app/store/actions/player.actions';
 import * as fromPlayersReducer from '../../../../store/reducers/player.reducer';
+import * as fromAppReducer from '../../../../store/reducers/app.reducer';
+
 import * as fromPlayersActions from '../../../../store/actions/player.actions';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -27,11 +29,13 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./choose-players.component.scss'],
 })
 export class ChoosePlayersComponent implements OnInit {
+  // @Input() gameType: string;
+
   gamers$: Observable<IGamer[]> | Store<IGamer[]>;
   gamers: IGamer[] = [];
 
-  // games$: Observable<IGame[]> | Store<IGame[]>;
-  // games: IGame[] = [];
+  gameType$: Observable<GameType>;
+  gameType: GameType;
 
   filtredGamers: IGamer[] = [];
   // showSelectColor: number | null;
@@ -40,8 +44,8 @@ export class ChoosePlayersComponent implements OnInit {
   // recentPlayers$: Observable<IGamer[]>;
   // playersTotal$: Observable<number>;
 
-  playersColors = environment.games.train.playersColors as Colors[];
-  filtredColors = environment.games.train.playersColors as Colors[];
+  playersColors: Colors[];
+  filtredColors: Colors[];
 
   constructor(
     private store: Store,
@@ -53,6 +57,16 @@ export class ChoosePlayersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.gameType$ = this.store.select(fromAppReducer.selectGameType);
+    this.gameType$.subscribe((gameType) => {
+      this.gameType = gameType;
+      console.log('gameType', gameType)
+
+      this.playersColors = environment.games[gameType].playersColors as Colors[];
+      this.filtredColors = environment.games[gameType].playersColors as Colors[];
+      console.log('this.filtredColors', this.filtredColors)
+    });
+
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
     this.players$.subscribe((players) => {
       this.players = players;
@@ -68,42 +82,7 @@ export class ChoosePlayersComponent implements OnInit {
   }
 
   startGameHandler() {
-    // const players = this.players.map((player) => ({
-    //   _id: player._id,
-    //   scoresLine: []
-    // }));
-
-    // const stationsRoundPlayers = this.players.map((player) => ({
-    //   _id: player._id,
-    //   scoresLine: [12]
-    // }));
-
-    // const clientGame = {
-    //   _id: uuidv4(),
-    //   type: 'train',
-    // };
-
-
-
-    // const rounds = [
-    //   { _id: 'start', players, clientGame },
-    //   { _id: 'routes', players, clientGame },
-    //   { _id: 'length', players, clientGame },
-    //   { _id: 'stations', players: stationsRoundPlayers, clientGame },
-    //   { _id: 'cars', players, clientGame },
-    // ];
-
-    this.sharedService.createRounds('train');
-
-    // this.store.dispatch(clientGameStartAction({ clientGame }));
-    // this.store.dispatch(loadRounds({ rounds }));
-    // this.store.dispatch(loadPlayers({ players: this.players }));
-
-
-    // dispatch(clientGameActions.setAll([clientGame]));
-    // dispatch(recentPlayerActions.setAll(this.players));
-    // dispatch(clientRoundActions.setAll(clientRounds));
-
+    this.sharedService.createRounds(this.gameType);
   }
 
   async presentPopover(event: Event, component: any, data: any): Promise<any> {
@@ -144,7 +123,7 @@ export class ChoosePlayersComponent implements OnInit {
       }
       return true;
     });
-    this.filtredColors = this.playersColors.filter((color) => {
+    const filtredColors = this.playersColors.filter((color, idx) => {
       for (const player of this.players) {
         if (player.color === color) {
           return false;
@@ -152,6 +131,7 @@ export class ChoosePlayersComponent implements OnInit {
       }
       return true;
     });
+    this.filtredColors = filtredColors.length ? filtredColors : this.filtredColors;
   }
 
   choosePlayerHandler(e: any, index: number) {
@@ -166,12 +146,7 @@ export class ChoosePlayersComponent implements OnInit {
       }
       return player;
     });
-    console.log('players', players);
     this.store.dispatch(fromPlayersActions.loadPlayers({players}));
-
-
-
-    // this.filter();
   }
 
   chooseColorHandler(color: Colors, index: number) {

@@ -1,4 +1,4 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, props, union } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 import { Round } from '../../interfaces';
@@ -51,3 +51,18 @@ export const deleteRounds = createAction(
 export const clearRounds = createAction(
   '[Round/API] Clear Rounds'
 );
+
+const all = union({
+  loadRounds,
+  addRound,
+  upsertRound,
+  addRounds,
+  upsertRounds,
+  updateRound,
+  updateRounds,
+  deleteRound,
+  deleteRounds,
+  clearRounds,
+});
+
+export type CoreActionsUnion = typeof all;

@@ -21,7 +21,7 @@ import { denormalize, schema } from 'normalizr';
 export class TrainRoundsComponent implements OnInit {
   @Input() activeRound$: Observable<RoundCfg>;
   activeRound: RoundCfg;
-  // @Input() round: Round;
+
   round: Round;
   round$: Observable<Round>;
 
@@ -50,74 +50,7 @@ export class TrainRoundsComponent implements OnInit {
     private store: Store,
   ) { }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('changes')
-  //   this.round$ = this.store.select(fromRoundsReducer.selectRoundsById(this.activeRound._id));
-  //   this.round$.subscribe((round) => {
-  //     this.round = round;
-  //     console.log('round', round);
-  //   });
-  // }
-
   ngOnInit() {
-
-    // this.rounds$ = this.store.select(fromRoundsReducer.selectAllRounds);
-    // this.rounds$.subscribe((rounds) => {
-    //   this.rounds = rounds;
-    // });
-
-    // this.roundMembersEntities$ = this.store.select(fromRoundMembersReducer.selectEntitiesRoundMembers);
-    // this.roundMembers$.subscribe((roundMembers) => {
-    //   this.roundMembers = roundMembers;
-    // });
-
-
-    // this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
-    // this.playersEnteties$ = this.store.select(fromPlayersReducer.selectEntitiesPlayers);
-    // this.players$.subscribe((players) => {
-    //   this.players = players;
-    //   this.players.forEach((player) => this.inverse[player._id] = 1);
-
-    // });
-
-    // this.round$ = this.rounds$.pipe(
-    //   switchMap((rounds) => {
-    //     this.rounds = rounds;
-    //     return this.roundMembersEntities$;
-    //   }),
-    //   switchMap((roundMembers) => {
-    //     this.roundMembersEntities = roundMembers;
-    //     return this.playersEnteties$;
-    //   }),
-    //   switchMap((players) => {
-    //     this.playersEnteties = players;
-    //     return this.activeRound$;
-    //   }),
-
-    //   tap((activeRound) => this.activeRound = activeRound),
-    //   switchMap((activeRound) => this.store.select(fromRoundsReducer.selectByIdRounds(activeRound._id))),
-    //   map((round) => {
-    //     this.round = round;
-    //     const player = new schema.Entity('players');
-    //     const roundMember = new schema.Entity('members', {
-    //       player: player,
-    //     }, { idAttribute: '_id' }
-
-    //     );
-
-    //     // Define your article
-    //     const roundSchema = new schema.Entity('rounds', {
-    //       roundMember: [roundMember]
-    //     }, { idAttribute: '_id' });
-
-    //     console.log('this.roundMembers', this.roundMembersEntities)
-    //     const normalizedData = denormalize(round, roundSchema, { player: this.playersEnteties, members: this.roundMembersEntities });
-    //     return normalizedData;
-    //   })
-    // );
-
-    // this.round$.subscribe((round) => console.log('round', round));
-
 
     this.activeRound$.pipe(
       tap((activeRound) => this.activeRound = activeRound),
@@ -149,16 +82,6 @@ export class TrainRoundsComponent implements OnInit {
 
   calcScores(player_id: string): number {
     return this.getMemberByPlayer_id(player_id).scoresLine.reduce((prev, cur) => prev + cur, 0);
-    // let result: number;
-    // this.round.members.forEach((member_id) => {
-    //   this.roundMembers.forEach((member) => {
-    //     if (member._id === member_id && member.player_id === player_id) {
-    //       result = member.scoresLine.reduce((prev, cur) => prev + cur, 0);
-    //     }
-    //   });
-    // });
-    // return result;
-    // return scoresLine.reduce((prev, cur) => prev + cur, 0);
   }
 
   getPlayerColor(player_id: string): string {
@@ -168,24 +91,11 @@ export class TrainRoundsComponent implements OnInit {
   getPlayerName(player_id: string): string {
     return this.players.find((player) => player._id === player_id).name;
   }
-  // round: {
-  //   members: ['44', '55']
-  // }
-
-  // roundMembers: [
-  //   {
-  //     _id: '44',
-  //     player_id: 'dddsdfsdf',
-  //     scoresLine: [5, 5, 6]
-  //   }
-  // ]
-
-
 
   getMemberByPlayer_id(player_id: string): RoundMember {
     return this.roundMembers
       .filter((roundMember) =>
-        roundMember.player=== player_id && this.round.roundMembers.includes(roundMember._id)
+        roundMember.player === player_id && this.round.roundMembers.includes(roundMember._id)
       )[0];
   }
 
@@ -199,19 +109,6 @@ export class TrainRoundsComponent implements OnInit {
     });
 
     return count;
-
-    // let count = 0;
-    // this.roundMembers
-    //   .forEach((member) => {
-    //     if (member._id === member_id) {
-    //       member.scoresLine.forEach((arrItem) => {
-    //         if (arrItem === item) {
-    //           count++;
-    //         }
-    //       });
-    //     }
-    //   });
-    // return count;
   }
 
   inverseScore(player_id: string) {
@@ -244,18 +141,6 @@ export class TrainRoundsComponent implements OnInit {
       scoresLine,
     };
 
-    // const changes = this.round.players
-    //   .map((player) => {
-    //     if (player._id === player_id) {
-    //       const scoresLine = [...player.scoresLine];
-    //       const index = scoresLine.indexOf(score);
-    //       scoresLine.splice(index, 1);
-    //       if (index !== -1) {
-    //         return { ...player, scoresLine };
-    //       }
-    //     }
-    //     return player;
-    //   });
     this.store.dispatch(fromRoundMembersActions.updateRoundMember({
       roundMember:
       {
@@ -281,69 +166,6 @@ export class TrainRoundsComponent implements OnInit {
     }));
   }
 
-
-  // addToScoresLine(player_id: string, score: number) {
-  //   console.log('upd', score)
-  //   const changes = this.round.players
-  //     .map((player) => {
-  //       if (player._id === player_id) {
-  //         return { ...player, scoresLine: [...player.scoresLine, score] };
-  //       }
-  //       return player;
-  //     });
-  //   this.store.dispatch(fromRoundsActions.updateRound({
-  //     round:
-  //     {
-  //       id: this.round._id,
-  //       changes: {
-  //         players: changes,
-  //       }
-  //     }
-  //   }));
-  // }
-
-  // removeFromScoresLine(player_id: string, score: number) {
-  //   const changes = this.round.players
-  //     .map((player) => {
-  //       if (player._id === player_id) {
-  //         const scoresLine = [...player.scoresLine];
-  //         const index = scoresLine.indexOf(score);
-  //         scoresLine.splice(index, 1);
-  //         if (index !== -1) {
-  //           return { ...player, scoresLine };
-  //         }
-  //       }
-  //       return player;
-  //     });
-  //   this.store.dispatch(fromRoundsActions.updateRound({
-  //     round:
-  //     {
-  //       id: this.round._id,
-  //       changes: {
-  //         players: changes,
-  //       }
-  //     }
-  //   }));
-  // }
-
-  // setScoresLine(player_id: string, scoresLine: number[]) {
-  //   const changes = this.round.players
-  //     .map((player) => {
-  //       if (player._id === player_id) {
-  //           return { ...player, scoresLine };
-  //       }
-  //       return player;
-  //     });
-  //   this.store.dispatch(fromRoundsActions.updateRound({
-  //     round:
-  //     {
-  //       id: this.round._id,
-  //       changes: {
-  //         players: changes,
-  //       }
-  //     }
-  //   }));
-  // }
 
   onMarkLongestHandler(e: any, player_id: string) {
     const checked = e.target.checked;

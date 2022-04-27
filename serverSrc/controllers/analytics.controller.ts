@@ -44,6 +44,23 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
                 '$sum': 1,
               },
             },
+          }, {
+            '$lookup': {
+              'from': 'gamers',
+              'localField': '_id',
+              'foreignField': '_id',
+              'as': 'gamer',
+            },
+          }, {
+            '$unwind': {
+              'path': '$gamer',
+            },
+          }, {
+            '$project': {
+              'count': 1,
+              'name': '$gamer.name',
+              'color': '$gamer.color',
+            },
           },
         ],
         'wins': [
@@ -76,40 +93,23 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
                 '$count': {},
               },
             },
-          }, {
-            '$lookup': {
-              'from': 'gamers',
-              'localField': '_id',
-              'foreignField': '_id',
-              'as': 'gamer',
-            },
-          }, {
-            '$unwind': {
-              'path': '$gamer',
-            },
-          }, {
-            '$project': {
-              'raiting.wins': '$count',
-              'name': '$gamer.name',
-              'color': '$gamer.color',
-            },
           },
         ],
       },
     }, {
       '$unwind': {
-        'path': '$wins',
+        'path': '$gamesCount',
       },
     }, {
       '$project': {
-        'wins': 1,
-        'gamesCount': {
+        'gamesCount': 1,
+        'wins': {
           '$filter': {
-            'input': '$gamesCount',
+            'input': '$wins',
             'as': 'm',
             'cond': {
               '$eq': [
-                '$$m._id', '$wins._id',
+                '$$m._id', '$gamesCount._id',
               ],
             },
           },
@@ -117,25 +117,31 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
       },
     }, {
       '$project': {
-        'wins': 1,
-        'gamesCount': {
-          '$arrayElemAt': [
-            '$gamesCount', 0,
+        'wins': {
+          '$ifNull': [
+            {
+              '$arrayElemAt': [
+                '$wins', 0,
+              ],
+            }, {
+              'count': 0,
+            },
           ],
         },
+        'gamesCount': 1,
       },
     }, {
       '$project': {
-        '_id': '$wins._id',
-        'name': '$wins.name',
-        'color': '$wins.color',
-        'raiting.wins': '$wins.raiting.wins',
+        '_id': '$gamesCount._id',
+        'name': '$gamesCount.name',
+        'color': '$gamesCount.color',
+        'raiting.wins': '$wins.count',
         'raiting.gamesCount': '$gamesCount.count',
         'raiting.winsToGames': {
           '$round': [
             {
               '$divide': [
-                '$wins.raiting.wins', '$gamesCount.count',
+                '$wins.count', '$gamesCount.count',
               ],
             }, 2,
           ],
@@ -148,7 +154,7 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
     },
   ])
     .then((game) => {
-      // console.log('found game', game);
+      console.log('found game', game);
       // return next(new ClientError('oops'));
       // return setTimeout(() => next(new ClientError('oops')), 3000);
       // return setTimeout(() => res.status(200).json(game), 2000);

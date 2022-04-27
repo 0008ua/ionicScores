@@ -5,6 +5,7 @@ import { State } from './store/reducers';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './modules/auth/auth.service';
 import jwtDecode from 'jwt-decode';
+import { NavigationEnd, NavigationError, NavigationStart, Router, Event } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
     private store: Store,
     private translate: TranslateService,
     private authService: AuthService,
+    private router: Router,
   ) {
     // static translation initialization
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -34,6 +36,25 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.store.dispatch(storeUserFromToken());
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationStart) {
+        // Show loading indicator
+        console.log('NavigationStart', event);
+      }
+
+      if (event instanceof NavigationEnd) {
+        // Hide loading indicator
+        console.log('NavigationEnd', event);
+      }
+
+      if (event instanceof NavigationError) {
+        // Hide loading indicator
+
+        // Present error to user
+        console.log('NavigationError', event.error);
+      }
+    });
   }
 }

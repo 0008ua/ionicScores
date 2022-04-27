@@ -132,6 +132,9 @@ MIT
 @ngrx/entity
 MIT
 
+@ngrx/router-store
+MIT
+
 @ngrx/store
 MIT
 

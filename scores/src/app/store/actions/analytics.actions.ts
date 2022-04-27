@@ -5,6 +5,7 @@ export enum AnalyticsActionTypes {
   getRaitingByWinsType = 'analytics/raitingByWins',
   getRaitingByWinsToGamesType = 'analytics/raitingByWinsToGames',
   getRaitingSuccessType = 'analytics/getRaitingSuccess',
+  addManyType = 'analytics/addMany',
 
   errorType = 'analytics/error',
   loadingType = 'analytics/loading',
@@ -28,6 +29,11 @@ export const getRaitingByWinsToGames = createAction(
 
 export const getRaitingSuccess = createAction(
   AnalyticsActionTypes.getRaitingSuccessType,
+  props<{ analytics: IGamer[] }>()
+);
+
+export const addMany = createAction(
+  AnalyticsActionTypes.addManyType,
   props<{ analytics: IGamer[] }>()
 );
 

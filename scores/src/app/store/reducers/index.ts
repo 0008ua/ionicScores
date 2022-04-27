@@ -9,6 +9,7 @@ import { hydrationMetaReducer } from './hydration.reducer';
 import * as fromPlayers from './player.reducer';
 import * as fromAnalytics from './analytics.reducer';
 import * as fromApp from './app.reducer';
+import { routerReducer } from '@ngrx/router-store';
 
 export interface State {
   auth: fromAuth.State;
@@ -17,6 +18,8 @@ export interface State {
   players: fromPlayers.State;
   analytics: fromAnalytics.State;
   app: fromApp.State;
+  router: typeof routerReducer;
+
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -26,6 +29,8 @@ export const reducers: ActionReducerMap<State> = {
   players: fromPlayers.reducer,
   analytics: fromAnalytics.reducer,
   app: fromApp.reducer,
+  router: routerReducer,
+
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [hydrationMetaReducer] : [hydrationMetaReducer];

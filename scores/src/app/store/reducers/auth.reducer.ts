@@ -25,8 +25,6 @@ export const reducer = createReducer(
     (state, { user }): State => ({
       ...state,
       user,
-      redirectionUrl: '/',
-      // redirectionUrl: user.role === 'member' ? '/auth/profile' : '/games',
       error: null,
     })
   ),

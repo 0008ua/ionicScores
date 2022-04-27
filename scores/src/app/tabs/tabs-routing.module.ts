@@ -28,14 +28,14 @@ const routes: Routes = [
         // canLoad: [NoAuthGuard],
         // canActivate: [NoAuthGuard],
       },
-      {
-        path: '',
-        redirectTo: 'games',
-        pathMatch: 'full'
-      },
+      // {
+      //   path: '',
+      //   redirectTo: 'games',
+      //   // pathMatch: 'full'
+      // },
       {
         path: '**',
-        redirectTo: '',
+        redirectTo: 'games',
         // pathMatch: 'full'
       }
     ],

@@ -5,8 +5,26 @@ export const environment = {
   // host: 'https://10.0.2.2:8084/',
   production: true,
   games: {
+    uno: {
+      maxPlayersQty: 10,
+      mштPlayersQty: 2,
+      playersColors: ['black'],
+      rounds: [
+        {
+          _id: 'start',
+          icon: 'log-out-outline',
+          initialScoresLine: [],
+        },
+        {
+          _id: 'unoRound',
+          icon: 'trail-sign-outline',
+          initialScoresLine: [],
+        },
+      ]
+    },
     train: {
       maxPlayersQty: 5,
+      mштPlayersQty: 2,
       playersColors: ['red', 'green', 'blue', 'black', 'yellow'],
       routeScores: [5, 6, 7, 8, 9, 10, 11, 12, 13, 20, 21],
       cars: [
@@ -55,7 +73,6 @@ export const environment = {
           icon: 'train-outline',
           initialScoresLine: [],
         },
-
       ]
     }
   }

@@ -3,16 +3,21 @@ import { ActivatedRoute, NavigationEnd, ParamMap, Router } from '@angular/router
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { filter, map, mergeMap, startWith, switchMap, tap } from 'rxjs/operators';
-import { IGamer, IGamerTotal, Round, RoundCfg, RoundMember } from 'src/app/interfaces';
-import { clearRounds, deleteRounds } from 'src/app/store/actions/round.actions';
+import { IGame, IGamer, IGamerTotal, Round, RoundCfg, RoundMember } from 'src/app/interfaces';
+import * as fromAppActions from 'src/app/store/actions/app.actions';
+import * as fromRoundActions from 'src/app/store/actions/round.actions';
+import * as fromRoundMemberActions from 'src/app/store/actions/round-member.actions';
+
 import { environment } from 'src/environments/environment';
 import * as fromRoundsReducer from '../../../store/reducers/round.reducer';
 import * as fromRoundMembersReducer from '../../../store/reducers/round-member.reducer';
 import * as fromPlayersReducer from '../../../store/reducers/player.reducer';
+import * as fromAppReducer from '../../../store/reducers/app.reducer';
 
 import { SharedService } from 'src/app/services/shared.service';
 import { GamerService } from 'src/app/store/gamer-data.service';
 import { GameService } from 'src/app/store/game-data.service';
+import { loading } from 'src/app/store/actions/app.actions';
 
 @Component({
   selector: 'app-train',
@@ -26,6 +31,7 @@ export class TrainPage implements OnInit {
   activeRound: RoundCfg;
   activeRound$ = new BehaviorSubject<RoundCfg>(this.roundsCfg[0]);
 
+  loading$: Observable<boolean>;
 
   rounds$: Observable<Round[]>;
   rounds: Round[];
@@ -52,7 +58,24 @@ export class TrainPage implements OnInit {
     private gameService: GameService,
   ) { }
 
+  // ionViewWillEnter() {
+  //   console.log('train ionViewWillEnter');
+  //   this.store.dispatch(fromRoundActions.clearRounds());
+  //   this.store.dispatch(fromRoundMemberActions.clearRoundMembers());
+  //   this.activeRound$.next(this.roundsCfg[0]);
+  // }
+
   ngOnInit() {
+
+    this.route.url
+      .subscribe((_) => {
+        console.log('url -train', _);
+        // start new game by navigating from another one
+        this.onCancelGameHandler();
+      });
+
+    console.log('train onInit');
+    // this.store.dispatch(fromRoundActions.clearRounds());
 
     // this.activeRound = this.roundsCfg[0];
     // this.activeRound = this.roundsEnv.filter((roundEnv) => roundEnv.name === initialRound)[0];
@@ -62,6 +85,8 @@ export class TrainPage implements OnInit {
     //   tap((activeRound) => this.activeRound = activeRound),
     //   switchMap((activeRound) => this.store.select(fromRoundsReducer.selectRoundsById(activeRound._id)))
     // ).subscribe((round) => this.round = round);
+
+    this.loading$ = this.store.select(fromAppReducer.selectLoading);
 
     this.activeRound$
       .subscribe((activeRound) => this.activeRound = activeRound);
@@ -125,6 +150,8 @@ export class TrainPage implements OnInit {
   }
 
   onFinishGameHandler() {
+    this.store.dispatch(loading({ loading: true }));
+
     const clientRoundsWithTotal = this.rounds.map((round) => {
       const players = round.roundMembers.map((member_id) => {
         const member = this.roundMembers.find((roundMember) => roundMember._id === member_id);
@@ -144,22 +171,28 @@ export class TrainPage implements OnInit {
       }))
     };
 
-    const game = {
+    const game: IGame = {
       type: this.rounds[0].clientGame.type,
       rounds: [...clientRoundsWithTotal, result],
     };
 
-    console.log('finish game', game);
     //save to db
     this.gameService.add(game)
-      .subscribe((_) => {
-        console.log(_);
-        this.store.dispatch(clearRounds());
-      });
+      .subscribe(
+        (_) => {
+          this.onCancelGameHandler();
+          // this.store.dispatch(loading({ loading: false }));
+        },
+        (err) => this.store.dispatch(loading({ loading: false }))
+      );
+    // setTimeout(() => this.store.dispatch(loading({ loading: false })), 2000)
   }
 
   onCancelGameHandler() {
-    this.store.dispatch(clearRounds());
+    this.store.dispatch(fromAppActions.clearGame());
+    // this.store.dispatch(fromRoundActions.clearRounds());
+    // this.store.dispatch(fromRoundMemberActions.clearRoundMembers());
+    this.activeRound$.next(this.roundsCfg[0]);
   }
 
   // calcScores(scoresLine: number[]): number {
@@ -167,13 +200,14 @@ export class TrainPage implements OnInit {
   // }
 
   getPlayerTotalScores(player: string): number {
-    let sum = 0;
-    this.roundMembers.forEach((roundMember) => {
-      if (roundMember.player === player) {
-        sum += roundMember.scoresLine.reduce((prev, cur) => prev + cur, 0);
-      }
-    });
-    return sum;
+    return this.sharedService.getPlayerTotalScores(player, this.roundMembers);
+    // let sum = 0;
+    // this.roundMembers.forEach((roundMember) => {
+    //   if (roundMember.player === player) {
+    //     sum += roundMember.scoresLine.reduce((prev, cur) => prev + cur, 0);
+    //   }
+    // });
+    // return sum;
   }
 
   // getPlayerColor(player_id: string): string {

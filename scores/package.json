@@ -1,6 +1,6 @@
 {
   "name": "scores",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
@@ -30,6 +30,7 @@
     "@ngrx/data": "^13.0.2",
     "@ngrx/effects": "^13.0.2",
     "@ngrx/entity": "^13.0.2",
+    "@ngrx/router-store": "^13.0.2",
     "@ngrx/store": "^13.0.2",
     "@ngrx/store-devtools": "^13.0.2",
     "@ngx-translate/core": "^14.0.0",

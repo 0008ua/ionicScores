@@ -1,4 +1,4 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, props, union } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 import { RoundMember } from '../../interfaces';
@@ -51,3 +51,18 @@ export const deleteRoundMembers = createAction(
 export const clearRoundMembers = createAction(
   '[RoundMember/API] Clear RoundMembers'
 );
+
+const all = union({
+  loadRoundMembers,
+  addRoundMember,
+  upsertRoundMember,
+  addRoundMembers,
+  upsertRoundMembers,
+  updateRoundMember,
+  updateRoundMembers,
+  deleteRoundMember,
+  deleteRoundMembers,
+  clearRoundMembers,
+});
+
+export type CoreActionsUnion = typeof all;

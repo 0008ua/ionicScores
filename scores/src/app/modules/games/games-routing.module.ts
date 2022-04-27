@@ -8,29 +8,35 @@ const routes: Routes = [
     path: '',
     component: GamesPage,
     children: [
-      {
-        path: '',
-        redirectTo: 'train',
-        pathMatch: 'full',
-      },
+
       {
         path: 'train',
         loadChildren: () => import('./train/train.module').then(m => m.TrainPageModule)
       },
       {
+        path: 'uno',
+        loadChildren: () => import('./uno/uno.module').then(m => m.UnoPageModule)
+      },
+      {
         path: 'cards',
         loadChildren: () => import('./cards/cards.module').then(m => m.CardsPageModule)
       },
+      // {
+      //   path: '',
+      //   redirectTo: 'uno',
+      //   pathMatch: 'full',
+      // },
       {
         path: '**',
-        redirectTo: '',
+        redirectTo: 'uno',
       },
     ],
   },
-  {
-    path: '**',
-    redirectTo: '',
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: '',
+  // },
+
   // {
   //   path: '**',
   //   redirectTo: '',

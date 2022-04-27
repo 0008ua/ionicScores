@@ -19,7 +19,11 @@ import { AuthService } from '../modules/auth/auth.service';
 import { SharedService } from '../services/shared.service';
 import { HydrationEffects } from './effects/hydration.effects';
 import { AnalyticsEffects } from './effects/analytics.effects';
-import { StoreAppService } from './store-app.service';
+// import { StoreAppService } from './store-app.service';
+import { AppEffects } from './effects/app.effects';
+import { RoundEffects } from './effects/round.effects';
+import { RoundMemberEffects } from './effects/round-member.effects';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.host + 'api/store/',
@@ -40,18 +44,24 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
 @NgModule({
   imports: [
     HttpClientModule,
-    StoreModule.forRoot(reducers, {
+    StoreModule.forRoot(
+      reducers, {
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: true,
       },
     }),
+    // Connects RouterModule with StoreModule
+    StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([
       AuthEffects,
       HydrationEffects,
       AnalyticsEffects,
+      AppEffects,
+      RoundEffects,
+      RoundMemberEffects,
     ]),
     EntityDataModule.forRoot({ entityMetadata }),
   ],
@@ -69,7 +79,7 @@ export class AppStoreModule {
     gameDataService: GameDataService,
     gamerDataService: GamerDataService,
     storeToastService: StoreToastService,
-    storeAppService: StoreAppService,
+    // storeAppService: StoreAppService,
   ) {
     entityDataService.registerService('Game', gameDataService);
     entityDataService.registerService('Gamer', gamerDataService);

@@ -12,6 +12,8 @@ import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
 // AoT requires an exported function for factories
 // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function createTranslateLoader(http: HttpClient) {
@@ -34,6 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
     AppStoreModule,
+    StoreRouterConnectingModule.forRoot(),
 
   ],
   providers: [
