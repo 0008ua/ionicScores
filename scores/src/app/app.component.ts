@@ -40,13 +40,11 @@ export class AppComponent implements OnInit {
     this.store.dispatch(storeUserFromToken());
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
-        // Show loading indicator
-        console.log('NavigationStart', event);
+        // console.log('NavigationStart', event);
       }
 
       if (event instanceof NavigationEnd) {
-        // Hide loading indicator
-        console.log('NavigationEnd', event);
+        // console.log('NavigationEnd', event);
       }
 
       if (event instanceof NavigationError) {

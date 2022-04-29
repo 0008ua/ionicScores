@@ -60,11 +60,8 @@ export class ChoosePlayersComponent implements OnInit {
     this.gameType$ = this.store.select(fromAppReducer.selectGameType);
     this.gameType$.subscribe((gameType) => {
       this.gameType = gameType;
-      console.log('gameType', gameType)
-
       this.playersColors = environment.games[gameType].playersColors as Colors[];
       this.filtredColors = environment.games[gameType].playersColors as Colors[];
-      console.log('this.filtredColors', this.filtredColors)
     });
 
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);

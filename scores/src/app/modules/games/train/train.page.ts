@@ -67,14 +67,13 @@ export class TrainPage implements OnInit {
 
   ngOnInit() {
 
-    this.route.url
-      .subscribe((_) => {
-        console.log('url -train', _);
-        // start new game by navigating from another one
-        this.onCancelGameHandler();
-      });
+    // this.route.url
+    //   .subscribe((_) => {
+    //     console.log('url -train', _);
+    //     // start new game by navigating from another one
+    //     this.onCancelGameHandler();
+    //   });
 
-    console.log('train onInit');
     // this.store.dispatch(fromRoundActions.clearRounds());
 
     // this.activeRound = this.roundsCfg[0];

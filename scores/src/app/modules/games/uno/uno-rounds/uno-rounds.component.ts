@@ -20,8 +20,6 @@ export class UnoRoundsComponent implements OnInit {
 
   round: Round;
 
-
-
   roundsCfg = environment.games.train.rounds;
 
   rounds$: Observable<Round[]>;

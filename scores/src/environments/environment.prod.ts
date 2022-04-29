@@ -16,7 +16,24 @@ export const environment = {
           initialScoresLine: [],
         },
         {
-          _id: 'unoRound',
+          _id: 'templateRound',
+          icon: 'trail-sign-outline',
+          initialScoresLine: [],
+        },
+      ]
+    },
+    cards: {
+      maxPlayersQty: 4,
+      mштPlayersQty: 2,
+      playersColors: ['black'],
+      rounds: [
+        {
+          _id: 'start',
+          icon: 'log-out-outline',
+          initialScoresLine: [],
+        },
+        {
+          _id: 'templateRound',
           icon: 'trail-sign-outline',
           initialScoresLine: [],
         },

@@ -1,14 +1,15 @@
-<app-choose-players 
+<app-choose-players
   *ngIf="activeRound?._id === 'start' && (rounds$ | async).length === 0; else restRounds">
 </app-choose-players>
 
 <ng-template #restRounds>
   <!-- <ion-card *ngFor="let member of (round$ | async).members"> -->
   <ion-card *ngFor="let player of players">
-    {{player | json}}
-    <ion-button shape="round" color="success" fill="outline" (click)="openNextRound()">
+    <!-- {{player | json}} -->
+    <!-- <ion-button shape="round" color="success" fill="outline" (click)="openNextRound()">
       <ion-icon name="add-outline"></ion-icon>
-    </ion-button>
+    </ion-button> -->
+    
     <!-- <ion-card-header [ngStyle]="{'border-bottom': '2px solid ' + getPlayerColor(player._id)}">
       <ion-card-subtitle>
         <span class="round-subtitle">

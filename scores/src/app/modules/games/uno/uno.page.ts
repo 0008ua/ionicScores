@@ -60,7 +60,6 @@ export class UnoPage implements OnInit {
 
     //   });
 
-    console.log('uno onInit');
     // this.store.dispatch(fromRoundActions.clearRounds());
 
 
