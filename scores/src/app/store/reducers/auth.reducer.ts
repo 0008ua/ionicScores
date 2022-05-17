@@ -8,7 +8,7 @@ export const authFeatureKey = 'auth';
 export interface State {
   user: IUser;
   error: any;
-  redirectionUrl: string;
+  redirectionUrl: string | null;
   loading: boolean;
 }
 

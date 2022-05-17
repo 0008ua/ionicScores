@@ -8,12 +8,14 @@ export const appFeatureKey = 'app';
 
 export interface State {
   loading: boolean;
-  gameType: GameType;
+  gameType: GameType | null;
+  redirectionUrl: string | null;
 }
 
 export const initialState: State = {
   loading: false,
-  gameType: Object.keys(environment.games)[0] as GameType,
+  gameType: null, //Object.keys(environment.games)[0] as GameType,
+  redirectionUrl: null,
 };
 
 export const reducer = createReducer(
@@ -30,9 +32,22 @@ export const reducer = createReducer(
       gameType,
     })
   ),
+  on(fromAppActions.gameTypeAndClearGame,
+    (state, { gameType }): State => ({
+      ...state,
+      gameType,
+    })
+  ),
+  on(fromAppActions.redirection,
+    (state, { redirectionUrl }): State => ({
+      ...state,
+      redirectionUrl,
+    })
+  ),
 );
 
 const selectFeature = createFeatureSelector<State>(appFeatureKey);
 
 export const selectLoading = createSelector(selectFeature, (state) => state.loading);
 export const selectGameType = createSelector(selectFeature, (state) => state.gameType);
+export const selectRedirectionUrl = createSelector(selectFeature, (state) => state.redirectionUrl);

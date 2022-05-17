@@ -61,4 +61,4 @@ export const {
 export const selectFeature = createFeatureSelector<State>(roundsFeatureKey);
 export const selectAllRounds = createSelector(selectFeature, selectAll);
 export const selectEntitiesRounds = createSelector(selectFeature, selectEntities);
-export const selectByIdRounds = (id: string) => createSelector(selectEntitiesRounds, (entities) => entities[id]);
+export const selectByIdRound = (id: string) => createSelector(selectEntitiesRounds, (entities) => entities[id]);

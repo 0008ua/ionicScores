@@ -14,6 +14,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { selectAllRounds } from '../store/reducers/round.reducer';
 import { selectAllRoundMembers } from '../store/reducers/round-member.reducer';
 import * as fromAppActions from '../store/actions/app.actions';
+import { selectRedirectionUrl } from '../store/reducers/app.reducer';
+import { Router } from '@angular/router';
+import { redirection } from '../store/actions/app.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +31,24 @@ export class SharedService {
   roundMembers: RoundMember[] = [];
   roundMembers$: Observable<RoundMember[]>;
 
+  host = environment.host;
+  url$: Observable<string>;
+
   constructor(
     private store: Store,
     private http: HttpClient,
+    private router: Router,
+
   ) {
+    this.url$ = this.store.select(selectRedirectionUrl);
+    this.url$
+      .subscribe((url) => {
+        if (url) {
+          this.router.navigateByUrl(url);
+          this.store.dispatch(redirection({ redirectionUrl: null }));
+        }
+      });
+
     this.players$ = this.store.select(selectAllPlayers);
     this.players$.subscribe((players) => {
       this.players = players;
@@ -173,9 +190,6 @@ export class SharedService {
     // console.log('roundMembers-', roundMembers);
     // console.log('rounds-', rounds);
     this.store.dispatch(fromAppActions.loadGame({ roundMembers, rounds }));
-
-    // this.store.dispatch(loadRoundMembers({ roundMembers }));
-    // this.store.dispatch(loadRounds({ rounds }));
   }
 
   getRaitingByWins(): Observable<IGamer[]> {

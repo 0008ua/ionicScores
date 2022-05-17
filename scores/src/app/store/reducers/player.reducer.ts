@@ -15,7 +15,6 @@ export const adapter: EntityAdapter<IGamer> = createEntityAdapter<IGamer>({
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
-  players: []
 });
 
 export const reducer = createReducer(
@@ -63,3 +62,4 @@ export const {
 export const selectFeature = createFeatureSelector<State>(playersFeatureKey);
 export const selectAllPlayers = createSelector(selectFeature, selectAll);
 export const selectEntitiesPlayers = createSelector(selectFeature, selectEntities);
+export const selectByIdPlayer = (id: string) => createSelector(selectEntitiesPlayers, (entities) => entities[id]);

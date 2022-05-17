@@ -116,14 +116,17 @@ export class AuthEffects {
     });
 
 
-    storeUserFromTokenSuccess = createEffect(() => {
-        return this.actions$.pipe(
-            ofType(fromAuthActions.storeUserFromTokenSuccess),
-            concatLatestFrom(() => this.store),
-            // !!!! get url from storage
-            map(([action, state]) => fromAuthActions.redirection({ redirectionUrl: '/games/' + (state as State).app.gameType }))
-        );
-    });
+    // storeUserFromTokenSuccess = createEffect(() => {
+    //     return this.actions$.pipe(
+    //         ofType(fromAuthActions.storeUserFromTokenSuccess),
+    //         concatLatestFrom(() => this.store),
+    //         // !!!! get url from storage
+    //         map(([action, state]) => {
+    //             console.log('state auth', state)
+    //             return fromAuthActions.redirection({ redirectionUrl: '/games/' + (state as State).app.gameType });
+    //         })
+    //     );
+    // });
 
     getGamers = createEffect(() => {
         return this.actions$.pipe(

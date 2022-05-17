@@ -36,7 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
     AppStoreModule,
-    StoreRouterConnectingModule.forRoot(),
+    // StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
 
   ],
   providers: [

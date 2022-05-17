@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-import { State } from '../reducers';
+import {  selectUrlRouter, State } from '../reducers';
 import * as HydrationActions from '../actions/hydration.actions';
 import { SharedService } from 'src/app/services/shared.service';
+import { Router } from '@angular/router';
+import { RouterState } from '@ngrx/router-store';
+import { redirection } from '../actions/app.actions';
 
 @Injectable()
 export class HydrationEffects implements OnInitEffects {
@@ -15,17 +18,29 @@ export class HydrationEffects implements OnInitEffects {
       map((storageValue) => {
         if (storageValue) {
           const state = JSON.parse(storageValue);
-
+          console.log('state', state);
           return HydrationActions.hydrateSuccess({ state });
         }
         return HydrationActions.hydrateFailure();
       })
     );
-  }
-  );
+  });
 
-  serialize$ = createEffect(
-    () => {
+  navigate$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(HydrationActions.hydrateSuccess),
+      concatLatestFrom(() => this.store.select(selectUrlRouter)),
+      map(([action, url]) => {
+        console.log('action rehydrate', action?.state?.router);
+        // !!!!!!!!!!!!!!!!!!!!
+        console.log('url rehydrate', url);
+        // this.router.navigate((state as State).router((state, action) => state).state)
+        return redirection({redirectionUrl: url});
+      })
+    );
+  }, );
+
+  serialize$ = createEffect(() => {
       return this.action$.pipe(
         ofType(HydrationActions.hydrateSuccess, HydrationActions.hydrateFailure),
         switchMap(() => this.store),
@@ -34,9 +49,7 @@ export class HydrationEffects implements OnInitEffects {
           players: store.players,
           rounds: store.rounds,
           roundMembers: store.roundMembers,
-// !!!          // storage: store.storage,
-
-
+          persistStore: store.persistStore,
           router: store.router,
         }))),
       );
@@ -48,6 +61,7 @@ export class HydrationEffects implements OnInitEffects {
     private action$: Actions,
     private store: Store,
     private sharedService: SharedService,
+    private router: Router,
   ) { }
 
   ngrxOnInitEffects(): Action {

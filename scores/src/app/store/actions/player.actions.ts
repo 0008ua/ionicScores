@@ -1,4 +1,4 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, props, union } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 import { IGamer } from '../../interfaces';
@@ -51,3 +51,18 @@ export const deletePlayers = createAction(
 export const clearPlayers = createAction(
   '[Player/API] Clear Players'
 );
+
+const all = union({
+  loadPlayers,
+  addPlayer,
+  upsertPlayer,
+  addPlayers,
+  upsertPlayers,
+  updatePlayer,
+  updatePlayers,
+  deletePlayer,
+  deletePlayers,
+  clearPlayers,
+});
+
+export type CoreActionsUnion = typeof all;

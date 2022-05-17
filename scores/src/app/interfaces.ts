@@ -46,7 +46,7 @@ export interface IGame {
 export type ClientGame  = Pick<IGame, '_id' | 'type'>;
 
 export interface Round {
-  _id: UID;
+  _id: string;
   roundMembers: UID[]; // RoundMember
   clientGame?: ClientGame;
   icon?: string;
@@ -65,11 +65,17 @@ export interface RoundCfg {
   initialScoresLine: number[];
 }
 
-export type Persist = {
-  gameType: string | null;
-  games: {
-    [key in GameType]: IGamer[];
-  } | null;
+export type PersistStore = {
+  _id: GameType;
+  players: IGamer[];
+
+  // [key in GameType]: IGamer[];
+  // gameType: string | null;
+  // games: {
+  //   [key in GameType]: IGamer[];
+  // } | null;
 };
+
+
 
 

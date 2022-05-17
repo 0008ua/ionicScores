@@ -9,7 +9,6 @@ import { switchMap, take } from 'rxjs/operators';
 import { IGamer, Colors, IGame, GameType } from 'src/app/interfaces';
 import { GamerDataService, GamerService } from 'src/app/store/gamer-data.service';
 import { AuthService } from '../../../auth/auth.service';
-import { environment } from 'src/environments/environment';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { SelectColorComponent } from '../select-color/select-color.component';
 import { CreateGamerComponent } from '../create-gamer/create-gamer.component';
@@ -22,6 +21,7 @@ import * as fromAppReducer from '../../../../store/reducers/app.reducer';
 
 import * as fromPlayersActions from '../../../../store/actions/player.actions';
 import { SharedService } from 'src/app/services/shared.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-choose-players',
@@ -30,6 +30,7 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class ChoosePlayersComponent implements OnInit {
   // @Input() gameType: string;
+  environment = environment;
 
   gamers$: Observable<IGamer[]> | Store<IGamer[]>;
   gamers: IGamer[] = [];
@@ -60,8 +61,8 @@ export class ChoosePlayersComponent implements OnInit {
     this.gameType$ = this.store.select(fromAppReducer.selectGameType);
     this.gameType$.subscribe((gameType) => {
       this.gameType = gameType;
-      this.playersColors = environment.games[gameType].playersColors as Colors[];
-      this.filtredColors = environment.games[gameType].playersColors as Colors[];
+      this.playersColors = environment.games[gameType]?.playersColors as Colors[];
+      this.filtredColors = environment.games[gameType]?.playersColors as Colors[];
     });
 
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
@@ -120,7 +121,7 @@ export class ChoosePlayersComponent implements OnInit {
       }
       return true;
     });
-    const filtredColors = this.playersColors.filter((color, idx) => {
+    const filtredColors = this.playersColors?.filter((color, idx) => {
       for (const player of this.players) {
         if (player.color === color) {
           return false;
@@ -128,7 +129,7 @@ export class ChoosePlayersComponent implements OnInit {
       }
       return true;
     });
-    this.filtredColors = filtredColors.length ? filtredColors : this.filtredColors;
+    this.filtredColors = filtredColors?.length ? filtredColors : this.filtredColors;
   }
 
   choosePlayerHandler(e: any, index: number) {

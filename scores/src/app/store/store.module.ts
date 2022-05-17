@@ -24,6 +24,8 @@ import { AppEffects } from './effects/app.effects';
 import { RoundEffects } from './effects/round.effects';
 import { RoundMemberEffects } from './effects/round-member.effects';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { PersistStoreEffects } from './effects/persist-store.effects';
+import { PlayerEffects } from './effects/player.effects';
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.host + 'api/store/',
@@ -52,8 +54,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
         strictActionImmutability: true,
       },
     }),
-    // Connects RouterModule with StoreModule
-    StoreRouterConnectingModule.forRoot(),
+
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([
       AuthEffects,
@@ -62,7 +63,12 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       AppEffects,
       RoundEffects,
       RoundMemberEffects,
+      PersistStoreEffects,
+      PlayerEffects,
     ]),
+    StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+
+    // Connects RouterModule with StoreModule
     EntityDataModule.forRoot({ entityMetadata }),
   ],
   providers: [

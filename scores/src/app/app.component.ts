@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { signin, storeUserFromToken } from './store/actions/auth.actions';
-import { State } from './store/reducers';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './modules/auth/auth.service';
 import jwtDecode from 'jwt-decode';
@@ -36,6 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
 
     this.store.dispatch(storeUserFromToken());
     this.router.events.subscribe((event: Event) => {

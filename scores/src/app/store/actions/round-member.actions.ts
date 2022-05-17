@@ -52,7 +52,7 @@ export const clearRoundMembers = createAction(
   '[RoundMember/API] Clear RoundMembers'
 );
 
-const all = union({
+export const all = union({
   loadRoundMembers,
   addRoundMember,
   upsertRoundMember,

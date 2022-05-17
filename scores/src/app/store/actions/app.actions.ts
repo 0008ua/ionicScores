@@ -1,11 +1,13 @@
 import { createAction, props, union } from '@ngrx/store';
-import { Round, RoundMember, GameType } from 'src/app/interfaces';
+import { Round, RoundMember, GameType, IGamer } from 'src/app/interfaces';
 
 export enum AppActionTypes {
   loadingType = 'app/loading',
   clearGameType = 'app/clearGame',
   loadGameType = 'app/loadGame',
   gameTypeType = 'app/gameType',
+  gameTypeAndClearGameType = 'app/gameTypeAndClearGame',
+  redirectionType = 'app/redirection',
   nopType = 'app/nopType',
 }
 
@@ -29,6 +31,17 @@ export const gameType = createAction(
   props<{ gameType: GameType }>()
 );
 
+export const gameTypeAndClearGame = createAction(
+  AppActionTypes.gameTypeAndClearGameType,
+  props<{ gameType: GameType }>()
+);
+
+
+export const redirection = createAction(
+  AppActionTypes.redirectionType,
+  props<{ redirectionUrl: string | null }>()
+);
+
 export const nop = createAction(
   AppActionTypes.nopType,
 );
@@ -38,6 +51,8 @@ const all = union({
   clearGame,
   loadGame,
   gameType,
+  gameTypeAndClearGame,
+  redirection,
   nop,
 });
 

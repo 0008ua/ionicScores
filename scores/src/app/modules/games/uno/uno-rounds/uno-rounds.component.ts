@@ -39,7 +39,7 @@ export class UnoRoundsComponent implements OnInit {
   ngOnInit() {
     this.activeRound$.pipe(
       tap((activeRound) => this.activeRound = activeRound),
-      switchMap((activeRound) => this.store.select(fromRoundsReducer.selectByIdRounds(activeRound._id)))
+      switchMap((activeRound) => this.store.select(fromRoundsReducer.selectByIdRound(activeRound._id)))
     ).subscribe((round) => {
       if (round) {
         this.round = round;
