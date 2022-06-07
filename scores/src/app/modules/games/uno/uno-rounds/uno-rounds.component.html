@@ -9,7 +9,7 @@
     <!-- <ion-button shape="round" color="success" fill="outline" (click)="openNextRound()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-button> -->
-    
+
     <!-- <ion-card-header [ngStyle]="{'border-bottom': '2px solid ' + getPlayerColor(player._id)}">
       <ion-card-subtitle>
         <span class="round-subtitle">
@@ -40,7 +40,7 @@
         </ion-col>
       </ion-row>
       <ion-row class="round round_result">
-        <ion-col *ngFor="let routeScore of getMemberByPlayer_id(player._id).scoresLine" size="3">
+        <ion-col *ngFor="let routeScore of getMemberByPlayerId(player._id).scoresLine" size="3">
           <ion-chip outline [color]="routeScore > 19 ? 'secondary' : 'warning'"
             (click)="removeFromScoresLine(player._id, routeScore)">
             <ion-label>{{routeScore }}</ion-label>
@@ -54,7 +54,7 @@
       <ion-row>
         <ion-col class="round round_tools">
           <div>{{'games.train.longestRoute' | translate}}</div>
-          <ion-toggle [checked]="getMemberByPlayer_id(player._id).scoresLine.length"
+          <ion-toggle [checked]="getMemberByPlayerId(player._id).scoresLine.length"
             (ionChange)="onMarkLongestHandler($event, player._id)">
           </ion-toggle>
         </ion-col>
@@ -69,14 +69,14 @@
         <ion-col class="round_tools__btn">
           <div class="incDecBtn">
             <ion-button shape="round" color="danger" fill="outline" (click)="addToScoresLine(player._id, 4)"
-              [disabled]="getMemberByPlayer_id(player._id).scoresLine.length >= 3">
+              [disabled]="getMemberByPlayerId(player._id).scoresLine.length >= 3">
               <ion-icon name="remove-outline"></ion-icon>
             </ion-button>
             <span class="incDecBtn__caption">
               <div>{{'games.train.stationsShort' | translate}}</div>
             </span>
             <ion-button shape="round" color="success" fill="outline" (click)="removeFromScoresLine(player._id, 4)"
-              [disabled]="getMemberByPlayer_id(player._id).scoresLine.length <= 0">
+              [disabled]="getMemberByPlayerId(player._id).scoresLine.length <= 0">
               <ion-icon name="add-outline"></ion-icon>
             </ion-button>
           </div>

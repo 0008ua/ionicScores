@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 
 type UserRoles = 'member' | 'guest';
-type UID = string;
+export type UID = string;
 export type Colors = 'red' | 'green' | 'blue' | 'black' | 'yellow';
 export type GameType = keyof typeof environment.games;
 

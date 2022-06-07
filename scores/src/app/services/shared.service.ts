@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { from, Observable, of, throwError } from 'rxjs';
 import { GetResult, Storage } from '@capacitor/storage';
 import { catchError, map, tap } from 'rxjs/operators';
-import { IGamer, IUser, Round, RoundCfg, RoundMember } from '../interfaces';
+import { IGamer, IUser, Round, RoundCfg, RoundMember, UID } from '../interfaces';
 import { Store } from '@ngrx/store';
 import { selectAllPlayers } from '../store/reducers/player.reducer';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +17,7 @@ import * as fromAppActions from '../store/actions/app.actions';
 import { selectRedirectionUrl } from '../store/reducers/app.reducer';
 import { Router } from '@angular/router';
 import { redirection } from '../store/actions/app.actions';
+import * as fromRoundMembersActions from '../store/actions/round-member.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -142,8 +143,6 @@ export class SharedService {
         };
       });
     this.store.dispatch(fromAppActions.loadGame({ roundMembers, rounds }));
-    // this.store.dispatch(loadRoundMembers({ roundMembers }));
-    // this.store.dispatch(loadRounds({ rounds }));
   }
 
   addRounds(roundCfg: RoundCfg): void {
@@ -161,34 +160,7 @@ export class SharedService {
         clientGame: this.rounds[0].clientGame,
         icon: roundCfg.icon
       }
-      ];
-    // const clientGame = {
-    //   _id: uuidv4(),
-    //   type: gameType,
-    // };
-    // // this.store.dispatch(clearRoundMembers());
-    // let roundMembers = [];
-    // console.log('env', environment.games[gameType].rounds)
-    // const rounds: Round[] = environment.games[gameType].rounds
-    //   .filter((round: RoundCfg) => round._id !== 'start')
-    //   .map((round: RoundCfg) => {
-    //     console.log('roundCfg', round)
-    //     const members = this.players.map((player) => ({
-    //       _id: uuidv4(),
-    //       player: player._id,
-    //       scoresLine: round.initialScoresLine,
-    //     }));
-    //     roundMembers = [...roundMembers, ...members];
-    //     // this.store.dispatch(addRoundMembers({ roundMembers: members }));
-    //     return {
-    //       _id: round._id,
-    //       roundMembers: members.map((member) => (member._id)),
-    //       clientGame,
-    //       icon: round.icon
-    //     };
-    //   });
-    // console.log('roundMembers-', roundMembers);
-    // console.log('rounds-', rounds);
+    ];
     this.store.dispatch(fromAppActions.loadGame({ roundMembers, rounds }));
   }
 
@@ -216,9 +188,10 @@ export class SharedService {
     ).pipe(catchError((err) => throwError(err)));
   }
 
-  getPlayerTotalScores(player: string, roundMembers: RoundMember[]): number {
+  getPlayerTotalScores(player: string): number {
+
     let sum = 0;
-    roundMembers.forEach((roundMember) => {
+    this.roundMembers.forEach((roundMember) => {
       if (roundMember.player === player) {
         sum += roundMember.scoresLine.reduce((prev, cur) => prev + cur, 0);
       }
@@ -226,4 +199,89 @@ export class SharedService {
     return sum;
   }
 
+  calcQtyOfArrItems(item: string | number, playerId: string, roundId: string): number {
+    let count = 0;
+
+    this.getMemberByPlayerId(playerId, roundId).scoresLine.forEach((arrItem) => {
+      if (arrItem === item) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  calcScores(playerId: UID, roundId: string): number {
+    return this.getMemberByPlayerId(playerId, roundId).scoresLine.reduce((prev, cur) => prev + cur, 0);
+  }
+
+  getPlayerColor(playerId: UID): string {
+    return this.players.find((player) => player._id === playerId).color;
+  }
+
+  getPlayerName(playerId: UID): string {
+    return this.players.find((player) => player._id === playerId).name;
+  }
+
+  getRoundById(roundId: string): Round {
+    return this.rounds.find((round) => round._id === roundId);
+  }
+
+  getMemberByPlayerId(playerId: UID, roundId: string): RoundMember {
+    const round = this.getRoundById(roundId);
+    return this.roundMembers
+      .filter((roundMember) =>
+        roundMember.player === playerId && round.roundMembers.includes(roundMember._id)
+      )[0];
+  }
+
+  addToScoresLine(score: number, playerId: UID, roundId: string) {
+    const roundMember = this.getMemberByPlayerId(playerId, roundId);
+    const changes = {
+      ...roundMember,
+      scoresLine: [...roundMember.scoresLine, score],
+    };
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
+      {
+        id: roundMember._id,
+        changes,
+      }
+    }));
+  }
+
+  removeFromScoresLine(score: number, playerId: UID, roundId: string) {
+    const roundMember = this.getMemberByPlayerId(playerId, roundId);
+    const scoresLine = [...roundMember.scoresLine];
+    const index = scoresLine.indexOf(score);
+    scoresLine.splice(index, 1);
+
+    const changes = {
+      ...roundMember,
+      scoresLine,
+    };
+
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
+      {
+        id: roundMember._id,
+        changes,
+      }
+    }));
+  }
+
+  setScoresLine(scoresLine: number[], playerId: UID, roundId: string) {
+    const roundMember = this.getMemberByPlayerId(playerId, roundId);
+    const changes = {
+      ...roundMember,
+      scoresLine,
+    };
+
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
+      {
+        id: roundMember._id,
+        changes,
+      }
+    }));
+  }
 }

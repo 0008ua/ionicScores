@@ -108,7 +108,7 @@ export class UnoPage implements OnInit {
   }
 
   getPlayerTotalScores(player: string): number {
-    return this.sharedService.getPlayerTotalScores(player, this.roundMembers);
+    return this.sharedService.getPlayerTotalScores(player);
     // let sum = 0;
     // this.roundMembers.forEach((roundMember) => {
     //   if (roundMember.player === player) {

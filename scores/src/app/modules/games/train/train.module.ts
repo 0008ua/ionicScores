@@ -11,6 +11,8 @@ import { TrainRoundsComponent } from './train-rounds/train-rounds.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { GamersModule } from '../gamers/gamers.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { RoundWrapperComponent } from './train-rounds/round-wrapper/round-wrapper.component';
+import { TrainRoundsModule } from './train-rounds/train-rounds.module';
 
 @NgModule({
   imports: [
@@ -23,11 +25,12 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     TranslateModule.forChild({
       extend: true,
     }),
-    GamersModule,
+    // GamersModule,
+    TrainRoundsModule,
   ],
   declarations: [
     TrainPage,
-    TrainRoundsComponent,
+
   ],
 })
 export class TrainPageModule { }

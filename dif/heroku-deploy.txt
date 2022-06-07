@@ -16,3 +16,13 @@ $ git push heroku branch-to-deploy:main
 This pushes the local branch to the Heroku app's git repository. You can change heroku depending on what you do in step 3.
 You can also use a different branch here if you are not deploying from main locally. The last part always needs to be main or master,
 as Heroku will only start builds for pushes to the main or master branch.
+
+
+// merge dev with main (production)
+git checkout dev
+git add .
+git commit -m "message"
+git checkout main
+git merge dev
+git push heroku main
+git push origin main

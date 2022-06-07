@@ -26,7 +26,7 @@ export const environment = {
     cards: {
       name: 'Cards',
       maxPlayersQty: 4,
-      mштPlayersQty: 2,
+      minPlayersQty: 2,
       playersColors: ['black'],
       rounds: [
         {
@@ -44,10 +44,11 @@ export const environment = {
     train: {
       name: 'Ticket to the ride',
       maxPlayersQty: 5,
-      mштPlayersQty: 2,
+      minPlayersQty: 2,
       playersColors: ['red', 'green', 'blue', 'black', 'yellow'],
-      routeScores: [5, 6, 7, 8, 9, 10, 11, 12, 13, 20, 21],
-      cars: [
+      routesScores: [5, 6, 7, 8, 9, 10, 11, 12, 13, 20, 21],
+      longestRouteScore: 10,
+      carsScores: [
         { qty: 1, score: 1 },
         { qty: 2, score: 2 },
         { qty: 3, score: 4 },

@@ -199,7 +199,7 @@ export class TrainPage implements OnInit {
   // }
 
   getPlayerTotalScores(player: string): number {
-    return this.sharedService.getPlayerTotalScores(player, this.roundMembers);
+    return this.sharedService.getPlayerTotalScores(player);
     // let sum = 0;
     // this.roundMembers.forEach((roundMember) => {
     //   if (roundMember.player === player) {
@@ -209,11 +209,11 @@ export class TrainPage implements OnInit {
     // return sum;
   }
 
-  // getPlayerColor(player_id: string): string {
-  //    return this.players.find((player) => player._id === player_id).color;
+  // getPlayerColor(playerId: string): string {
+  //    return this.players.find((player) => player._id === playerId).color;
   //   }
 
-  // getPlayerName(player_id: string): string {
-  //   return this.players.find((player) => player._id === player_id).name
+  // getPlayerName(playerId: string): string {
+  //   return this.players.find((player) => player._id === playerId).name
   // }
 }
