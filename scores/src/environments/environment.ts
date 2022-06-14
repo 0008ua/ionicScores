@@ -94,7 +94,7 @@ export const environment = {
         { name: 3, value: 4 },
         { name: 4, value: 7 },
         { name: 6, value: 15 },
-        { name: 8, value: 21 },
+        { name: 8, value: 21 }
       ],
       stats: [
         {
