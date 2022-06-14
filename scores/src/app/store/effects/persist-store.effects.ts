@@ -36,6 +36,9 @@ export class PersistStoreEffects {
         this.store.select(fromPlayerReducer.selectAllPlayers),
       ]),
       map(([_, gameType, players]) => {
+        if (!gameType) {
+          return fromAppActions.nop();
+        }
         return fromPersistStoreActions.upsertPersistStore({ persistStore: { _id: gameType, players } });
       })
     );

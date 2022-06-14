@@ -8,19 +8,22 @@ const routes: Routes = [
     path: '',
     component: GamesPage,
     children: [
-
       {
-        path: 'train',
-        loadChildren: () => import('./train/train.module').then(m => m.TrainPageModule)
+        path: ':id',
+        loadChildren: () => import('./game/game.module').then(m => m.GamePageModule)
       },
-      {
-        path: 'uno',
-        loadChildren: () => import('./uno/uno.module').then(m => m.UnoPageModule)
-      },
-      {
-        path: 'cards',
-        loadChildren: () => import('./cards/cards.module').then(m => m.CardsPageModule)
-      },
+      // {
+      //   path: 'train',
+      //   loadChildren: () => import('./train/train.module').then(m => m.TrainPageModule)
+      // },
+      // {
+      //   path: 'uno',
+      //   loadChildren: () => import('./uno/uno.module').then(m => m.UnoPageModule)
+      // },
+      // {
+      //   path: 'cards',
+      //   loadChildren: () => import('./cards/cards.module').then(m => m.CardsPageModule)
+      // },
       // {
       //   path: '',
       //   redirectTo: 'uno',
@@ -32,6 +35,11 @@ const routes: Routes = [
       },
     ],
   },
+  // {
+  //   path: 'game',
+  //   loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
+  // },
+
   // {
   //   path: '**',
   //   redirectTo: '',

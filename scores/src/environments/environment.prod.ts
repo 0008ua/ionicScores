@@ -17,7 +17,7 @@ export const environment = {
           initialScoresLine: [],
         },
         {
-          _id: 'templateRound',
+          _id: 'unoRound',
           icon: 'trail-sign-outline',
           initialScoresLine: [],
         },
@@ -35,7 +35,7 @@ export const environment = {
           initialScoresLine: [],
         },
         {
-          _id: 'templateRound',
+          _id: 'cardsRound',
           icon: 'trail-sign-outline',
           initialScoresLine: [],
         },

@@ -9,6 +9,9 @@
       "stations": "Used stations",
       "longestRoute": "Mark as longest route",
       "stationsShort": "Stations"
+    },
+    "uno": {
+      "round": "Round"
     }
   },
   "modules": {
@@ -28,7 +31,8 @@
       "createGamer": "Create player",
       "addPlayers": "Add players",
       "color": "Color",
-      "player": "Player"
+      "player": "Player",
+      "round": "Round"
     },
     "user": {
       "signin": "Sign in",
@@ -58,7 +62,8 @@
       "close": "Close",
       "delete": "Delete",
       "finishGame": "Finish game",
-      "cancelGame": "Cancel game"
+      "cancelGame": "Cancel game",
+      "nextRound": "Next Round"
     }
   },
   "common": {

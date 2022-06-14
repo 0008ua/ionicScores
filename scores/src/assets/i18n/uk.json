@@ -9,6 +9,9 @@
       "stations": "Використані станції",
       "longestRoute": "Позначити як найдовший",
       "stationsShort": "Станції"
+    },
+    "uno": {
+      "round": "Раунд"
     }
   },
   "modules": {
@@ -28,7 +31,8 @@
       "createGamer": "Створити гравця",
       "addPlayers": "Додати гравців",
       "color": "Колір",
-      "player": "Гравець"
+      "player": "Гравець",
+      "round": "Раунд"
     },
     "user": {
       "signin": "Вхід",
@@ -58,7 +62,8 @@
       "close": "Закрити",
       "delete": "Видалити",
       "finishGame": "Завершити гру",
-      "cancelGame": "Відмінити гру"
+      "cancelGame": "Відмінити гру",
+      "nextRound": "Наступний раунд"
     }
   },
   "common": {

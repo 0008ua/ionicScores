@@ -50,6 +50,8 @@ export interface Round {
   roundMembers: UID[]; // RoundMember
   clientGame?: ClientGame;
   icon?: string;
+  name: string;
+  namePostfix: string;
 }
 
 
@@ -57,12 +59,15 @@ export interface RoundMember {
   _id: UID;
   player: UID; // Player
   scoresLine: number[];
+  namedScoresLine?: NamedScore[];
 }
 
 export interface RoundCfg {
   _id: string;
   icon: string;
+  namePostfix: string;
   initialScoresLine: number[];
+  initialNamedScoresLine?: NamedScore[];
 }
 
 export type PersistStore = {
@@ -76,6 +81,10 @@ export type PersistStore = {
   // } | null;
 };
 
-
+export interface NamedScore {
+  name: string;
+  value: number;
+  picture?: string;
+}
 
 

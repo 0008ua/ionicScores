@@ -1,0 +1,12 @@
+<app-choose-players *ngIf="(activeRoundId$ | async) === 'start' && (rounds$ | async).length === 0; else restRounds">
+</app-choose-players>
+
+<ng-template #restRounds  >
+
+  <!-- <app-round-wrapper *ngFor="let player of (players$ | async)" -->
+  <app-round-wrapper [roundId]="(activeRoundId$ | async)"
+    [playerId]="(activePlayerId$ | async)">
+    <app-round-uno [roundId]="(activeRoundId$ | async)" [playerId]="(activePlayerId$ | async)">
+    </app-round-uno>
+  </app-round-wrapper>
+</ng-template>

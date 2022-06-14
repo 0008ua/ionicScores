@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { from, Observable, of, throwError } from 'rxjs';
 import { GetResult, Storage } from '@capacitor/storage';
 import { catchError, map, tap } from 'rxjs/operators';
-import { IGamer, IUser, Round, RoundCfg, RoundMember, UID } from '../interfaces';
+import { IGamer, IUser, NamedScore, Round, RoundCfg, RoundMember, UID } from '../interfaces';
 import { Store } from '@ngrx/store';
 import { selectAllPlayers } from '../store/reducers/player.reducer';
 import { v4 as uuidv4 } from 'uuid';
@@ -122,24 +122,23 @@ export class SharedService {
     };
 
     let roundMembers = [];
-    console.log('gameType', gameType)
-    console.log('env', environment.games[gameType].rounds)
     const rounds: Round[] = environment.games[gameType].rounds
-      .filter((round: RoundCfg) => round._id !== 'start')
-      .map((round: RoundCfg) => {
-
+      .filter((roundCfg: RoundCfg) => roundCfg._id !== 'start')
+      .map((roundCfg: RoundCfg) => {
         const members = this.players.map((player) => ({
           _id: uuidv4(),
           player: player._id,
-          scoresLine: round.initialScoresLine,
+          scoresLine: roundCfg.initialScoresLine,
+          namedScoresLine: roundCfg.initialNamedScoresLine,
         }));
         roundMembers = [...roundMembers, ...members];
-        // this.store.dispatch(addRoundMembers({ roundMembers: members }));
         return {
-          _id: round._id,
+          _id: roundCfg._id + roundCfg.namePostfix,
           roundMembers: members.map((member) => (member._id)),
           clientGame,
-          icon: round.icon
+          icon: roundCfg.icon,
+          name: roundCfg._id,
+          namePostfix: roundCfg.namePostfix,
         };
       });
     this.store.dispatch(fromAppActions.loadGame({ roundMembers, rounds }));
@@ -150,15 +149,18 @@ export class SharedService {
       _id: uuidv4(),
       player: player._id,
       scoresLine: roundCfg.initialScoresLine,
+      namedScoresLine: roundCfg.initialNamedScoresLine,
     }));
     const roundMembers = [...this.roundMembers, ...members];
     const rounds = [
       ...this.rounds,
       {
-        _id: roundCfg._id + '_' + this.rounds.length,
+        _id: roundCfg._id + (this.rounds.length + 1),
         roundMembers: members.map((member) => (member._id)),
         clientGame: this.rounds[0].clientGame,
-        icon: roundCfg.icon
+        icon: roundCfg.icon,
+        name: roundCfg._id,
+        namePostfix: this.rounds.length + 1 + '',
       }
     ];
     this.store.dispatch(fromAppActions.loadGame({ roundMembers, rounds }));
@@ -227,11 +229,31 @@ export class SharedService {
   }
 
   getMemberByPlayerId(playerId: UID, roundId: string): RoundMember {
+    // console.log('getMemberByPlayerId playerId', playerId)
+    // console.log('getMemberByPlayerId roundId', roundId)
     const round = this.getRoundById(roundId);
+    // console.log(' this.roundMembers', this.roundMembers)
+    // console.log(' round', round)
     return this.roundMembers
       .filter((roundMember) =>
-        roundMember.player === playerId && round.roundMembers.includes(roundMember._id)
+        roundMember.player === playerId && round?.roundMembers.includes(roundMember._id)
       )[0];
+  }
+
+  addToNamedScoresLine(namedScore: NamedScore, playerId: UID, roundId: string) {
+    const roundMember = this.getMemberByPlayerId(playerId, roundId);
+    const changes = {
+      ...roundMember,
+      namedScoresLine: [...roundMember.namedScoresLine, namedScore],
+    };
+    this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+      roundMember:
+      {
+        id: roundMember._id,
+        changes,
+      }
+    }));
+    this.addToScoresLine(namedScore.value, playerId, roundId);
   }
 
   addToScoresLine(score: number, playerId: UID, roundId: string) {
@@ -247,6 +269,29 @@ export class SharedService {
         changes,
       }
     }));
+  }
+
+  removeFromNamedScoresLine(namedScore: NamedScore, playerId: UID, roundId: string) {
+    const roundMember = this.getMemberByPlayerId(playerId, roundId);
+    const namedScoresLine = [...roundMember.namedScoresLine];
+    const index = namedScoresLine.findIndex((ns) => ns.name === namedScore.name);
+    if (index !== -1) {
+      namedScoresLine.splice(index, 1);
+      const changes = {
+        ...roundMember,
+        namedScoresLine,
+      };
+
+      this.store.dispatch(fromRoundMembersActions.updateRoundMember({
+        roundMember:
+        {
+          id: roundMember._id,
+          changes,
+        }
+      }));
+
+      this.removeFromScoresLine(namedScore.value, playerId, roundId);
+    };
   }
 
   removeFromScoresLine(score: number, playerId: UID, roundId: string) {

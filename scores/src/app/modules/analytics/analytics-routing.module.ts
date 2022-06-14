@@ -13,10 +13,7 @@ const routes: Routes = [
         path: 'train',
         loadChildren: () => import('./train/train.module').then(m => m.TrainPageModule)
       },
-      {
-        path: 'cards',
-        loadChildren: () => import('./cards/cards.module').then(m => m.CardsPageModule)
-      },
+
       {
         path: '',
         redirectTo: 'train',
@@ -28,10 +25,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: '',
     pathMatch: 'full'
-  },
-  {
-    path: 'cards',
-    loadChildren: () => import('./cards/cards.module').then( m => m.CardsPageModule)
   },
 ];
 
