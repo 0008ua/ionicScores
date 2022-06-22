@@ -1,8 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { NamedScore } from 'src/app/interfaces';
 import { environment } from 'src/environments/environment';
-import { ROUND_COMPONENT } from '../../../round/round-interfaces';
-import { RoundBaseDirective, RoundScoresLineDirective } from '../../../round/round.directive';
+import { ROUND_COMPONENT } from '../../round-interfaces';
+import { RoundBaseDirective, RoundScoresLineDirective } from '../../round.directive';
 
 @Component({
   selector: 'app-round-uno',

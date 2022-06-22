@@ -1,8 +1,8 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { RoundMember, UID } from 'src/app/interfaces';
 import { SharedService } from 'src/app/services/shared.service';
-import { ROUND_COMPONENT } from '../../../round/round-interfaces';
-import { RoundBaseDirective } from '../../../round/round.directive';
+import { ROUND_COMPONENT } from '../../round-interfaces';
+import { RoundBaseDirective } from '../../round.directive';
 
 @Component({
   selector: 'app-round-stations',

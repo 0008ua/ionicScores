@@ -229,11 +229,7 @@ export class SharedService {
   }
 
   getMemberByPlayerId(playerId: UID, roundId: string): RoundMember {
-    // console.log('getMemberByPlayerId playerId', playerId)
-    // console.log('getMemberByPlayerId roundId', roundId)
     const round = this.getRoundById(roundId);
-    // console.log(' this.roundMembers', this.roundMembers)
-    // console.log(' round', round)
     return this.roundMembers
       .filter((roundMember) =>
         roundMember.player === playerId && round?.roundMembers.includes(roundMember._id)

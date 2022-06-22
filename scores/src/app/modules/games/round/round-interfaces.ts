@@ -23,10 +23,30 @@ export interface RoundBaseWrapper {
   getMemberByPlayerId: (playerId: string) => RoundMember;
 }
 
-
 export interface RoundScoresLine {
   addToScoresLine: (score: number) => void;
   removeFromScoresLine: (score: number) => void;
   addToNamedScoresLine: (namedScore: NamedScore) => void;
   removeFromNamedScoresLine: (namedScore: NamedScore) => void;
+}
+
+export interface RoundLongest {
+  longestRouteScoreEnv: number;
+  onMarkLongestHandler: (e: any) => void;
+}
+
+export type Inverse = 1 | -1;
+
+export interface RoundRoutes {
+  routesScoresEnv: NamedScore[];
+  inverse: Inverse;
+  inverseScore: (e: any) => void;
+}
+
+export interface RoundCars {
+  carsScoresEnv: {
+    name: number;
+    value: number;
+  }[];
+  calcQtyOfArrItems: (e: any) => void;
 }

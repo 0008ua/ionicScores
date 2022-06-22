@@ -26,7 +26,8 @@ export class GamePage implements OnInit {
   unoRound: RoundCfg;
   gameType: string;
   gameType$: Observable<GameType>;
-
+  environment = environment;
+  showToolbarMenu = false;
 
   activeRound: string;
   activeRoundId$ = new ReplaySubject<string>(1);
@@ -62,9 +63,13 @@ export class GamePage implements OnInit {
           return;
         }
         this.gameType = gameType;
+
+        this.showToolbarMenu = environment.games[gameType].showToolbarMenu;
+
         this.roundsCfg = environment.games[gameType].rounds;
         if (gameType === 'uno') {
           this.unoRound = this.roundsCfg[1];
+
         }
         this.rounds = rounds;
         if (!this.roundsCfg) {
@@ -81,14 +86,6 @@ export class GamePage implements OnInit {
           } else {
             this.activeRoundId$.next(this.roundsCfg[1]._id);
           }
-
-          // this.activeRoundId$.next({
-          //   ...this.roundsCfg[1],
-          //   _id: this.roundsCfg[1]._id +
-          //     (rounds.length === 1
-          //       ? this.roundsCfg[1].namePostfix
-          //       : rounds.length),
-          // });
         } else {
           // game not started and active menu !'start'
           this.activeRoundId$.next(this.roundsCfg[0]._id);
@@ -97,51 +94,14 @@ export class GamePage implements OnInit {
 
     this.roundMembers$ = this.store.select(fromRoundMembersReducer.selectAllRoundMembers);
 
-    // this.activeRoundId$
-    // .subscribe((activeRound) => this.activeRound = activeRound);
-
-    // this.rounds$.subscribe((rounds) => {
-    //   this.rounds = rounds;
-    //   if (!this.roundsCfg) {
-    //     return;
-    //   }
-    //   if (rounds.length) {
-    //     // game started and active menu 'start'
-    //     if (this.gameType === 'uno') {
-    //       this.activeRoundId$.next(this.roundsCfg[1]._id +
-    //         (rounds.length === 1
-    //           ? this.roundsCfg[1].namePostfix
-    //           : rounds.length)
-    //       );
-    //     } else {
-    //       this.activeRoundId$.next(this.roundsCfg[1]._id);
-    //     }
-
-    //     // this.activeRoundId$.next({
-    //     //   ...this.roundsCfg[1],
-    //     //   _id: this.roundsCfg[1]._id +
-    //     //     (rounds.length === 1
-    //     //       ? this.roundsCfg[1].namePostfix
-    //     //       : rounds.length),
-    //     // });
-    //   } else {
-    //     // game not started and active menu !'start'
-    //     this.activeRoundId$.next(this.roundsCfg[0]._id);
-    //   }
-    // });
-
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
     this.players$.subscribe(
-      // take(1),
       (players) => {
-        // console.log('players-', players)
         this.activePlayerId$.next(players[0]._id);
       });
 
     this.players$.pipe(
       switchMap((players) => {
-        // console.log('players', players)
-
         this.players = players;
         return this.roundMembers$;
       }))
@@ -156,9 +116,8 @@ export class GamePage implements OnInit {
 
       });
 
+    this.activePlayerId$.subscribe((activePlayerId) => this.activePlayerId = activePlayerId);
 
-
-    this.activePlayerId$.subscribe((activePlayerId) => this.activePlayerId = activePlayerId)
     this.route.params.subscribe(params => {
       // this.gameType = params.id;
     });

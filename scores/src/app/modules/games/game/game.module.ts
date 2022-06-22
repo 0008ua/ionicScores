@@ -7,9 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { GamePageRoutingModule } from './game-routing.module';
 
 import { GamePage } from './game.page';
-import { UnoRoundsModule } from './uno-rounds/uno-rounds.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { TrainRoundsModule } from './train-rounds/train-rounds.module';
+import { RoundModule } from '../round/round.module';
+import { GamersModule } from '../gamers/gamers.module';
 
 @NgModule({
   imports: [
@@ -20,9 +20,11 @@ import { TrainRoundsModule } from './train-rounds/train-rounds.module';
     TranslateModule.forChild({
       extend: true,
     }),
-    UnoRoundsModule,
-    TrainRoundsModule,
+    RoundModule,
+    GamersModule,
   ],
-  declarations: [GamePage]
+  declarations: [
+    GamePage,
+  ]
 })
 export class GamePageModule { }

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { UnoRoundsComponent } from './uno-rounds.component';
+import { RoundComponent } from './round.component';
 
-describe('UnoRoundsComponent', () => {
-  let component: UnoRoundsComponent;
-  let fixture: ComponentFixture<UnoRoundsComponent>;
+describe('RoundComponent', () => {
+  let component: RoundComponent;
+  let fixture: ComponentFixture<RoundComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UnoRoundsComponent ],
+      declarations: [ RoundComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UnoRoundsComponent);
+    fixture = TestBed.createComponent(RoundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

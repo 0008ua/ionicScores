@@ -7,6 +7,7 @@ export const environment = {
   games: {
     uno: {
       name: 'Uno',
+      showToolbarMenu: false,
       maxPlayersQty: 10,
       mштPlayersQty: 2,
       playersColors: ['black'],
@@ -46,6 +47,7 @@ export const environment = {
     },
     cards: {
       name: 'Cards',
+      showToolbarMenu: true,
       maxPlayersQty: 4,
       minPlayersQty: 2,
       playersColors: ['black'],
@@ -67,7 +69,8 @@ export const environment = {
       ]
     },
     train: {
-      name: 'Ticket to the ride',
+      name: 'Ticket to ride',
+      showToolbarMenu: true,
       maxPlayersQty: 5,
       minPlayersQty: 2,
       playersColors: ['red', 'green', 'blue', 'black', 'yellow'],

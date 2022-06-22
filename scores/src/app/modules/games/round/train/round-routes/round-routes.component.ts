@@ -1,9 +1,9 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { UID } from 'src/app/interfaces';
 import { environment } from 'src/environments/environment';
-import { Inverse, RoundRoutes } from '../train-interfaces';
-import { RoundScoresLineDirective } from '../../../round/round.directive';
-import { ROUND_COMPONENT } from '../../../round/round-interfaces';
+import { Inverse, RoundRoutes } from '../../round-interfaces';
+import { RoundScoresLineDirective } from '../../round.directive';
+import { ROUND_COMPONENT } from '../../round-interfaces';
 
 @Component({
   selector: 'app-round-routes',
@@ -22,6 +22,7 @@ export class RoundRoutesComponent
 
   routesScoresEnv = environment.games.train.routesScores;
   inverse: Inverse = 1;
+  numberFn = Number;
 
   constructor(
     injector: Injector,
