@@ -36,6 +36,9 @@ export class PersistStoreEffects {
         this.store.select(fromPlayerReducer.selectAllPlayers),
       ]),
       map(([_, gameType, players]) => {
+        console.log('_', _);
+        console.log('gameType', gameType);
+        console.log('players', players);
         if (!gameType) {
           return fromAppActions.nop();
         }

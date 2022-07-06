@@ -45,12 +45,17 @@ export const environment = {
         },
       ]
     },
-    cards: {
-      name: 'Cards',
-      showToolbarMenu: true,
+    thousand: {
+      name: 'Thousand - 1000',
+      showToolbarMenu: false,
       maxPlayersQty: 4,
       minPlayersQty: 2,
-      playersColors: ['black'],
+      playersColors: ['red', 'green', 'blue', 'black'],
+      roundsScores: [
+        { name: 'Score', value: 0, },
+        { name: 'S', value: -100, },
+        { name: 'R', value: 0, },
+      ],
       rounds: [
         {
           _id: 'start',

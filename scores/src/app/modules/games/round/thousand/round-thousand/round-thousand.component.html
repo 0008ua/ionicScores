@@ -1,0 +1,37 @@
+<ion-card-content>
+  <!-- <ion-row class="round round_tools">
+    <ion-col *ngFor="let roundsScore of roundsScoresEnv">
+      <ion-chip (click)="addToNamedScoresLine({value: roundsScore.value, name: roundsScore.name })">
+        <ion-label>{{roundsScore.value }}</ion-label>
+      </ion-chip>
+    </ion-col>
+  </ion-row> -->
+  <ng-container *ngFor="let round of (rounds$ | async)" class="round round_result">
+    <ion-row>
+      <ion-col *ngFor="let roundMemberId of round.roundMembers; let i=index">
+        <ion-item lines="none"
+          *ngFor="let score of (sharedService.getRoundMemberById$(roundMemberId) | async).namedScoresLine">
+          {{score.name}}
+        </ion-item>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col *ngFor="let roundMemberId of round.roundMembers; let i=index">
+        <ion-item>
+          <ion-input type="number" placeholder="0" [(ngModel)]="scores[roundMemberId]"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="1">
+        <ion-chip (click)="addAllScores()">
+          <ion-label>add</ion-label>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+
+
+
+
+</ion-card-content>

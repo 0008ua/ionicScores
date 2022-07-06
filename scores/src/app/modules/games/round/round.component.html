@@ -19,4 +19,10 @@
     <app-round-uno [roundId]="(activeRoundId$ | async)" [playerId]="(activePlayerId$ | async)">
     </app-round-uno>
   </app-round-wrapper>
+  <!-- Thousand -->
+  <app-round-t-wrapper *ngIf="(gameType$ | async) === 'thousand'" [roundId]="(activeRoundId$ | async)"
+    [playerId]="(activePlayerId$ | async)">
+    <app-round-thousand *ngFor="let round of (rounds$ | async)" [roundId]="round._id"
+      [playerId]="(activePlayerId$ | async)"></app-round-thousand>
+  </app-round-t-wrapper>
 </ng-template>

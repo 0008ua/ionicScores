@@ -23,8 +23,6 @@ export class GamesPage implements OnInit {
     private store: Store,
     public translate: TranslateService,
     private menuController: MenuController,
-    private route: ActivatedRoute,
-    // private gamerService: GamerService,
   ) { }
 
   ngOnInit() {

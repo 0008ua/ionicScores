@@ -9,7 +9,6 @@ import { reducers, metaReducers } from './reducers';
 import { GameDataService } from './game-data.service';
 import { GamerDataService } from './gamer-data.service';
 import { entityMetadata } from './entity-metadata';
-import { StoreToastService } from './store-toast.service';
 import { environment } from 'src/environments/environment';
 import { AuthEffects } from './effects/auth.effects';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,6 +25,7 @@ import { RoundMemberEffects } from './effects/round-member.effects';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { PersistStoreEffects } from './effects/persist-store.effects';
 import { PlayerEffects } from './effects/player.effects';
+import { StoreErrorService } from './store-error.service';
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.host + 'api/store/',
@@ -84,7 +84,7 @@ export class AppStoreModule {
     entityDataService: EntityDataService,
     gameDataService: GameDataService,
     gamerDataService: GamerDataService,
-    storeToastService: StoreToastService,
+    storeErrorService: StoreErrorService,
     // storeAppService: StoreAppService,
   ) {
     entityDataService.registerService('Game', gameDataService);

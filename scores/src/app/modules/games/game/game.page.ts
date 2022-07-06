@@ -23,7 +23,7 @@ import { GameService } from 'src/app/store/game-data.service';
 export class GamePage implements OnInit {
   roundsCfg: RoundCfg[];
   // roundsCfg: RoundCfg[] = environment.games.uno.rounds;
-  unoRound: RoundCfg;
+  nextRound: RoundCfg;
   gameType: string;
   gameType$: Observable<GameType>;
   environment = environment;
@@ -59,6 +59,8 @@ export class GamePage implements OnInit {
 
     combineLatest([this.gameType$, this.rounds$])
       .subscribe(([gameType, rounds]) => {
+        console.log('gameType', gameType)
+        console.log('rounds', rounds)
         if (!gameType) {
           return;
         }
@@ -68,8 +70,7 @@ export class GamePage implements OnInit {
 
         this.roundsCfg = environment.games[gameType].rounds;
         if (gameType === 'uno') {
-          this.unoRound = this.roundsCfg[1];
-
+          this.nextRound = this.roundsCfg[1];
         }
         this.rounds = rounds;
         if (!this.roundsCfg) {
@@ -88,6 +89,7 @@ export class GamePage implements OnInit {
           }
         } else {
           // game not started and active menu !'start'
+          console.log('game not started')
           this.activeRoundId$.next(this.roundsCfg[0]._id);
         }
       });
@@ -97,7 +99,9 @@ export class GamePage implements OnInit {
     this.players$ = this.store.select(fromPlayersReducer.selectAllPlayers);
     this.players$.subscribe(
       (players) => {
-        this.activePlayerId$.next(players[0]._id);
+        if (players.length) {
+          this.activePlayerId$.next(players[0]._id);
+        }
       });
 
     this.players$.pipe(
@@ -173,7 +177,7 @@ export class GamePage implements OnInit {
   }
 
   openNextRound() {
-    this.sharedService.addRounds(this.unoRound);
+    this.sharedService.addRounds(this.nextRound);
   }
 
   selectPlayer(playerId: UID) {

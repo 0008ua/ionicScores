@@ -35,9 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
-    this.store.dispatch(storeUserFromToken());
+    // this.store.dispatch(storeUserFromToken());
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         // console.log('NavigationStart', event);

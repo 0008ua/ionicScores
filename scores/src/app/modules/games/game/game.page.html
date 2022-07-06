@@ -55,11 +55,11 @@
         </ion-card>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col *ngIf="(activeRoundId$ | async) && (activePlayerId$ | async)" size-lg="6" size-md="8" size-sm="10"
+    <ion-row *ngIf="(activeRoundId$ | async) === 'start' || ((activeRoundId$ | async) && (activePlayerId$ | async))">
+      <ion-col size-lg="6" size-md="8" size-sm="10"
         offset-lg="3" offset-md="2" offset-sm="1">
-        <app-round [activeRoundId$]="activeRoundId$" [activePlayerId$]="activePlayerId$" [gameType$]="gameType$"></app-round>
+        <app-round [activeRoundId$]="activeRoundId$" [activePlayerId$]="activePlayerId$" [gameType$]="gameType$" [players$]="players$"></app-round>
       </ion-col>
-    </ion-row>
+     </ion-row>
   </ion-grid>
 </ion-content>

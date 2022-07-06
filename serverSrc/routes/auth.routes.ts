@@ -27,6 +27,15 @@ router.get('/protected',
 
 // name with username and password
 router.post('/signin',
+  (req: Request, res: Response, next: NextFunction) => {
+    // console.log('granted');
+    console.log('req.body', req.body)
+
+    return next();
+    // return res.status(200).json('grant');
+    // return res.status(200).json(body);
+    // return next(new ClientError());
+  },
   passport.authenticate('local', {session: false}),
   authController.createJwtAndResponse,
 );
@@ -34,6 +43,16 @@ router.post('/signin',
 // bad token or new guest user without token
 // or new user is registring
 router.post('/signup',
+  (req: Request, res: Response, next: NextFunction) => {
+    // console.log('granted');
+    console.log('req.body', req.body)
+
+
+    return next();
+    // return res.status(200).json('grant');
+    // return res.status(200).json(body);
+    // return next(new ClientError());
+  },
   authController.signup,
   passport.authenticate('localWithoutPassword', { session: false }),
   authController.createJwtAndResponse,

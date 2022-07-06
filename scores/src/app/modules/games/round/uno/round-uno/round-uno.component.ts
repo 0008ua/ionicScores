@@ -27,18 +27,4 @@ export class RoundUnoComponent
   }
 
   ngOnInit() { }
-
-  // addToNamedScoresLine(namedScore: NamedScore) {
-  //   this.namedScoreLine.push(namedScore);
-  //   this.addToScoresLine(namedScore.score);
-  // }
-
-  // removeFromNamedScoresLine(namedScore: NamedScore) {
-  //   const index = this.namedScoreLine.findIndex((ns) => ns.name === namedScore.name);
-  //   if (index !== -1) {
-  //     this.namedScoreLine.splice(index, 1)
-  //   };
-  //   console.log('this.namedScoreLine', this.namedScoreLine);
-  //   this.removeFromScoresLine(namedScore.score);
-  // }
 }

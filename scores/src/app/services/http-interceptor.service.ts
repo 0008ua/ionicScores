@@ -30,6 +30,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.sharedService.getToken().pipe(
+
       switchMap((token) => {
         if (token) {
           req = req.clone({

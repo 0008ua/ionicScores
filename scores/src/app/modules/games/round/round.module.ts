@@ -11,16 +11,20 @@ import { RoundStationsComponent } from './train/round-stations/round-stations.co
 import { RoundCarsComponent } from './train/round-cars/round-cars.component';
 import { RoundUnoComponent } from './uno/round-uno/round-uno.component';
 import { GamersModule } from '../gamers/gamers.module';
+import { RoundTWrapperComponent } from './round-t-wrapper/round-t-wrapper.component';
+import { RoundThousandComponent } from './thousand/round-thousand/round-thousand.component';
 
 @NgModule({
   declarations: [
     RoundWrapperComponent,
+    RoundTWrapperComponent,
     RoundComponent,
     RoundRoutesComponent,
     RoundLengthComponent,
     RoundStationsComponent,
     RoundCarsComponent,
-    RoundUnoComponent
+    RoundUnoComponent,
+    RoundThousandComponent,
   ],
   imports: [
     CommonModule,

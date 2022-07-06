@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import winston from '../config/winston';
+import mongoose from 'mongoose';
+import { MongoError, MongoServerError } from 'mongodb';
 const log = winston(module);
 
 export class CustomError extends Error {
@@ -26,11 +28,16 @@ export class ServerError extends CustomError {
   }
 }
 
-export const errorHandler = (err: Error | ClientError | ServerError, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (err: Error | ClientError | ServerError | MongoError, req: Request, res: Response, next: NextFunction) => {
   // defined errors return to client
   // console.log('error Handler', err);
   log.error(err);
-  console.log('error', err);
+
+  if (err.name === 'MongoServerError' && (err as MongoError).code === 11000) {
+    const dupError = new ClientError('Already exists', 422);
+    return res.status(dupError.status).json(dupError);
+  }
+
   if (err instanceof ClientError || err instanceof ServerError) {
     return res.status(err.status).json(err);
   }

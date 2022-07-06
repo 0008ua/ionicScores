@@ -1,5 +1,7 @@
 import { InjectionToken } from '@angular/core';
-import { NamedScore, Round, RoundMember, UID } from 'src/app/interfaces';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { IGamer, NamedScore, Round, RoundMember, UID } from 'src/app/interfaces';
 import { SharedService } from 'src/app/services/shared.service';
 
 export const ROUND_COMPONENT = new InjectionToken<RoundBase>('roundComponent');
@@ -23,11 +25,16 @@ export interface RoundBaseWrapper {
   getMemberByPlayerId: (playerId: string) => RoundMember;
 }
 
-export interface RoundScoresLine {
+export interface RoundScoresLine extends RoundBase {
   addToScoresLine: (score: number) => void;
   removeFromScoresLine: (score: number) => void;
-  addToNamedScoresLine: (namedScore: NamedScore) => void;
+  addToNamedScoresLine: (namedScore: NamedScore, playerId?: UID) => void;
   removeFromNamedScoresLine: (namedScore: NamedScore) => void;
+}
+
+export interface RoundTBase extends RoundScoresLine, RoundBase {
+  store: Store;
+  rounds$: Observable<Round[]>;
 }
 
 export interface RoundLongest {

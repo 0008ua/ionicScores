@@ -41,7 +41,6 @@ export class HydrationEffects implements OnInitEffects {
       switchMap(() => this.store),
       distinctUntilChanged(),
       switchMap((store: State) => {
-        
         return this.sharedService.setToStorage('appState', JSON.stringify({
           players: store.players,
           rounds: store.rounds,

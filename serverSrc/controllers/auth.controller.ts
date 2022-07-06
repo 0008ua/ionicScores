@@ -29,9 +29,9 @@ const signup = (req: Request, res: Response, next: NextFunction) => {
 const createJwtAndResponse = (req: Request, res: Response, next: NextFunction) => {
   // console.log('jwt', config.get('JWT_SECRET'))
   const { name, role, _id } = req.user as IUser;
-  // console.log('req.user', req.user)
   const user = { name, role, _id };
   const token = createJwtHelper('JWT ', user, config.get('JWT_SECRET'));
+
   res.status(200).json(token);
 };
 

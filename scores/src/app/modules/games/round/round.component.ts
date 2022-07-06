@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { GameType, Round, UID } from 'src/app/interfaces';
+import { GameType, IGamer, Round, UID } from 'src/app/interfaces';
 import { selectGameType } from 'src/app/store/reducers/app.reducer';
 import { selectAllRounds } from 'src/app/store/reducers/round.reducer';
 
@@ -14,6 +14,7 @@ export class RoundComponent implements OnInit {
   @Input() activeRoundId$: Observable<string>;
   @Input() activePlayerId$: Observable<UID>;
   @Input() gameType$: Observable<GameType>;
+  @Input() players$: Observable<IGamer[]>;
 
   rounds$: Observable<Round[]>;
   // gameType$: Observable<GameType>;

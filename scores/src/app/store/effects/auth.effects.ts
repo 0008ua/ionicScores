@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Observable, of, throwError } from 'rxjs';
+import { Actions, concatLatestFrom, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
+import { noop, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, catchError, tap, mergeMap, filter, withLatestFrom } from 'rxjs/operators';
 
 import * as fromAuthActions from '../actions/auth.actions';
@@ -15,9 +15,11 @@ import { GamerService } from '../gamer-data.service';
 import { EntityActionFactory, EntityOp, MergeStrategy } from '@ngrx/data';
 import { SharedService } from 'src/app/services/shared.service';
 import { State } from '../reducers';
+import { selectUser } from '../reducers/auth.reducer';
+import { nop } from '../actions/app.actions';
 
 @Injectable()
-export class AuthEffects {
+export class AuthEffects implements OnInitEffects {
     setLoading = createEffect(() => {
         return this.actions$.pipe(
             ofType(fromAuthActions.signin, fromAuthActions.signup, fromAuthActions.logout),
@@ -89,7 +91,6 @@ export class AuthEffects {
             ofType(fromAuthActions.storeToken),
             map((action) => action.token),
             switchMap((token) => this.sharedService.setToken(token)),
-            // map(() => this.sharedService.removeFromStorage('appState')),
             map(() => fromAuthActions.storeUserFromToken()),
             catchError((error) => of(fromAuthActions.error({ error: error.error.message || 'error' }))),
         );
@@ -102,7 +103,9 @@ export class AuthEffects {
                 switchMap(() => this.sharedService.decodeToken().pipe(
                     // catch decodeToken error and throw up
                     // this part of stream finishes
-                    catchError((error) => throwError(error)),
+                    catchError((error) => {
+                        return of(fromAuthActions.signup({}));
+                    }),
                     // catch without throw keep running stream
                     // if no error store user
                     map((user) => fromAuthActions.storeUserFromTokenSuccess({ user })),
@@ -110,9 +113,20 @@ export class AuthEffects {
                 // get decode token error
                 // stream stay alive
                 // store error
-                catchError((error) => of(fromAuthActions.error({ error: error.error.message || 'error' })))
+                catchError((error) => of(fromAuthActions.error({ error: error.message || error.error.message || 'error' })))
             ))
         );
+    });
+
+    redirectAfterSignin = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(fromAuthActions.storeUserFromTokenSuccess),
+            map((payload) => {
+                if (payload.user?.role === 'member') {
+                    return fromAuthActions.redirection({ redirectionUrl: '/' });
+                }
+                return nop();
+            }));
     });
 
 
@@ -162,4 +176,9 @@ export class AuthEffects {
         private sharedService: SharedService,
         private entityActionFactory: EntityActionFactory,
     ) { }
+
+
+    ngrxOnInitEffects(): Action {
+        return fromAuthActions.storeUserFromToken();
+    }
 }

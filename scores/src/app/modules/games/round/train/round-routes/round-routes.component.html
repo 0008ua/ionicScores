@@ -15,7 +15,7 @@
   </ion-row>
   <ion-row class="round round_result">
     <ion-col *ngFor="let routeScore of getMemberByPlayerId().namedScoresLine" size="3">
-      <ion-chip outline [color]="routeScore.value > 19 ? 'secondary' : 'warning'"
+      <ion-chip outline [color]="routeScore.value > 19 ? 'secondary' : routeScore.value < 0 ? 'danger' : 'warning'"
         (click)="removeFromNamedScoresLine({value: routeScore.value, name: routeScore.name})">
         <ion-label>{{routeScore.value}}</ion-label>
         <ion-icon name="close-circle"></ion-icon>
