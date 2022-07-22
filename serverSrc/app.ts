@@ -6,7 +6,7 @@ import express, { Request, Response, Application, NextFunction } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import { ClientError, errorHandler, ServerError } from './errors';
-import { router, dataRouter, authRouter, storeRouter, analyticsRouter } from './routes';
+import { router, dataRouter, authRouter, storeRouter, analyticsRouter, appRouter } from './routes';
 import passport from 'passport';
 
 import mongooseConnect from './config/mongoose';
@@ -40,6 +40,7 @@ app.use('/api/data', dataRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/store', storeRouter);
 app.use('/api/analytics', analyticsRouter);
+app.use('/api/app', appRouter);
 app.use('/api', (req: Request, res: Response, next: NextFunction) => next(new ClientError('Wrong url', 404)));
 // app.use('/api', (req: Request, res: Response, next: NextFunction) => next(new ClientError({
 //   message: 'Wrong api',

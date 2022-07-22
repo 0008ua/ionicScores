@@ -30,8 +30,8 @@ export class ServerError extends CustomError {
 
 export const errorHandler = (err: Error | ClientError | ServerError | MongoError, req: Request, res: Response, next: NextFunction) => {
   // defined errors return to client
-  // console.log('error Handler', err);
-  log.error(err);
+  console.log('error Handler', err);
+  // log.error(err);
 
   if (err.name === 'MongoServerError' && (err as MongoError).code === 11000) {
     const dupError = new ClientError('Already exists', 422);

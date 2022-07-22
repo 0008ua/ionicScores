@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
-
-import { filter } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { EntityAction, ofEntityOp, OP_ERROR, OP_SUCCESS, EntityCacheAction } from '@ngrx/data';
 import * as fromAnalyticsActions from './actions/analytics.actions';
 import * as fromAuthActions from './actions/auth.actions';
 import { Action, Store } from '@ngrx/store';
 import { ToastService } from '../services/toast.service';
+import { SharedService } from '../services/shared.service';
 
 /** Report ngrx-data success/error actions as toast messages **/
 @Injectable({ providedIn: 'root' })
@@ -15,6 +16,7 @@ export class StoreErrorService {
     private store: Store,
     private actions$: Actions,
     public toastService: ToastService,
+    private sharedService: SharedService,
   ) {
     actions$
       .pipe(
@@ -24,10 +26,11 @@ export class StoreErrorService {
         ),
       )
       .subscribe((action) => {
+        console.log('ofEntityOp error', action)
         this.store.dispatch(fromAuthActions.error({ error: action.payload.data.error.message }))
-        // console.log('entity toast op error', action.payload.data.error.message);
-        // this.presentToast(`OP_ERROR - ${action.payload.data.error.message}`);
-      });
+      }
+
+      );
 
     actions$
       .pipe(ofType(EntityCacheAction.SAVE_ENTITIES_ERROR))
@@ -41,23 +44,32 @@ export class StoreErrorService {
         ofType(
           fromAnalyticsActions.error,
           fromAuthActions.error
-        ))
-      .subscribe((action) => {
-        console.log(action);
-        if (!action.error) {
-          return;
-        }
-        switch (action.type) {
-          case fromAnalyticsActions.AnalyticsActionTypes.errorType:
-            this.toastService.presentToast(`${action.error}`, fromAnalyticsActions.error);
-            console.log('entity toast error AnalyticsActionTypes', action);
-            break;
-          case fromAuthActions.AuthActionTypes.errorType:
-            this.toastService.presentToast(`${action.error}`, fromAuthActions.error);
-            console.log('entity toast error AuthActionTypes', action);
-            break;
-          default:
-        }
-      });
+        ),
+        filter((action) => action.error !== null),
+        switchMap((action) => {
+          console.log('error store', action)
+
+          switch (action.type) {
+            case fromAnalyticsActions.AnalyticsActionTypes.errorType:
+              this.toastService.presentToast(`${action.error}`, fromAnalyticsActions.error);
+              console.log('entity toast error AnalyticsActionTypes', action);
+              break;
+            case fromAuthActions.AuthActionTypes.errorType:
+              this.toastService.presentToast(`${action.error}`, fromAuthActions.error);
+              console.log('entity toast error AuthActionTypes', action);
+              break;
+            default:
+          }
+          return this.sharedService.logErrorToDB(action.error);
+        }))
+      .subscribe((result) => {
+        console.log('Error successfuly logged');
+      }, (error) => {
+        console.log('Fail to log error', error);
+        this.store.dispatch(fromAuthActions.error({ error: 'Fail to log error' }));
+      }
+      );
+
+
   }
 }

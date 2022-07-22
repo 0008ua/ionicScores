@@ -10,12 +10,14 @@ export interface State {
   loading: boolean;
   gameType: GameType | null;
   redirectionUrl: string | null;
+  error: string | null;
 }
 
 export const initialState: State = {
   loading: false,
   gameType: null, //Object.keys(environment.games)[0] as GameType,
   redirectionUrl: null,
+  error: null,
 };
 
 export const reducer = createReducer(

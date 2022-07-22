@@ -5,11 +5,11 @@ import dataRouter from './data.routes';
 import authRouter from './auth.routes';
 import storeRouter from './store.routes';
 import analyticsRouter from './analytics.routes';
+import appRouter from './app.routes';
 
 const router = express.Router();
 router.use('/', express.static(path.join(__dirname, '..', '..', 'public'), { redirect: false }));
 router.use('*', (req: Request, res: Response) => res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'index.html')));
-
 
 export {
   router,
@@ -17,4 +17,5 @@ export {
   authRouter,
   storeRouter,
   analyticsRouter,
+  appRouter,
 };

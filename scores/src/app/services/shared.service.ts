@@ -343,4 +343,20 @@ export class SharedService {
       }
     }));
   }
+
+
+  logErrorToDB(message: string): Observable<string> {
+    console.log('logErrorToDB', message);
+    // return of(error);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http.post<string>(
+      this.host + '/api/app/log-error-to-db',
+      {message},
+      httpOptions,
+    );
+  }
 }

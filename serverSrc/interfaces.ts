@@ -1,5 +1,13 @@
 import { Model, Schema, model, Document } from 'mongoose';
 
+export interface IErrorLog {
+  _id?: string;
+  owner: string;
+  message: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface IUser {
   _id?: string;
   name: string;
@@ -59,4 +67,8 @@ export interface IGamerModel extends Model<IGamer> {
 
 export interface IGameModel extends Model<IGame> {
   createGame(game: IGame): Promise<IGame>;
+}
+
+export interface IErrorLogModel extends Model<IErrorLog> {
+  createErrorLog(error: IErrorLog): Promise<IErrorLog>;
 }
