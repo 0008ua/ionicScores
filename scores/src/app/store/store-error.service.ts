@@ -47,8 +47,6 @@ export class StoreErrorService {
         ),
         filter((action) => action.error !== null),
         switchMap((action) => {
-          console.log('error store', action)
-
           switch (action.type) {
             case fromAnalyticsActions.AnalyticsActionTypes.errorType:
               this.toastService.presentToast(`${action.error}`, fromAnalyticsActions.error);
@@ -63,10 +61,9 @@ export class StoreErrorService {
           return this.sharedService.logErrorToDB(action.error);
         }))
       .subscribe((result) => {
-        console.log('Error successfuly logged');
+        console.log('Error successefuly logged to db');
       }, (error) => {
         console.log('Fail to log error', error);
-        this.store.dispatch(fromAuthActions.error({ error: 'Fail to log error' }));
       }
       );
 

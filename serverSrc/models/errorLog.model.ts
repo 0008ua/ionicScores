@@ -7,7 +7,6 @@ const ErrorLogSchema = new Schema<IErrorLog, IErrorLogModel>({
   message: {
     type: String,
     required: true,
-    unique: true,
     default: 'Unknown Error',
   },
   owner: {
