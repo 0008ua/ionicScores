@@ -3,9 +3,10 @@
     <ion-card-subtitle>
       <span class="round-subtitle">
         <ion-icon class="round-subtitle__icon" color="primary" [name]=getRoundById()?.icon></ion-icon>
-        <span class="ion-text-capitalize round-subtitle__text">
+        <span *ngIf="(gameType$ | async) !== 'rummy'" class="ion-text-capitalize round-subtitle__text">
           {{'games.' + (gameType$ | async) + '.' + getRoundById()?.name | translate}} {{getRoundById()?.namePostfix}}
         </span>
+
         <span class="round-subtitle__blank"></span>
         <span>{{calcScores()}}</span>
       </span>

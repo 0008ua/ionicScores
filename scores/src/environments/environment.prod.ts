@@ -5,11 +5,50 @@ export const environment = {
   // host: 'https://10.0.2.2:8084/',
   production: true,
   games: {
+    rummy: {
+      name: 'Rummy',
+      showToolbarMenu: false,
+      maxPlayersQty: 4,
+      minPlayersQty: 2,
+      playersColors: ['black'],
+      namedScores: [
+        { name: '1', value: -1, picture: './assets/games/uno/1.svg' },
+        { name: '2', value: -2, picture: './assets/games/uno/2.svg' },
+        { name: '3', value: -3, picture: './assets/games/uno/3.svg' },
+        { name: '4', value: -4, picture: './assets/games/uno/4.svg' },
+        { name: '5', value: -5, picture: './assets/games/uno/5.svg' },
+        { name: '6', value: -6, picture: './assets/games/uno/6.svg' },
+        { name: '7', value: -7, picture: './assets/games/uno/7.svg' },
+        { name: '8', value: -8, picture: './assets/games/uno/8.svg' },
+        { name: '9', value: -9, picture: './assets/games/uno/9.svg' },
+        { name: '10', value: -10, picture: './assets/games/uno/9.svg' },
+        { name: '11', value: -11, picture: './assets/games/uno/9.svg' },
+        { name: '12', value: -12, picture: './assets/games/uno/9.svg' },
+        { name: '13', value: -13, picture: './assets/games/uno/9.svg' },
+        { name: 'Joker', value: 30, picture: './assets/games/uno/reverse.svg' },
+      ],
+      rounds: [
+        {
+          _id: 'start',
+          icon: 'log-out-outline',
+          namePostfix: '',
+          initialScoresLine: [],
+          initialNamedScoresLine: [],
+        },
+        {
+          _id: 'round',
+          icon: 'copy-outline',
+          namePostfix: '',
+          initialScoresLine: [],
+          initialNamedScoresLine: [],
+        },
+      ]
+    },
     uno: {
       name: 'Uno',
       showToolbarMenu: false,
       maxPlayersQty: 10,
-      mштPlayersQty: 2,
+      minPlayersQty: 2,
       playersColors: ['black'],
       namedScores: [
         { name: '0', value: 0, picture: './assets/games/uno/0.svg' },
@@ -153,3 +192,4 @@ export const environment = {
     }
   }
 };
+

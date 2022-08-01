@@ -29,6 +29,7 @@ export class GamePage implements OnInit {
   environment = environment;
   showToolbarMenu = false;
 
+
   activeRound: string;
   activeRoundId$ = new ReplaySubject<string>(1);
   // activeRoundId$ = new BehaviorSubject<string>(this.roundsCfg[0]._id);
@@ -59,8 +60,8 @@ export class GamePage implements OnInit {
 
     combineLatest([this.gameType$, this.rounds$])
       .subscribe(([gameType, rounds]) => {
-        console.log('gameType', gameType)
-        console.log('rounds', rounds)
+        console.log('gameType', gameType);
+        console.log('rounds', rounds);
         if (!gameType) {
           return;
         }
@@ -89,7 +90,7 @@ export class GamePage implements OnInit {
           }
         } else {
           // game not started and active menu !'start'
-          console.log('game not started')
+          console.log('game not started');
           this.activeRoundId$.next(this.roundsCfg[0]._id);
         }
       });
@@ -104,6 +105,8 @@ export class GamePage implements OnInit {
         }
       });
 
+
+
     this.players$.pipe(
       switchMap((players) => {
         this.players = players;
@@ -112,10 +115,13 @@ export class GamePage implements OnInit {
       .subscribe((roundMembers) => {
         this.roundMembers = roundMembers;
         this.playersWithTotal = this.players
-          .map((player) => ({
-            ...player,
-            totalScore: this.getPlayerTotalScores(player._id),
-          }))
+
+          .map((player) => {
+            return {
+              ...player,
+              totalScore: this.getPlayerTotalScores(player._id),
+            }
+          })
           .sort((a, b) => b.totalScore - a.totalScore);
 
       });
@@ -126,6 +132,17 @@ export class GamePage implements OnInit {
       // this.gameType = params.id;
     });
   }
+
+  finishGameDisabled(playersWithTotal: IGamer[]): boolean {
+    let countZeros = 0;
+
+    playersWithTotal.forEach((player: IGamer) => {
+      if (this.getPlayerTotalScores(player._id) === 0) {
+        countZeros++;
+      }
+    });
+    return countZeros !== 1;
+  };
 
   getPlayerTotalScores(player: string): number {
     return this.sharedService.getPlayerTotalScores(player);
@@ -149,13 +166,31 @@ export class GamePage implements OnInit {
       return { _id: round._id, players };
     });
 
-    const result = {
-      _id: 'result',
-      players: this.players.map((player) => ({
-        _id: player._id,
-        score: this.getPlayerTotalScores(player._id),
-      }))
-    };
+    let result: any;
+
+    if (this.gameType !== 'rummy') {
+      result = {
+        _id: 'result',
+        players: this.players.map((player) => ({
+          _id: player._id,
+          score: this.getPlayerTotalScores(player._id),
+        }))
+      };
+    } else {
+      let acc = 0;
+      result = {
+        _id: 'result',
+        players: this.players.map((player) => {
+          const score = this.getPlayerTotalScores(player._id);
+          acc += score;
+          return {
+            _id: player._id,
+            score,
+          };
+        })
+          .map((player) => ({ ...player, score: (player.score) || (acc * -1) }))
+      };
+    }
 
     const game: IGame = {
       type: this.rounds[0].clientGame.type,

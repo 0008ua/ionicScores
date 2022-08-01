@@ -13,6 +13,7 @@ import { RoundUnoComponent } from './uno/round-uno/round-uno.component';
 import { GamersModule } from '../gamers/gamers.module';
 import { RoundTWrapperComponent } from './round-t-wrapper/round-t-wrapper.component';
 import { RoundThousandComponent } from './thousand/round-thousand/round-thousand.component';
+import { RoundRummyComponent } from './rummy/round-rummy/round-rummy.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RoundThousandComponent } from './thousand/round-thousand/round-thousand
     RoundCarsComponent,
     RoundUnoComponent,
     RoundThousandComponent,
+    RoundRummyComponent,
   ],
   imports: [
     CommonModule,

@@ -19,6 +19,12 @@
     <app-round-uno [roundId]="(activeRoundId$ | async)" [playerId]="(activePlayerId$ | async)">
     </app-round-uno>
   </app-round-wrapper>
+  <!-- Rummy -->
+  <app-round-wrapper *ngIf="(gameType$ | async) === 'rummy'" [roundId]="(activeRoundId$ | async)"
+    [playerId]="(activePlayerId$ | async)">
+    <app-round-rummy [roundId]="(activeRoundId$ | async)" [playerId]="(activePlayerId$ | async)">
+    </app-round-rummy>
+  </app-round-wrapper>
   <!-- Thousand -->
   <app-round-t-wrapper *ngIf="(gameType$ | async) === 'thousand'" [roundId]="(activeRoundId$ | async)"
     [playerId]="(activePlayerId$ | async)">
