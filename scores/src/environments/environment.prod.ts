@@ -25,7 +25,7 @@ export const environment = {
         { name: '11', value: -11, picture: './assets/games/uno/9.svg' },
         { name: '12', value: -12, picture: './assets/games/uno/9.svg' },
         { name: '13', value: -13, picture: './assets/games/uno/9.svg' },
-        { name: 'Joker', value: 30, picture: './assets/games/uno/reverse.svg' },
+        { name: 'Joker', value: -30, picture: './assets/games/uno/reverse.svg' },
       ],
       rounds: [
         {
