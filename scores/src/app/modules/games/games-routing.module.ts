@@ -31,7 +31,7 @@ const routes: Routes = [
       // },
       {
         path: '**',
-        redirectTo: 'uno',
+        redirectTo: 'rummy',
       },
     ],
   },

@@ -14,7 +14,9 @@ import { IGamer } from 'src/app/interfaces';
 export class AnalyticsEffects {
     setLoading = createEffect(() => {
         return this.actions$.pipe(
-            ofType(fromAnalyticsActions.getRatingByWins, fromAnalyticsActions.getRatingByWinsToGames),
+            ofType(fromAnalyticsActions.getRatingByWins,
+                fromAnalyticsActions.getRatingByWinsToGames,
+                fromAnalyticsActions.getRating),
             map((_) => fromAnalyticsActions.loading({ loading: true })),
         );
     });

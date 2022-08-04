@@ -31,7 +31,14 @@ export class RummyPage implements OnInit {
     private gamerService: GamerService,
   ) {}
 
+  ionViewWillEnter() {
+    // console.log('view')
+    this.store.dispatch(fromAnalyticsActions[this.stats[0]._id]({ gameType: 'rummy' }));
+  }
+
   ngOnInit() {
+    console.log('init')
+
     this.games$ = this.gameService.entities$;
     this.games$
       .subscribe(() =>
@@ -43,7 +50,6 @@ export class RummyPage implements OnInit {
 
 
     console.log('[this.stats[0]._id', this.stats[0]._id);
-    this.store.dispatch(fromAnalyticsActions[this.stats[0]._id]({ gameType: 'rummy' }));
     this.analytics$ = this.store.select(selectRating);
     // this.analytics$.pipe(
     //   withLatestFrom(this.gamers$),

@@ -294,7 +294,7 @@ const getRating = (req: Request, res: Response, next: NextFunction) => {
           '$sum': {
             '$cond': [
               {
-                '$lt': [
+                '$gt': [
                   '$players.score', 0,
                 ],
               }, 1, 0,
