@@ -45,7 +45,15 @@ export const environment = {
           initialScoresLine: [],
           initialNamedScoresLine: [],
         },
-      ]
+      ],
+
+      stats: [
+        {
+          _id: 'getRating',
+          icon: 'trophy-outline',
+          name: 'rating',
+        },
+      ],
     },
     uno: {
       name: 'Uno',
@@ -145,12 +153,12 @@ export const environment = {
       ],
       stats: [
         {
-          _id: 'getRaitingByWins',
+          _id: 'getRatingByWins',
           icon: 'trophy-outline',
           name: 'byWins',
         },
         {
-          _id: 'getRaitingByWinsToGames',
+          _id: 'getRatingByWinsToGames',
           icon: 'podium-outline',
           name: 'byWinsToGames',
         }

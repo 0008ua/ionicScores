@@ -5,11 +5,11 @@
     <ion-buttons slot="end">
       <ion-menu-button menu="analytics-menu"></ion-menu-button>
     </ion-buttons>
-    <ion-segment [value]="stats[0]" (ionChange)="onMenuClickHandler($event)">
+    <!-- <ion-segment [value]="stats[0]" (ionChange)="onMenuClickHandler($event)">
       <ion-segment-button *ngFor="let stat of stats; let idx = index" [value]="stat">
         <ion-icon [name]="stat.icon"></ion-icon>
       </ion-segment-button>
-    </ion-segment>
+    </ion-segment> -->
 
   </ion-toolbar>
 </ion-header>
@@ -20,7 +20,7 @@
       <ion-col size-lg="6" size-md="8" size-sm="10" offset-lg="3" offset-md="2" offset-sm="1">
         <ion-card>
           <ion-card-header>
-            <ion-card-title class="ion-text-center">Ticket to ride</ion-card-title>
+            <ion-card-title class="ion-text-center">Rummy</ion-card-title>
             <ion-card-subtitle class="ion-text-center">{{'modules.analytics.' + stat.name | translate}}
             </ion-card-subtitle>
           </ion-card-header>
@@ -44,16 +44,15 @@
                 <ion-label>
                   {{player.name}}
                 </ion-label>
-                <ion-text *ngIf="stat._id === 'getRatingByWins'" slot="end" color="primary">
-                  {{player.rating.wins}}
-                </ion-text>
-                <ion-text *ngIf="stat._id === 'getRatingByWinsToGames'" slot="end" color="primary">
 
-                  {{player.rating.wins}} / {{player.rating.gamesCount}}
-                  <ion-text class="bold">( {{player.rating.wins ? math.floor(player.rating.winsToGames * 100) : 0}}% )
-                  </ion-text>
-
+                <ion-text slot="end" color="primary">
+                  <ion-text class="bold" [color]="player.rating.scores < 0 ? 'danger' : 'success'"> {{player.rating.scores}}</ion-text>
+                  / {{player.rating.totalGames}} / {{player.rating.wins}}
                 </ion-text>
+                <!-- <ion-text *ngIf="stat._id === 'getRatingByWinsToGames'" slot="end" color="primary">
+                  {{player.rating.wins}}/{{player.rating.gamesCount}} ({{player.rating.wins ?
+                  math.floor(player.rating.winsToGames * 100) : 0}}%)
+                </ion-text> -->
               </ion-item>
             </ion-list>
             <!-- <ion-row class="ion-justify-content-around">

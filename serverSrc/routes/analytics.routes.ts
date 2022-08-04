@@ -16,4 +16,9 @@ router.get('/get-wins-to-games',
   analyticsController.getWinsToGames
 );
 
+router.get('/get-rating',
+  passport.authenticate('jwt', { session: false, failWithError: true }),
+  analyticsController.getRating
+);
+
 export default router;

@@ -83,7 +83,7 @@ export class SharedService {
   }
 
   removeFromStorage(key: string): Observable<void> {
-    console.log('remove', key)
+    console.log('remove', key);
     return from(Storage.remove({ key }));
   }
 
@@ -181,7 +181,20 @@ export class SharedService {
     this.store.dispatch(fromAppActions.loadGame({ roundMembers, rounds }));
   }
 
-  getRaitingByWins(): Observable<IGamer[]> {
+  getRating(): Observable<IGamer[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http.get<IGamer[]>(
+      environment.host + 'api/analytics/get-rating/',
+      httpOptions,
+    ).pipe(
+      catchError((err) => throwError(err)));
+  }
+
+  getRatingByWins(): Observable<IGamer[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -190,10 +203,11 @@ export class SharedService {
     return this.http.get<IGamer[]>(
       environment.host + 'api/analytics/get-wins/',
       httpOptions,
-    ).pipe(catchError((err) => throwError(err)));
+    ).pipe(
+      catchError((err) => throwError(err)));
   }
 
-  getRaitingByWinsToGames(): Observable<IGamer[]> {
+  getRatingByWinsToGames(): Observable<IGamer[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -202,7 +216,9 @@ export class SharedService {
     return this.http.get<IGamer[]>(
       environment.host + 'api/analytics/get-wins-to-games/',
       httpOptions,
-    ).pipe(catchError((err) => throwError(err)));
+
+    ).pipe(
+      catchError((err) => throwError(err)));
   }
 
   getPlayerTotalScores(player: string): number {
@@ -255,7 +271,7 @@ export class SharedService {
   }
 
   addToNamedScoresLine(namedScore: NamedScore, playerId: UID, roundId: string) {
-    console.log('namedScore', namedScore)
+    console.log('namedScore', namedScore);
     const roundMember = this.getMemberByPlayerId(playerId, roundId);
     const changes = {
       ...roundMember,
@@ -355,7 +371,7 @@ export class SharedService {
     };
     return this.http.post<string>(
       this.host + '/api/app/log-error-to-db',
-      {message},
+      { message },
       httpOptions,
     );
   }

@@ -13,10 +13,13 @@ const routes: Routes = [
         path: 'train',
         loadChildren: () => import('./train/train.module').then(m => m.TrainPageModule)
       },
-
+      {
+        path: 'rummy',
+        loadChildren: () => import('./rummy/rummy.module').then(m => m.RummyPageModule)
+      },
       {
         path: '',
-        redirectTo: 'train',
+        redirectTo: 'rummy',
         pathMatch: 'full',
       },
     ]
@@ -26,6 +29,11 @@ const routes: Routes = [
     redirectTo: '',
     pathMatch: 'full'
   },
+  {
+    path: 'rummy',
+    loadChildren: () => import('./rummy/rummy.module').then( m => m.RummyPageModule)
+  },
+
 ];
 
 @NgModule({

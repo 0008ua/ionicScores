@@ -135,9 +135,9 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
         '_id': '$gamesCount._id',
         'name': '$gamesCount.name',
         'color': '$gamesCount.color',
-        'raiting.wins': '$wins.count',
-        'raiting.gamesCount': '$gamesCount.count',
-        'raiting.winsToGames': {
+        'rating.wins': '$wins.count',
+        'rating.gamesCount': '$gamesCount.count',
+        'rating.winsToGames': {
           '$round': [
             {
               '$divide': [
@@ -149,12 +149,12 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
       },
     }, {
       '$sort': {
-        'raiting.winsToGames': -1,
+        'rating.winsToGames': -1,
       },
     },
   ])
     .then((game) => {
-      console.log('found game', game);
+      // console.log('found game', game);
       // return next(new ClientError('oops'));
       // return setTimeout(() => next(new ClientError('oops')), 3000);
       // return setTimeout(() => res.status(200).json(game), 2000);
@@ -233,13 +233,101 @@ const getWins = (req: Request, res: Response, next: NextFunction) => {
       },
     }, {
       '$project': {
-        'raiting.wins': '$count',
+        'rating.wins': '$count',
         'name': '$gamer.name',
         'color': '$gamer.color',
       },
     }, {
       '$sort': {
-        'raiting.wins': -1,
+        'rating.wins': -1,
+      },
+    },
+  ])
+    .then((game) => {
+      // console.log('found game', game);
+      // return next(new ClientError('oops'));
+      // return setTimeout(() => next(new ClientError('oops')), 3000);
+      // return setTimeout(() => res.status(200).json(game), 2000);
+      return res.status(200).json(game);
+    })
+    .catch((err) => next(err));
+};
+
+
+const getRating = (req: Request, res: Response, next: NextFunction) => {
+  // const _id = req.params._id;
+  const user = req.user as IUser;
+
+  // console.log('user._id', req.user);
+  GameModel.aggregate([
+    {
+      '$match': {
+        'owner': user._id + '',
+        'type': 'rummy',
+      },
+    }, {
+      '$unwind': {
+        'path': '$rounds',
+      },
+    }, {
+      '$match': {
+        'rounds._id': 'result',
+      },
+    }, {
+      '$project': {
+        'players': '$rounds.players',
+        '_id': 0,
+      },
+    }, {
+      '$unwind': {
+        'path': '$players',
+      },
+    }, {
+      '$group': {
+        '_id': {
+          '$toObjectId': '$players._id',
+        },
+        'totalGames': {
+          '$count': {},
+        },
+        'wins': {
+          '$sum': {
+            '$cond': [
+              {
+                '$lt': [
+                  '$players.score', 0,
+                ],
+              }, 1, 0,
+            ],
+          },
+        },
+        'sum': {
+          '$sum': '$players.score',
+        },
+      },
+    }, {
+      '$lookup': {
+        'from': 'gamers',
+        'localField': '_id',
+        'foreignField': '_id',
+        'as': 'gamer',
+      },
+    }, {
+      '$unwind': {
+        'path': '$gamer',
+      },
+    }, {
+      '$project': {
+        'rating.wins': '$wins',
+        'rating.totalGames': '$totalGames',
+        'rating.scores': '$sum',
+        'name': '$gamer.name',
+        'color': '$gamer.color',
+      },
+    },
+    {
+      '$sort': {
+        'rating.scores': -1,
       },
     },
   ])
@@ -262,4 +350,5 @@ const getWithQuery = (req: Request, res: Response, next: NextFunction) => {
 export {
   getWins,
   getWinsToGames,
+  getRating,
 };

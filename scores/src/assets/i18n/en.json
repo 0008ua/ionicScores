@@ -20,6 +20,7 @@
     },
     "analytics": {
       "title": "Analytics",
+      "rating": "Raiting",
       "byWins": "Raiting by total wins",
       "byWinsToGames": "Raiting by wins to played games",
       "gamesCount": "Games",

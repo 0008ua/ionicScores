@@ -20,7 +20,7 @@ export interface IGamer {
   owner?: UID;
   name: string;
   uniqueName?: string;
-  raiting?: any;
+  rating?: any;
   color: Colors;
   createdAt?: string;
   updatedAt?: string;

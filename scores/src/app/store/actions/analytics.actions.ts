@@ -2,33 +2,42 @@ import { createAction, props, union } from '@ngrx/store';
 import { IGamer } from 'src/app/interfaces';
 
 export enum AnalyticsActionTypes {
-  getRaitingByWinsType = 'analytics/raitingByWins',
-  getRaitingByWinsToGamesType = 'analytics/raitingByWinsToGames',
-  getRaitingSuccessType = 'analytics/getRaitingSuccess',
+  getRatingByWinsType = 'analytics/ratingByWins',
+  getRatingByWinsToGamesType = 'analytics/ratingByWinsToGames',
+  getRatingType = 'analytics/rating',
+  getRatingSuccessType = 'analytics/getRatingSuccess',
   addManyType = 'analytics/addMany',
 
   errorType = 'analytics/error',
   loadingType = 'analytics/loading',
 }
 
-export const getRaitingByWins = createAction(
-  AnalyticsActionTypes.getRaitingByWinsType,
+export const getRatingByWins = createAction(
+  AnalyticsActionTypes.getRatingByWinsType,
   props<{
     gameType: string;
     query?: any;
   }>()
 );
 
-export const getRaitingByWinsToGames = createAction(
-  AnalyticsActionTypes.getRaitingByWinsToGamesType,
+export const getRatingByWinsToGames = createAction(
+  AnalyticsActionTypes.getRatingByWinsToGamesType,
   props<{
     gameType: string;
     query?: any;
   }>()
 );
 
-export const getRaitingSuccess = createAction(
-  AnalyticsActionTypes.getRaitingSuccessType,
+export const getRating = createAction(
+  AnalyticsActionTypes.getRatingType,
+  props<{
+    gameType: string;
+    query?: any;
+  }>()
+);
+
+export const getRatingSuccess = createAction(
+  AnalyticsActionTypes.getRatingSuccessType,
   props<{ analytics: IGamer[] }>()
 );
 
@@ -49,9 +58,10 @@ export const loading = createAction(
 
 const all = union({
   error,
-  getRaitingByWins,
-  getRaitingByWinsToGames,
-  getRaitingSuccess,
+  getRatingByWins,
+  getRatingByWinsToGames,
+  getRating,
+  getRatingSuccess,
   loading,
 });
 

@@ -14,14 +14,14 @@ import { IGamer } from 'src/app/interfaces';
 export class AnalyticsEffects {
     setLoading = createEffect(() => {
         return this.actions$.pipe(
-            ofType(fromAnalyticsActions.getRaitingByWins, fromAnalyticsActions.getRaitingByWinsToGames),
+            ofType(fromAnalyticsActions.getRatingByWins, fromAnalyticsActions.getRatingByWinsToGames),
             map((_) => fromAnalyticsActions.loading({ loading: true })),
         );
     });
 
     cancelLoading = createEffect(() => {
         return this.actions$.pipe(
-            ofType(fromAnalyticsActions.getRaitingSuccess, fromAnalyticsActions.error),
+            ofType(fromAnalyticsActions.getRatingSuccess, fromAnalyticsActions.error),
             filter((action) =>
                 // ignore error cancelling (null) actions
                 action.type !== fromAnalyticsActions.AnalyticsActionTypes.errorType ||
@@ -31,22 +31,32 @@ export class AnalyticsEffects {
         );
     });
 
-    getRaitingByWins = createEffect(() => {
+    getRatingByWins = createEffect(() => {
         return this.actions$.pipe(
-            ofType(fromAnalyticsActions.getRaitingByWins),
-            switchMap(() => this.sharedService.getRaitingByWins().pipe(
+            ofType(fromAnalyticsActions.getRatingByWins),
+            switchMap(() => this.sharedService.getRatingByWins().pipe(
                 switchMap((result) => this.addLoosers(of(result))),
-                map((analytics) => fromAnalyticsActions.getRaitingSuccess({ analytics })),
+                map((analytics) => fromAnalyticsActions.getRatingSuccess({ analytics })),
                 catchError((error) => of(fromAnalyticsActions.error({ error: error.error.message || 'error' }))),
             ))
         );
     });
 
-    getRaitingByWinsToGames = createEffect(() => {
+    getRatingByWinsToGames = createEffect(() => {
         return this.actions$.pipe(
-            ofType(fromAnalyticsActions.getRaitingByWinsToGames),
-            switchMap(() => this.sharedService.getRaitingByWinsToGames().pipe(
-                map((analytics) => fromAnalyticsActions.getRaitingSuccess({ analytics })),
+            ofType(fromAnalyticsActions.getRatingByWinsToGames),
+            switchMap(() => this.sharedService.getRatingByWinsToGames().pipe(
+                map((analytics) => fromAnalyticsActions.getRatingSuccess({ analytics })),
+                catchError((error) => of(fromAnalyticsActions.error({ error: error.error.message || 'error' }))),
+            ))
+        );
+    });
+
+    getRating = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(fromAnalyticsActions.getRating),
+            switchMap(() => this.sharedService.getRating().pipe(
+                map((analytics) => fromAnalyticsActions.getRatingSuccess({ analytics })),
                 catchError((error) => of(fromAnalyticsActions.error({ error: error.error.message || 'error' }))),
             ))
         );
@@ -69,7 +79,7 @@ export class AnalyticsEffects {
                         _id,
                         name,
                         color,
-                        raiting: { wins: 0 }
+                        rating: { wins: 0 }
                     }));
                 const fullList = analytics.concat(losers);
                 return fullList;

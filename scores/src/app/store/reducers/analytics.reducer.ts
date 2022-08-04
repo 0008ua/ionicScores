@@ -19,7 +19,7 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(fromAnalyticsActions.getRaitingSuccess,
+  on(fromAnalyticsActions.getRatingSuccess,
     (state, { analytics }): State => ({
       ...state,
       analytics,
@@ -49,5 +49,5 @@ export const reducer = createReducer(
 
 const selectFeature = createFeatureSelector<State>(analyticsFeatureKey);
 
-export const selectRaiting = createSelector(selectFeature, (state) => state.analytics);
+export const selectRating = createSelector(selectFeature, (state) => state.analytics);
 export const selectLoading = createSelector(selectFeature, (state) => state.loading);
