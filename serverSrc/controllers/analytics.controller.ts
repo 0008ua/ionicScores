@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { ClientError } from '../errors';
-import { GamerModel, GameModel } from '../models';
-import { IGamer, IGame, IUser } from '../interfaces';
-import { Types } from 'mongoose';
+import { GameModel } from '../models';
+import { IUser } from '../interfaces';
 
 const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
   // const _id = req.params._id;
@@ -153,14 +151,14 @@ const getWinsToGames = (req: Request, res: Response, next: NextFunction) => {
       },
     },
   ])
-    .then((game) => {
+    .then((game: any) => {
       // console.log('found game', game);
       // return next(new ClientError('oops'));
       // return setTimeout(() => next(new ClientError('oops')), 3000);
       // return setTimeout(() => res.status(200).json(game), 2000);
       return res.status(200).json(game);
     })
-    .catch((err) => next(err));
+    .catch((err: any) => next(err));
 };
 
 
@@ -243,14 +241,14 @@ const getWins = (req: Request, res: Response, next: NextFunction) => {
       },
     },
   ])
-    .then((game) => {
+    .then((game: any) => {
       // console.log('found game', game);
       // return next(new ClientError('oops'));
       // return setTimeout(() => next(new ClientError('oops')), 3000);
       // return setTimeout(() => res.status(200).json(game), 2000);
       return res.status(200).json(game);
     })
-    .catch((err) => next(err));
+    .catch((err: any) => next(err));
 };
 
 
@@ -331,20 +329,20 @@ const getRating = (req: Request, res: Response, next: NextFunction) => {
       },
     },
   ])
-    .then((game) => {
+    .then((game: any) => {
       // console.log('found game', game);
       // return next(new ClientError('oops'));
       // return setTimeout(() => next(new ClientError('oops')), 3000);
       // return setTimeout(() => res.status(200).json(game), 2000);
       return res.status(200).json(game);
     })
-    .catch((err) => next(err));
+    .catch((err: any) => next(err));
 };
 
-const getWithQuery = (req: Request, res: Response, next: NextFunction) => {
-  const entityPluralName = req.params.entityPluralName;
-  const query = req.query;
-};
+// const getWithQuery = (req: Request, res: Response, next: NextFunction) => {
+//   const entityPluralName = req.params.entityPluralName;
+//   const query = req.query;
+// };
 
 
 export {
