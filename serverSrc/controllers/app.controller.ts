@@ -12,29 +12,10 @@ const logErrorToDB = (req: Request, res: Response, next: NextFunction) => {
     message,
     owner: user._id?.toString() as string,
   };
-
-  console.log('error', error);
+  console.log('error Logger', error);
   ErrorLogModel.createErrorLog(error)
-    .then(() => {
-      return res.status(200).json('ok');
-    })
+    .then(() => res.status(200).json('error logged successfully'))
     .catch((err) => next(err));
-  // if (user && user.name && user.password) {
-  //   // singnup new user
-  //   user.role = 'member';
-  // } else {
-  //   // signup anonymus user
-  //   user.role = 'guest';
-  //   user.name = uuidv4();
-  //   user.password = uuidv4();
-  // }
-
-  // UserModel.createUser(user)
-  //   .then((user) => {
-  //     req.body = user;
-  //     return next();
-  //   })
-  //   .catch((err) => next(err));
 };
 
 

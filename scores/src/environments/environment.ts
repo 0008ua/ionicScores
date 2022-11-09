@@ -100,7 +100,7 @@ export const environment = {
       showToolbarMenu: false,
       maxPlayersQty: 4,
       minPlayersQty: 2,
-      playersColors: ['red', 'green', 'blue', 'black'],
+      playersColors: ['black'],
       roundsScores: [
         { name: 'Score', value: 0, },
         { name: 'S', value: -100, },

@@ -60,8 +60,6 @@ export class GamePage implements OnInit {
 
     combineLatest([this.gameType$, this.rounds$])
       .subscribe(([gameType, rounds]) => {
-        console.log('gameType', gameType);
-        console.log('rounds', rounds);
         if (!gameType) {
           return;
         }
@@ -90,7 +88,6 @@ export class GamePage implements OnInit {
           }
         } else {
           // game not started and active menu !'start'
-          console.log('game not started');
           this.activeRoundId$.next(this.roundsCfg[0]._id);
         }
       });
@@ -125,7 +122,6 @@ export class GamePage implements OnInit {
           .sort((a, b) => b.totalScore - a.totalScore);
 
       });
-
     this.activePlayerId$.subscribe((activePlayerId) => this.activePlayerId = activePlayerId);
 
     this.route.params.subscribe(params => {

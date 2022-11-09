@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "npm install && tsc",
     "server": "c:/it/scores/node_modules/.bin/tsc-watch --onSuccess \" node ./serverDist/bin/www \"",
     "start": "node ./serverDist/bin/www",
     "postinstall": "tsc"
