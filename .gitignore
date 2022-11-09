@@ -1,6 +1,6 @@
 nodemon.json
 security
-serverDist
+# serverDist
 .env
 
 .idea

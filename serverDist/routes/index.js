@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.appRouter = exports.analyticsRouter = exports.storeRouter = exports.authRouter = exports.dataRouter = exports.router = void 0;
+const express_1 = __importDefault(require("express"));
+const path_1 = __importDefault(require("path"));
+const data_routes_1 = __importDefault(require("./data.routes"));
+exports.dataRouter = data_routes_1.default;
+const auth_routes_1 = __importDefault(require("./auth.routes"));
+exports.authRouter = auth_routes_1.default;
+const store_routes_1 = __importDefault(require("./store.routes"));
+exports.storeRouter = store_routes_1.default;
+const analytics_routes_1 = __importDefault(require("./analytics.routes"));
+exports.analyticsRouter = analytics_routes_1.default;
+const app_routes_1 = __importDefault(require("./app.routes"));
+exports.appRouter = app_routes_1.default;
+const router = express_1.default.Router();
+exports.router = router;
+router.use('/', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public'), { redirect: false }));
+router.use('*', (req, res) => res.sendFile(path_1.default.resolve(__dirname, '..', '..', 'public', 'index.html')));

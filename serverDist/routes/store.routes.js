@@ -1,0 +1,40 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// const express = require('express');
+const express_1 = __importDefault(require("express"));
+const router = express_1.default.Router();
+const passport_1 = __importDefault(require("passport"));
+const controllers_1 = require("../controllers");
+// const { authorization } = require('../helpers');
+// router.get('/:entity/:_id', (req: Request, res: Response) => {
+//   const body = req.body;
+//   const { _id, entity } = req.params;
+//   console.log('req.params', req.params);
+//   console.log('body', body);
+//   console.log('_id', _id);
+//   console.log('entity', entity);
+//   setTimeout(() => res.status(200).json(_id), 2000);
+//   // return res.status(200).json(body);
+//   // return next(new ClientError());
+// });
+// router.get('/:entities', (req: Request, res: Response) => {
+//   const body = req.body;
+//   const { entities } = req.params;
+//   console.log('req.params', req.params);
+//   console.log('body', body);
+//   console.log('entities', entities);
+//   setTimeout(() => res.status(200).json(['one', 'two']), 2000);
+//   // return res.status(200).json(body);
+//   // return next(new ClientError());
+// });
+router.post('/:entityName', passport_1.default.authenticate('jwt', { session: false, failWithError: true }), controllers_1.storeController.add);
+router.delete('/:entityName/:_id', passport_1.default.authenticate('jwt', { session: false, failWithError: true }), controllers_1.storeController.remove);
+router.get('/:entityPluralName', passport_1.default.authenticate('jwt', { session: false, failWithError: true }), controllers_1.storeController.getAll);
+router.get('/:entityName/:_id', passport_1.default.authenticate('jwt', { session: false, failWithError: true }), controllers_1.storeController.getById);
+router.get('/:entityPluralName', passport_1.default.authenticate('jwt', { session: false, failWithError: true }), controllers_1.storeController.getWithQuery);
+router.put('/:entityName/:_id', passport_1.default.authenticate('jwt', { session: false, failWithError: true }), controllers_1.storeController.update);
+module.exports.storeRoutes = router;
+exports.default = router;
